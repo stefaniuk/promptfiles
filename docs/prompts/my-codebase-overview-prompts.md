@@ -38,11 +38,9 @@ Recommended minimum set:
 
 ## Copilot instruction file (make behaviour consistent)
 
-Create this file:
+All prompts include `.github/instructions/include/codebase-insight.md`, which mirrors the Copilot instructions below. Keep this file as the single source of truth so every run inherits the same guardrails.
 
-- `.github/copilot-instructions.md`
-
-Paste this content:
+Reference copy:
 
 ```md
 # Copilot instructions (architecture documentation)
@@ -63,101 +61,38 @@ Output style
 
 - Use headings, short paragraphs, and bullet lists.
 - Where helpful, use Mermaid diagrams in Markdown.
+
+Process
+
+- Always run the architecture prompts sequentially: `01-repo-map`, `02-component-catalogue`, `03-runtime-flows`.
+- After each prompt run, review the generated Markdown under `docs/architecture/` and iterate rather than starting from scratch.
+- Keep `architecture-overview.md` as the canonical landing page; link every new component or flow document from it.
+- Capture uncertainties explicitly in an **Unknowns / to verify** section so follow-up passes know what to investigate next.
 ```
 
 ---
 
 ## Prompt files (repeatable passes)
 
-Create a folder:
-
-- `.github/prompts/`
-
-Then add the following prompt files.
+Prompt files live under `.github/prompts/` and already import the `codebase-insight` instructions. Run them in order and iterate on the generated docs/architecture artefacts.
 
 ### 1) Repo map prompt
 
-File:
+File: `.github/prompts/01-repo-map.prompt.md`
 
-- `.github/prompts/01-repo-map.prompt.md`
-
-Content:
-
-```md
----
-description: Build a repo map for architecture documentation
----
-
-Using workspace context, create docs/architecture/repo-map.md.
-
-Steps:
-
-1. Identify top-level folders and what they contain.
-2. Identify primary entry points (apps/services, main functions, server startup, CLI entry points).
-3. Identify build/deploy artefacts (Dockerfile, Helm, Kubernetes manifests, Terraform, pipelines).
-4. Identify key external dependencies (package manifests, lockfiles, major libraries).
-5. For each major statement, add "Evidence:" bullets with file paths + symbols/config keys.
-
-Write the file and keep it concise.
-```
+Purpose: orchestrates creation of `docs/architecture/repo-map.md`, capturing folder structure, entry points, build/deploy artefacts, and dependencies with **Evidence** bullets.
 
 ### 2) Component catalogue prompt
 
-File:
+File: `.github/prompts/02-component-catalogue.prompt.md`
 
-- `.github/prompts/02-component-catalogue.prompt.md`
-
-Content:
-
-```md
----
-description: Create component-level summaries and link them from the overview
----
-
-Goal: build docs/architecture/components/\*.md and link them from docs/architecture/architecture-overview.md.
-
-Process:
-
-1. From repo-map.md, pick the 5–15 most important components/modules (services, bounded areas, packages).
-2. For each, create docs/architecture/components/<name>.md with:
-   - Purpose
-   - Responsibilities
-   - Key modules/symbols
-   - Key inbound/outbound interfaces (HTTP routes, messaging topics, queues, events)
-   - Data stores used
-   - Config and feature flags (if any)
-   - Observability (logging/metrics/tracing)
-   - Evidence section (file paths + symbols/config keys)
-3. Update architecture-overview.md to include a "Component catalogue" section linking to each file.
-
-Do this iteratively: create a first draft, then refine after searching for more evidence.
-```
+Purpose: creates one Markdown file per major component under `docs/architecture/components/`, updates `architecture-overview.md` with a catalogue, and enforces evidence-backed descriptions of responsibilities, interfaces, data, config, and observability.
 
 ### 3) Runtime flows prompt
 
-File:
+File: `.github/prompts/03-runtime-flows.prompt.md`
 
-- `.github/prompts/03-runtime-flows.prompt.md`
-
-Content:
-
-```md
----
-description: Document key runtime flows with evidence and diagrams
----
-
-Create docs/architecture/flows/runtime-flows.md.
-
-1. Identify 3–6 critical user/system flows (e.g. login, create/update entity, background job, ingestion pipeline).
-2. For each flow:
-   - A short narrative (what happens)
-   - Mermaid sequence diagram
-   - Error handling / retries / idempotency notes (if present in code)
-   - Evidence: file paths + symbols + config keys
-3. Where you are not sure, mark "Unknown from code".
-
-Keep it readable and practical.
-```
+Purpose: documents 3–6 critical flows inside `docs/architecture/flows/runtime-flows.md`, including narratives, Mermaid sequence diagrams, error-handling notes, and evidence references; also reminds authors to flag unknowns explicitly.
 
 ---
 
