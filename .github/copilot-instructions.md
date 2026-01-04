@@ -2,7 +2,7 @@
 
 Follow the relevant guidance in:
 
-- [Codebase Overview](./instructions/include/codebase-overview.md)
+- [Codebase Insight Instructions](./instructions/include/codebase-insight.md)
 
 If there is a conflict, prefer the most specific guidance for the task at hand. Use British English, keep language simple.
 

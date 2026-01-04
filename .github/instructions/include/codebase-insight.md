@@ -1,4 +1,4 @@
-# Codebase Overview 📚
+# Codebase Insight 📚
 
 You are producing a design overview for this codebase.
 
