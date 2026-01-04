@@ -74,6 +74,7 @@ Where:
 
 - `[XXX]` is a stable numeric order (e.g. `010`, `020`, `030` …) so links don’t churn
 - `[name]` is short and meaningful (kebab-case)
+- Use the same component names as in `component-*.md` (consistency rule)
 
 Each flow document must capture:
 
@@ -140,6 +141,16 @@ Write a short narrative that includes:
 
 Update: [codebase overview](../../docs/codebase-overview/README.md) with a **Runtime Flows** section linking to every flow document (in `[XXX]` order).
 
+Also add (or update) a brief flow index table in the README (evidence-based):
+
+- Flow | Trigger | Primary components | Primary datastore | Async? | Evidence link
+
+Where relevant, include cross-cutting notes in the README (link once, then reference):
+
+- Authentication/authorisation path (middleware/filters)
+- Transaction boundaries (where commits happen)
+- Correlation IDs / trace propagation
+
 ---
 
 ## Template snippet per flow
@@ -179,6 +190,11 @@ sequenceDiagram
 - Timeouts: ...
 - Unknowns: ...
 
+## Operational notes (only if evidenced)
+
+- Expected concurrency (workers, consumers): ...
+- Backpressure mechanism (queue depth, rate limits): ...
+
 ## Evidence
 
 - Evidence: [/path/to/file](/path/to/file#L75-L140) - {handler/function/route/topic/schedule/config key}
@@ -187,5 +203,5 @@ sequenceDiagram
 
 ---
 
-> **Version**: 1.2.0
+> **Version**: 1.2.5
 > **Last Amended**: 2026-01-04
