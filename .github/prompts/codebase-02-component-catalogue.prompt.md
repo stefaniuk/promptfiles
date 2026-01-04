@@ -9,7 +9,7 @@ description: Create component-level summaries
 
 Create (or update): [component catalogue](../../docs/codebase-overview/component-*.md)
 
-Also ensure it is linked from: [codebase overview](../../docs/codebase-overview/README.md)
+Also ensure they are linked from:[codebase overview](../../docs/codebase-overview/README.md)
 
 ---
 
@@ -157,7 +157,7 @@ Update: [codebase overview](../../docs/codebase-overview/README.md) with a **Com
 
 ## Template snippet per component
 
-```md
+```markdown
 # Component {name}
 
 {one-paragraph summary}
@@ -222,9 +222,9 @@ Update: [codebase overview](../../docs/codebase-overview/README.md) with a **Com
 
 - Evidence: [/path/to/file](/path/to/file#L20-L58) - {symbol or config key}
 - Evidence: Unknown from code – {action}
+```
 
 ---
 
 > **Version**: 1.2.5
 > **Last Amended**: 2026-01-04
-```
