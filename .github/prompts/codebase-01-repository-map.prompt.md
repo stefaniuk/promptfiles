@@ -142,5 +142,5 @@ Use the following snippet inside `repository-map.md`:
 
 ---
 
-> **Version**: 1.2.4
+> **Version**: 1.2.5
 > **Last Amended**: 2026-01-04

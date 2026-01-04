@@ -5,37 +5,168 @@ description: Create component-level summaries
 
 **Mandatory preparation:** read [codebase overview](../instructions/include/codebase-overview.md) in full and follow strictly its rules before executing any step below.
 
-Goal: create [component catalogue](../../../docs/codebase-overview/component-*.md)
+## Goal
 
-Discovery (run before writing):
+Create (or update): [component catalogue](../../docs/codebase-overview/component-*.md)
 
-1. Re-read [repository map](../../../docs/codebase-overview/repository-map.md) and note domains, entry points, and data stores already identified.
-2. Search for module boundaries via package manifests, workspace references (`apps/`, `services/`, `api/`, `packages/`, `cmd/`, `cli/`, `src/` subfolders).
-3. Read code for registries (router files, DI containers, plugin loaders) to uncover implicit components.
+Also ensure it is linked from: [codebase overview](../../docs/codebase-overview/README.md)
 
-Steps:
+---
 
-1. From the refreshed repository knowledge, pick the 7-12 most important components or modules (services, bounded areas, packages). Document selection criteria if ambiguous.
-2. For each component, create `docs/codebase-overview/component-[XXX]-[name].md` covering:
-   - Purpose
-   - Responsibilities
-   - Key modules/symbols
-   - Key inbound/outbound interfaces (HTTP routes, messaging topics, queues, events)
-   - Data structures
-   - Config and feature flags (if any)
-   - Observability, logging/metrics/tracing
-   - Evidence section, file paths (only URL must be prefixed with `/` for the link to resolve correctly) + symbols/config keys
-3. For any field without supporting code, add **Unknown from code — {action}** so gaps remain visible.
-4. Write the file and keep it concise while preserving the evidence-first rule.
-5. Iterate, create a first draft, search for more evidence, then refine links and unknowns while keeping the document readable and practical.
-6. Update [codebase overview](../../../docs/codebase-overview/README.md) with a **Component Catalogue** section linking to every component document.
+## Discovery (run before writing)
 
-Template snippet per component:
+### A. Refresh what is already known
+
+1. Re-read: [repository map](../../docs/codebase-overview/repository-map.md).
+2. Extract (briefly) into working notes:
+   - Deployable units and entry points
+   - Domains / bounded areas already mentioned
+   - Datastores and external services already identified
+   - Key configuration locations (values files, env var lists, config structs)
+
+### B. Find explicit component boundaries (structure-driven)
+
+1. Identify package/module boundaries from repository structure and manifests, for example:
+   - Monorepo boundaries: `apps/`, `services/`, `packages/`, `libs/`, `api/`
+   - Language-specific roots: `src/`, `cmd/`, `internal/`, `pkg/`, `cli/`
+   - Package manifests and workspace configuration (per ecosystem)
+2. Identify "shared" vs "owned" code:
+   - Shared libraries/packages
+   - Common utilities
+   - Cross-cutting frameworks (logging, auth, config)
+
+### C. Find implicit component boundaries (runtime-driven)
+
+1. Locate registries and composition roots, for example:
+   - HTTP route registration / controllers
+   - DI containers / service registries
+   - Plugin/module loaders
+   - Background job schedulers / worker registries
+2. Use these to confirm which components are real at runtime (not just folders).
+
+---
+
+## Steps
+
+### 1) Select components (explicit criteria)
+
+1. Select **12** components that best represent the architecture.
+2. Prefer components that are:
+   - Deployable units (services/apps/workers/CLIs), or
+   - Major domain modules, or
+   - Shared platform libraries used across multiple units
+3. Ensure coverage across:
+   - Primary user/system flows
+   - Data ownership (who writes/reads what)
+   - Integration surfaces (APIs/events/queues)
+4. If selection is ambiguous, record the criteria in the component catalogue (e.g. "picked by deployability + domain ownership + highest call volume surfaces", evidence-based where possible).
+
+### 2) Create one document per component (consistent scope)
+
+For each component, create:
+
+- `docs/codebase-overview/component-[XXX]-[name].md`
+
+Where:
+
+- `[XXX]` is a stable numeric order (e.g. `010`, `020`, `030` …) so links don’t churn
+- `[name]` is short and meaningful (kebab-case)
+
+For each component document, capture:
+
+#### 2A. Identity and scope
+
+- Component name
+- Component type (service/app/worker/CLI/library/module)
+- Where it lives in the repo (folder roots)
+- What it owns vs what it depends on (one short "Boundaries" paragraph)
+
+#### 2B. Purpose and responsibilities
+
+- Purpose (why it exists)
+- Responsibilities (bullet list; start each bullet with a verb)
+- Non-responsibilities (what it explicitly does not do), if inferable
+
+#### 2C. Key code structure (symbols and modules)
+
+- Key modules/packages
+- Key symbols (classes/functions) that represent the "public surface" of the component
+- Composition root / startup wiring location (where applicable)
+
+#### 2D. Interfaces (split and explicit)
+
+- **Inbound interfaces** (how other things call it)
+  - HTTP routes (include route patterns and where they’re registered)
+  - Events/topics/queues consumed
+  - CLI commands (if applicable)
+  - Scheduled triggers (cron/schedules) (if applicable)
+- **Outbound interfaces** (what it calls)
+  - Downstream HTTP/gRPC clients
+  - Events/topics/queues published
+  - External dependencies (identity, email, payments, etc.)
+
+#### 2E. Data (split by ownership and access)
+
+- Data stores used
+- Owned data vs referenced data (if inferable)
+- Key entities / tables / collections / schemas
+- Key read/write paths (where writes happen; where reads happen)
+
+#### 2F. Configuration and feature control
+
+- Config files and config entry points
+- Environment variables / config keys used by the component
+- Feature flags (where declared, how evaluated)
+
+#### 2G. Observability and operability
+
+- Logging: where it is configured and how correlation is handled (if present)
+- Metrics: what is emitted and where
+- Tracing: instrumentation and propagation (if present)
+- Health checks / readiness / liveness endpoints (if present)
+- Retry/backoff/idempotency patterns (if present)
+
+#### 2H. Evidence (mandatory)
+
+- Evidence bullets with:
+  - File paths (URLs must be prefixed with `/` so links resolve correctly)
+  - Symbols and/or config keys
+- If a field cannot be supported by code/config, record:
+  - **Unknown from code – {action to confirm}**
+
+### 3) Keep unknowns visible (no guessing)
+
+1. If the component is referenced in docs but not found in code, record:
+   - **Unknown from code – verify existence / locate entry point**
+2. If a dependency is implied but not evidenced, record:
+   - **Unknown from code – locate client initialisation / env var / IaC resource**
+
+### 4) Write concisely, then iterate
+
+1. Write a first draft for all components.
+2. Then do a second pass:
+   - Improve evidence links
+   - Replace vague terms with precise names (symbols/routes/topics/config keys)
+   - Reduce duplication across components (move shared info into a shared section or link)
+
+### 5) Update the index
+
+Update: [codebase overview](../../docs/codebase-overview/README.md) with a **Component Catalogue** section linking to every component document (in `[XXX]` order).
+
+---
+
+## Template snippet per component
 
 ```md
 # Component {name}
 
-{summary}
+{one-paragraph summary}
+
+## Type and boundaries
+
+- Type: {service/app/worker/CLI/library/module}
+- Location: {/path}, {/path}
+- Boundaries: {what it owns vs depends on}
 
 ## Purpose
 
@@ -43,36 +174,57 @@ Template snippet per component:
 
 ## Responsibilities
 
-...
+- ...
+- ...
 
-## Symbols
+## Key modules and symbols
 
-...
+- {/path/to/module} – {symbol}
+- ...
 
 ## Interfaces
 
-- Inbound: ...
-- Outbound: ...
+### Inbound
 
-## Data Structures
+- HTTP: {METHOD} {ROUTE} – evidence link
+- Events: {topic/queue} (consumer) – evidence link
+- Scheduled: {schedule} – evidence link
+- CLI: {command} – evidence link
 
-...
+### Outbound
 
-## Configuration
+- HTTP/gRPC: {service} – evidence link
+- Events: {topic/queue} (publisher) – evidence link
+- External services: {service} – evidence link
 
-...
+## Data
 
-## Observability
+- Stores: {db/cache/object store}
+- Owned entities: {entity/table/collection}
+- Key write paths: evidence links
+- Key read paths: evidence links
 
-...
+## Configuration and feature control
+
+- Config entry: evidence link
+- Env/config keys: {KEY} – evidence link
+- Feature flags: {flag} – evidence link
+
+## Observability and operability
+
+- Logging: evidence link
+- Metrics: evidence link
+- Tracing: evidence link
+- Health checks: evidence link
+- Reliability patterns: evidence link
 
 ## Evidence
 
-- Evidence: [path/to/file](path/to/file#L20-L58) - {symbol}
-- Evidence: Unknown from code - {action}
-```
+- Evidence: [/path/to/file](/path/to/file#L20-L58) - {symbol or config key}
+- Evidence: Unknown from code – {action}
 
 ---
 
-> **Version**: 1.1.0
+> **Version**: 1.2.5
 > **Last Amended**: 2026-01-04
+```
