@@ -105,12 +105,28 @@ For each component document, capture:
   - Events/topics/queues published
   - External dependencies (identity, email, payments, etc.)
 
-#### 2E. Data (split by ownership and access)
+#### 2E. Data flows and lineage (only if evidenced)
 
-- Data stores used
-- Owned data vs referenced data (if inferable)
-- Key entities / tables / collections / schemas
-- Key read/write paths (where writes happen; where reads happen)
+Include a brief, evidence-based view of how data moves through (or is produced/consumed by) this component.
+
+- **Owned data (source of truth):** {entities/tables/collections/schemas this component owns and writes}
+- **Derived/replicated data:** {materialised views, projections, caches, read models}
+- **Consumed data (read-only):** {entities/events this component reads but does not own}
+- **Published data:** {events/messages produced, schema locations, topics/queues}
+- **Consumed data streams:** {events/messages consumed, schema locations, topics/queues}
+- **Transformations:** {where data is validated/transformed/enriched; key modules/symbols}
+- **Lineage notes:** {origin → transformations → destinations} (keep to 1–3 bullets)
+
+If any item cannot be supported by code/config, record:
+
+- **Unknown from code – {action}**
+
+Add evidence bullets for each of the above categories, for example:
+
+- Evidence: [/path/to/migrations](/path/to/migrations) - {table/entity}
+- Evidence: [/path/to/producer](/path/to/producer#L10-L40) - {event name/topic}
+- Evidence: [/path/to/consumer](/path/to/consumer#L50-L120) - {handler/topic}
+- Evidence: [/path/to/schema](/path/to/schema) - {schema name/version}
 
 #### 2F. Configuration and feature control
 
