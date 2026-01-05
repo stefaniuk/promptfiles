@@ -294,5 +294,5 @@ This review is complete only when:
 
 ---
 
-> **Version**: 1.2.2
-> **Last Amended**: 2026-01-02
+> **Version**: 1.2.3
+> **Last Amended**: 2026-01-05
