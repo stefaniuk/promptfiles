@@ -70,7 +70,7 @@ In your response, provide updated versions of each as separate, downloadable fil
 
 ## TODO
 
-- if gocloc is present run it and store the result
+- include date of the report; if gocloc is present run it and store the result
 - new instructions
   - github workflow/actions pipelines
   - docker
