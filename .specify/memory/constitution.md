@@ -148,7 +148,7 @@ Key rules:
 
 - Prefer designs that minimise cross-team co-ordination and hand-offs.
 - Optimise for independent change and independent deployment where practical.
-- Align domain boundaries, team ownership, and interfaces (apply Conway’s Law deliberately).
+- Align domain boundaries, team ownership, and interfaces (apply Conway's Law deliberately).
 - Accept duplication where it reduces coupling and improves flow.
 - Avoid over-fragmentation: a well-structured modular monolith is valid when it improves cognitive load and operability.
 
@@ -254,13 +254,32 @@ Key rules:
 - Avoid ambiguity, unnecessary abbreviations, and mental mapping.
 - Naming must match the ubiquitous language.
 
-### 7.3 Functions and Methods
+### 7.3 Static Typing Requirements
+
+- All code written in **statically analysable languages** must use the language's typing facilities consistently:
+  - Public APIs must have explicit types.
+  - Function and method parameters and return values must be typed.
+  - Data models and structured data must be typed.
+  - Avoid `any`-style escape hatches or implicit dynamic typing except where explicitly justified.
+- **TypeScript and Python are not exempt.** Both must use type annotations with static analysis enforced (for example, `strict` mode in TypeScript; mypy, pyright, or ruff in Python).
+- **Shell scripts** (Bash, zsh, and similar) are exempt from static typing, but must:
+  - Remain small and focused
+  - Validate inputs explicitly
+  - Fail fast with clear error messages
+  - Prefer simple, portable constructs
+- Any exception to the typing requirement must be:
+  - Explicitly documented with rationale
+  - Limited in scope
+  - Reviewed regularly
+  - Removed as soon as practicable (see §11.3)
+
+### 7.4 Functions and Methods
 
 - Functions must be small and focused on a single responsibility.
 - Functions must operate at a single level of abstraction where practical.
 - Happy-path logic must be separated from error handling where practical.
 
-### 7.4 Comments (Intent-Focused)
+### 7.5 Comments (Intent-Focused)
 
 - Comments must explain intent and reasoning, not mechanics.
 - Comments must explain why something exists, not what the code already states.
@@ -270,7 +289,7 @@ Key rules:
   - Non-obvious trade-offs, edge cases, and reasoning
 - Comments that merely restate code are prohibited.
 
-### 7.5 Code Smells
+### 7.6 Code Smells
 
 - Code smells must be actively identified and removed, including (not limited to):
   - Long functions
@@ -281,13 +300,13 @@ Key rules:
   - Temporal coupling
   - Inconsistent naming
 
-### 7.6 Incremental Improvement
+### 7.7 Incremental Improvement
 
 - Refactoring must focus on readability and maintainability.
 - Small, incremental improvements are preferred over large rewrites.
 - Improvements must not widen scope or introduce new behaviour.
 
-### 7.7 File Ordering and Navigability
+### 7.8 File Ordering and Navigability
 
 Within a file, order code to match the primary execution / call flow to aid readability and navigation:
 
@@ -297,7 +316,7 @@ Within a file, order code to match the primary execution / call flow to aid read
 
 If strict call-order would reduce clarity (for example shared utilities used widely), group those helpers in a clearly labelled "Utilities" section at the end of the file.
 
-### 7.8 Mandatory Local Quality Gates
+### 7.9 Mandatory Local Quality Gates
 
 After making **any** change to implementation code or tests, you must run:
 
@@ -306,12 +325,12 @@ After making **any** change to implementation code or tests, you must run:
 
 You must continue iterating on the changes until **both commands complete successfully with no errors or warnings**. This is mandatory and must be done automatically as part of AI-assisted development, without requiring an additional prompt.
 
-### 7.9 Automated Quality Enforcement
+### 7.10 Automated Quality Enforcement
 
 - Quality must be protected by **robust and comprehensive automation** (tests, checks, policies), not by hope or manual vigilance. ([GitHub][1])
 - Where CI exists, CI quality gates are authoritative for merge readiness; local gates must mirror them as closely as practical.
 
-### 7.10 Sensitive Data Must Not Leak
+### 7.11 Sensitive Data Must Not Leak
 
 - Sensitive data (including credentials, tokens, patient-identifiable data, or other secrets) must never be committed to source control.
 - Any suspected leak is treated as an incident: stop, contain, rotate/revoke, and record what happened. ([GitHub][1])
