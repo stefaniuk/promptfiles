@@ -1,6 +1,6 @@
 ---
 agent: agent
-description: Build a repository map to document the architecture
+description: Build a repository map to document architecture, technology stack, and repo-level conventions (evidence-first)
 ---
 
 **Mandatory preparation:** read [codebase overview](../instructions/include/codebase-overview.md) instructions in full and follow strictly its rules before executing any step below.
@@ -10,6 +10,16 @@ description: Build a repository map to document the architecture
 Create (or update): [repository map](../../docs/codebase-overview/repository-map.md)
 
 Also ensure it is linked from: [codebase overview](../../docs/codebase-overview/README.md) output
+
+---
+
+## Configuration (optional, evidence-first)
+
+If not set, auto-detect from code/config. Do **not** guess.
+
+- `${PROJECT_TYPE="Auto-detect|.NET|Java|JavaScript|TypeScript|React|Angular|Python|Node.js|Go|Other"}`
+- `${ARCHITECTURE_PATTERN="Auto-detect|Clean Architecture|Microservices|Layered|MVVM|MVC|Hexagonal|Event-Driven|Serverless|Monolithic|Other"}`
+- `${DETAIL_LEVEL="High-level|Detailed|Comprehensive"}`
 
 ---
 
@@ -30,7 +40,22 @@ Also ensure it is linked from: [codebase overview](../../docs/codebase-overview/
    - Summarise the top languages (by lines) in `repository-map.md` under a short **Size and language mix** section.
    - If `gocloc` is not available, record **Unknown from code – install gocloc or provide equivalent LOC output** and continue.
 
-### B. Read context documents (non-authoritative)
+### B. Detect project type and architecture pattern (repo-level, evidence-first)
+
+> This section creates a **single** repo-level statement. Do not repeat this per component; component details live in `component-*.md`.
+
+1. Identify primary technology stacks by examining:
+   - Project/config files (e.g. `pyproject.toml`, `package.json`, `tsconfig.json`, `*.csproj`, `pom.xml`, `go.mod`)
+   - Lock files and workspace configuration (pnpm/npm/yarn/uv/poetry/pip-tools/Gradle/Maven/etc.)
+   - Build and deployment configurations (Dockerfiles, workflows, scripts)
+2. Determine the primary architecture pattern(s) by analysing:
+   - Folder organisation and naming
+   - Dependency direction (imports, layering, package boundaries)
+   - Composition roots / DI wiring / router registrations
+   - Communication mechanisms (HTTP, events/queues, schedules, CLI)
+3. If `${PROJECT_TYPE}` or `${ARCHITECTURE_PATTERN}` are set (not Auto-detect), validate they match the evidence; otherwise record drift as **Unknown from code – reconcile config vs implementation**.
+
+### C. Read context documents (non-authoritative)
 
 1. Identify key context files such as:
    - `README*`, `doc*/**`, `adr/**`, `spec*/**`, `*.md`
@@ -83,6 +108,7 @@ Also ensure it is linked from: [codebase overview](../../docs/codebase-overview/
    - Main jobs (build/test/lint/security/deploy)
    - Artefacts produced (images, packages, reports)
 3. Record security/scanning steps (SAST, dependency scanning, container scanning, SBOM), if present.
+4. If licensing checks exist (e.g. SBOM generation, licence scanning), record them here; otherwise do not invent them.
 
 #### 3C. Deployment artefacts and infrastructure
 
@@ -93,7 +119,7 @@ Also ensure it is linked from: [codebase overview](../../docs/codebase-overview/
 2. For each deployable unit, link to the deployment artefacts that apply to it.
 3. Note environments if represented (dev/test/prod), and where configuration differs.
 
-### 4) Identify dependencies and platform usage (split and explicit)
+### 4) Map dependencies and platform usage (split and explicit)
 
 #### 4A. Languages, frameworks, and runtime
 
@@ -116,6 +142,22 @@ Also ensure it is linked from: [codebase overview](../../docs/codebase-overview/
    - Third-party APIs
 2. Only include a service if you can point to evidence in code/config (imports, clients, env vars, helm values, terraform resources, etc.).
 3. Capture cloud managed services where evidenced (AWS/Azure/GCP resources, platform operators, etc.).
+
+### 5) Repo-level conventions and "how to extend" (avoid duplication)
+
+> Keep this repo-level and concise. Do **not** restate per component; component and flow docs hold the detail.
+
+1. Document coding conventions that are enforced by tooling (formatters, linters, CI rules):
+   - Naming conventions (if encoded in lint rules or templates)
+   - Formatting (prettier/black/ruff/gofmt/etc.)
+   - Import/module boundary rules (eslint boundaries, dep checks, etc.)
+2. Identify any scaffolding/templates that shape new code (cookiecutter, generators, template dirs).
+3. Provide a short "Blueprint for new development" section:
+   - Where to put new **services/apps**
+   - Where to put new **shared libraries**
+   - How to introduce a new **external integration** (config + client + tests)
+   - What tests are expected by default (unit/integration boundaries)
+4. If the repo appears to use ADRs or decision logs, link to them; do not invent decision rationale.
 
 ---
 
@@ -146,5 +188,5 @@ Use the following snippet inside `repository-map.md`:
 
 ---
 
-> **Version**: 1.3.7
-> **Last Amended**: 2026-01-09
+> **Version**: 1.4.0
+> **Last Amended**: 2026-01-10

@@ -1,6 +1,6 @@
 ---
 agent: agent
-description: Domain analysis (DDD) to document bounded contexts, language, and context map
+description: Domain analysis (DDD) to document bounded contexts, language, events, and context map (evidence-first)
 ---
 
 **Mandatory preparation:** read [codebase overview](../instructions/include/codebase-overview.md) instructions in full and follow strictly its rules before executing any step below.
@@ -32,6 +32,7 @@ Also ensure they are linked from: [codebase overview](../../docs/codebase-overvi
    - Datastores and ownership statements (if any)
    - Integration surfaces (HTTP routes, topics/queues, schedules)
    - Any existing domain terms (from code identifiers, schemas, endpoint names)
+   - The repo-level architecture statement (do not restate per domain doc; assume the reader has the repo map)
 
 ### B. Locate domain model signals (code-driven)
 
@@ -107,6 +108,7 @@ Create/update: `docs/codebase-overview/domain-03-context-map.md`
    - Relationship direction (upstream/downstream)
    - Integration style (HTTP API, async events, shared DB, shared library, file/object storage)
    - Any translation layer (Anti-Corruption Layer, mapping code), if evidenced
+   - Any versioning contract (API version headers, event schema versions) if evidenced
 2. Include a Mermaid diagram (flowchart) showing contexts and arrows.
 3. Highlight risky couplings (only if evidenced), such as:
    - Direct database access across contexts
@@ -152,6 +154,8 @@ Create/update: `docs/codebase-overview/domain-05-boundary-notes.md`
 1. Record evidence-based notes on:
    - Where business rules live (domain services vs application services vs controllers)
    - Aggregate boundaries (where transactional consistency appears to be enforced)
+   - Entity/value object patterns (how identity, immutability, equality are implemented) if evidenced
+   - Domain services vs application orchestration (what is pure domain vs integration glue)
    - Shared kernel candidates (shared types that are genuinely stable)
    - Boundary violations (imports/DB access/event coupling that crosses contexts)
 2. Keep this constructive and specific:
@@ -212,5 +216,5 @@ flowchart LR
 
 ---
 
-> **Version**: 1.0.2
-> **Last Amended**: 2026-01-09
+> **Version**: 1.1.0
+> **Last Amended**: 2026-01-10

@@ -1,6 +1,6 @@
 ---
 agent: agent
-description: Document key runtime flows with diagrams
+description: Document key runtime flows with diagrams (trigger → orchestration → data lineage), evidence-first
 ---
 
 **Mandatory preparation:** read [codebase overview](../instructions/include/codebase-overview.md) instructions in full and follow strictly its rules before executing any step below.
@@ -25,6 +25,7 @@ Also ensure they are linked from: [codebase overview](../../docs/codebase-overvi
    - Known external integrations
    - Known datastores and queues/topics
    - Any existing "critical paths" mentioned (even if non-authoritative)
+   - Repo-level architecture pattern statement (use once in README, not per flow)
 
 ### B. Locate orchestration and routing points (code-driven)
 
@@ -33,8 +34,8 @@ Search for and open the files that define or register:
 1. HTTP routing / controllers / endpoints (router registration points)
 2. Message consumers / subscription registration (topics/queues, consumer groups)
 3. Job schedulers / cron definitions (where schedule → handler is wired)
-4. Pipeline definitions / workflow coordinators (if present)
-5. Cross-cutting middleware that affects flows (auth, validation, transactions, retries)
+4. Workflow/pipeline coordinators (if present)
+5. Cross-cutting middleware that affects flows (auth, validation, transactions, retries, idempotency, timeouts, logging correlation)
 
 ### C. Identify workflow semantics (if any)
 
@@ -94,6 +95,7 @@ Write a short narrative that includes:
 - Main steps (7–15 bullets, each a single action)
 - Outcome (what is created/updated/emitted)
 - Key side effects (events published, notifications sent, files written)
+- Any explicit sync vs async boundary (e.g. request returns before background work completes)
 
 #### 2C. Sequence diagram (Mermaid, component-level)
 
@@ -104,6 +106,7 @@ Write a short narrative that includes:
   - Main calls/messages
   - Datastore interactions
   - Published events / queued work
+  - Authentication/authorisation checks and middleware **only if they materially affect the flow**
 
 #### 2D. Data flow and lineage (only if evidenced)
 
@@ -142,9 +145,16 @@ If any item cannot be supported by code/config, record:
 - Retries and backoff (where configured)
 - Idempotency (keys, dedupe tables, exactly-once semantics if present)
 - Timeouts / circuit breakers (if present)
+- Fallback / graceful degradation behaviour (if present)
 - Compensation / rollback (transactions, sagas, compensating actions) if present
 
-#### 2F. Evidence (mandatory)
+#### 2F. Observability notes (only if evidenced)
+
+- Correlation IDs / trace propagation points
+- Key log events (start/end/error) if standardised
+- Metrics emitted for this flow (counters/timers) if present
+
+#### 2G. Evidence (mandatory)
 
 - Evidence bullets with:
   - File paths (URLs must be prefixed with `/` so links resolve correctly)
@@ -245,18 +255,21 @@ flowchart LR
 - Transformations: ...
 - Lineage notes: ...
 
-## Reliability and failure behaviour
+## Reliability and failure behaviour (only if evidenced)
 
 - Error handling: ...
 - Retries/backoff: ...
 - Idempotency: ...
-- Timeouts: ...
+- Timeouts/circuit breakers: ...
+- Fallbacks: ...
+- Compensation/rollback: ...
 - Unknowns: ...
 
-## Operational notes (only if evidenced)
+## Observability notes (only if evidenced)
 
-- Expected concurrency (workers, consumers): ...
-- Backpressure mechanism (queue depth, rate limits): ...
+- Correlation/tracing: ...
+- Logs: ...
+- Metrics: ...
 
 ## Evidence
 
@@ -266,5 +279,5 @@ flowchart LR
 
 ---
 
-> **Version**: 1.2.9
-> **Last Amended**: 2026-01-09
+> **Version**: 1.3.0
+> **Last Amended**: 2026-01-10

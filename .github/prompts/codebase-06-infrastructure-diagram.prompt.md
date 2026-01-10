@@ -1,6 +1,6 @@
 ---
 agent: agent
-description: Produce AWS infrastructure diagram from Terraform
+description: Produce AWS infrastructure diagram from Terraform (evidence-first, consistent with C4 container naming)
 ---
 
 **Mandatory preparation:** read [codebase overview](../instructions/include/codebase-overview.md) instructions in full and follow strictly its rules before executing any step below.
@@ -14,8 +14,10 @@ Also ensure this work is linked from: [codebase overview](../../docs/codebase-ov
 Constraints:
 
 - Derive every element from Terraform/IaC code (no speculation)
-- Use AWS architecture styling, icons, and colour palette as provided by the official AWS icon set packaged in Draw.io.
-- Keep diagram layers/groups consistent (e.g. networking, compute, data stores) and label AWS accounts/regions when known.
+- Use AWS architecture styling, icons, and colour palette as provided by the official AWS icon set packaged in Draw.io
+- Keep diagram layers/groups consistent (e.g. networking, compute, data stores)
+- Label AWS accounts/regions when known
+- Keep names consistent with the C4 Container diagram where possible (service/container names), without inventing mappings
 
 ---
 
@@ -64,6 +66,7 @@ For each Terraform root/module:
    - Private entry (VPN, Transit Gateway, Direct Connect)
    - Outbound integrations (third-party APIs, SaaS endpoints)
 3. Identify data-flow paths (client → edge → compute → data store) based on resource references and outputs.
+4. Capture resilience topology where evidenced (multi-AZ, autoscaling, failover, backups).
 
 ### 2) Define diagram layers and grouping rules
 
@@ -83,6 +86,7 @@ For each Terraform root/module:
    - Annotate connections with protocols/ports if Terraform security groups or listeners provide that info
 3. Use Draw.io layers or groups to represent environments if multiple share the same page; otherwise create duplicate pages per environment.
 4. Record unresolved items in a dedicated **Unknown from code** sticky note inside the diagram (non-exporting layer) to maintain transparency.
+5. Where you can map an AWS "compute" resource to a deployable unit in the repo (from `repository-map.md` / C4 container diagram), label it accordingly and include a short evidence pointer. If you cannot map it, keep the label Terraform-derived and record **Unknown from code – map resource to deployable**.
 
 ### 4) Document evidence and outputs
 
@@ -90,7 +94,7 @@ For each Terraform root/module:
    - Link to the draw.io file (and PNG/SVG if exported)
    - Short summary of what the diagram covers (environments, date of last refresh)
    - Instructions to regenerate (e.g. "Open in draw.io desktop/web and refresh AWS icons from Terraform module XYZ")
-2. Add an **Evidence** section to this prompt's output notes when run, referencing Terraform files for each major diagram element.
+2. Add an **Evidence** section to `aws-infrastructure.md`, referencing Terraform files for each major diagram element.
 3. If automation or scripts exist for exporting diagrams, document usage (command, output path) or record **Unknown from code – locate diagram export tooling**.
 
 ---
@@ -158,5 +162,5 @@ Example evidence snippet:
 
 ---
 
-> **Version**: 1.0.0
-> **Last Amended**: 2026-01-09
+> **Version**: 1.1.0
+> **Last Amended**: 2026-01-10

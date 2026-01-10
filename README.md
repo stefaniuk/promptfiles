@@ -1,8 +1,8 @@
-# spec-kit prompt library
+# AI-assisted Development Prompt Files
 
 This repository is the central prompt-and-instruction library for specification-driven development (SDD) teams. Every artefact (constitution, instruction packs, ADR templates, and curated prompt suites) is designed for copy-and-paste reuse inside downstream repositories so that Copilot and other AI helpers stay aligned with the spec-kit operating model.
 
-- [spec-kit prompt library](#spec-kit-prompt-library)
+- [AI-assisted Development Prompt Files](#ai-assisted-development-prompt-files)
   - [Quick start](#quick-start)
   - [Repository layout](#repository-layout)
   - [Prompt catalogue](#prompt-catalogue)
@@ -94,7 +94,6 @@ Use the `/speckit.constitution` command set below whenever you need deterministi
 - **New prompts**
   - `architecture-review.prompt` (architect for flow)
   - `migrate-from-[tech A]-to-[tech B].prompt`
-  - Blend learnings from the [architecture blueprint generator](https://github.com/github/awesome-copilot/blob/main/prompts/architecture-blueprint-generator.prompt.md) and [technology stack blueprint generator](https://github.com/github/awesome-copilot/blob/main/prompts/technology-stack-blueprint-generator.prompt.md) into the codebase prompts.
 - **Instruction packs**
   - Extend Makefile guidance with the latest repository template rules.
   - Add automation-ready GitHub Actions workflow instructions.

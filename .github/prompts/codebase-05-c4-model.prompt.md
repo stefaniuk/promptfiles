@@ -1,6 +1,6 @@
 ---
 agent: agent
-description: Produce C4 model diagrams (Context, Container, Component) in Structurizr DSL
+description: Produce C4 model diagrams (Context, Container, Component) in Structurizr DSL (evidence-first, consistent naming)
 ---
 
 **Mandatory preparation:** read [codebase overview](../instructions/include/codebase-overview.md) instructions in full and follow strictly its rules before executing any step below.
@@ -32,6 +32,7 @@ Also ensure they are linked from: [codebase overview](../../docs/codebase-overvi
    - External systems (identity, messaging, email, payments, third-party APIs)
    - Datastores (DBs, caches, object stores) and which parts use them
    - Bounded contexts / major domain areas (if documented)
+   - Primary protocols and interaction styles (HTTP, events, schedules) if evidenced
 
 ### B. Confirm diagram candidates in code/config (evidence-first)
 
@@ -84,6 +85,7 @@ Rules:
 - Only include externals that have evidence in code/config/IaC.
 - Use tags for: `Person`, `ExternalSystem`, `Database`, `Queue`, `Cache`, `Storage` as applicable.
 - Add brief descriptions (one sentence max).
+- Where meaningful and evidenced, annotate relationships with the interaction style (e.g. `HTTPS/443`, `Publishes events`, `Reads/writes`).
 
 ---
 
@@ -148,15 +150,17 @@ Structurizr DSL is not ideal for line-level evidence. Do this instead:
 
 1. At the top of each `.dsl` file, include a short comment block:
    - What inputs were used (links to repo map/components/flows)
-   - A short “Evidence pointers” list (file paths only)
-   - “Unknown from code” items, if any
+   - A short "Evidence pointers" list (file paths only)
+   - "Unknown from code" items, if any
 
 Example comment:
 
 ```
+// Inputs:
+// - /docs/codebase-overview/repository-map.md
+// - /docs/codebase-overview/component-001-*.md
 // Evidence pointers:
 // - /path/to/router.ts
-// - /path/to/consumer_registration.go
 // - /infra/k8s/service.yaml
 // Unknown from code – confirm whether {X} is a separate deployable
 ```
@@ -171,9 +175,9 @@ Update: [codebase overview](../../docs/codebase-overview/README.md) with a **C4 
 - `c4/02-container.dsl`
 - `c4/03-component-*.dsl`
 
-Also include brief “How to view” notes (repo-local, no external claims), for example:
+Also include brief "How to view" notes (repo-local, no external claims), for example:
 
-- “Open the DSL in your Structurizr tooling / exporter used by this repo (if present).”
+- "Open the DSL in your Structurizr tooling / exporter used by this repo (if present)."
 - If no tooling is found, record **Unknown from code – identify how diagrams are rendered in this repo**.
 
 ---
@@ -282,5 +286,5 @@ workspace "System - Components" "Component diagram for one container." {
 
 ---
 
-> **Version**: 1.0.2
-> **Last Amended**: 2026-01-09
+> **Version**: 1.1.0
+> **Last Amended**: 2026-01-10

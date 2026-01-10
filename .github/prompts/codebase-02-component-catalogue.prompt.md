@@ -1,6 +1,6 @@
 ---
 agent: agent
-description: Create component-level summaries
+description: Create component-level summaries (responsibilities, interfaces, data, and extension points)
 ---
 
 **Mandatory preparation:** read [codebase overview](../instructions/include/codebase-overview.md) instructions in full and follow strictly its rules before executing any step below.
@@ -20,6 +20,7 @@ Also ensure they are linked from:[codebase overview](../../docs/codebase-overvie
 1. Re-read: [repository map](../../docs/codebase-overview/repository-map.md).
 2. Extract (briefly) into working notes:
    - Deployable units and entry points
+   - Repo-level architecture statement and tech stack summary (do not repeat in every component)
    - Domains / bounded areas already mentioned
    - Datastores and external services already identified
    - Key configuration locations (values files, env var lists, config structs)
@@ -80,6 +81,7 @@ For each component document, capture:
 - Component type (service/app/worker/CLI/library/module)
 - Where it lives in the repo (folder roots)
 - What it owns vs what it depends on (one short "Boundaries" paragraph)
+- Architecture role (one line): e.g. edge/API, orchestration, domain core, integration adapter, persistence, shared platform
 
 #### 2B. Purpose and responsibilities
 
@@ -87,11 +89,12 @@ For each component document, capture:
 - Responsibilities (bullet list; start each bullet with a verb)
 - Non-responsibilities (what it explicitly does not do), if inferable
 
-#### 2C. Key code structure (symbols and modules)
+#### 2C. Internal structure and key abstractions
 
 - Key modules/packages
 - Key symbols (classes/functions) that represent the "public surface" of the component
 - Composition root / startup wiring location (where applicable)
+- Design patterns utilised (e.g. repository, mediator, ports/adapters) **only if evidenced**
 
 #### 2D. Interfaces (split and explicit)
 
@@ -128,13 +131,23 @@ Add evidence bullets for each of the above categories, for example:
 - Evidence: [/path/to/consumer](/path/to/consumer#L50-L120) - {handler/topic}
 - Evidence: [/path/to/schema](/path/to/schema) - {schema name/version}
 
-#### 2F. Configuration and feature control
+#### 2F. Cross-cutting concerns (component-specific, no duplication)
+
+Document component-specific implementation details only. If a concern is identical across many components, capture it once (in the most "central" component or a shared doc) and link to it rather than repeating.
+
+- Authentication/authorisation integration points (middleware/guards/clients)
+- Error handling strategy (exceptions, error mapping, retry wrappers)
+- Logging and correlation (how IDs are propagated)
+- Validation (where it happens and what enforces it)
+- Configuration and secrets (entry points, key env/config names)
+
+#### 2G. Configuration and feature control
 
 - Config files and config entry points
 - Environment variables / config keys used by the component
 - Feature flags (where declared, how evaluated)
 
-#### 2G. Observability and operability
+#### 2H. Observability and operability
 
 - Logging: where it is configured and how correlation is handled (if present)
 - Metrics: what is emitted and where
@@ -142,7 +155,14 @@ Add evidence bullets for each of the above categories, for example:
 - Health checks / readiness / liveness endpoints (if present)
 - Retry/backoff/idempotency patterns (if present)
 
-#### 2H. Evidence (mandatory)
+#### 2I. Evolution and extension patterns (only if evidenced)
+
+- Variation points (interfaces, plugins, strategy objects, hook systems)
+- How to add a new handler/route/integration safely (where to register)
+- Configuration-driven behaviour (what can be changed without code)
+- Backwards-compatibility constraints (API versions, event schema evolution), if present
+
+#### 2J. Evidence (mandatory)
 
 - Evidence bullets with:
   - File paths (URLs must be prefixed with `/` so links resolve correctly)
@@ -182,6 +202,7 @@ Update: [codebase overview](../../docs/codebase-overview/README.md) with a **Com
 
 - Type: {service/app/worker/CLI/library/module}
 - Location: {/path}, {/path}
+- Role: {edge/API|orchestration|domain core|integration adapter|persistence|shared platform}
 - Boundaries: {what it owns vs depends on}
 
 ## Purpose
@@ -220,19 +241,25 @@ Update: [codebase overview](../../docs/codebase-overview/README.md) with a **Com
 - Key write paths: evidence links
 - Key read paths: evidence links
 
+## Cross-cutting concerns (component-specific)
+
+- Auth: evidence link
+- Errors/retries: evidence link
+- Logging/correlation: evidence link
+- Validation: evidence link
+- Config/secrets: evidence link
+
 ## Configuration and feature control
 
-- Config entry: evidence link
-- Env/config keys: {KEY} – evidence link
-- Feature flags: {flag} – evidence link
+...
 
 ## Observability and operability
 
-- Logging: evidence link
-- Metrics: evidence link
-- Tracing: evidence link
-- Health checks: evidence link
-- Reliability patterns: evidence link
+...
+
+## Evolution and extension (only if evidenced)
+
+...
 
 ## Evidence
 
@@ -242,5 +269,5 @@ Update: [codebase overview](../../docs/codebase-overview/README.md) with a **Com
 
 ---
 
-> **Version**: 1.2.8
-> **Last Amended**: 2026-01-09
+> **Version**: 1.3.0
+> **Last Amended**: 2026-01-10
