@@ -14,6 +14,9 @@
     - [Assumptions 🧩](#assumptions-)
     - [Drivers 🎯](#drivers-)
     - [Options 🔀](#options-)
+      - [Option A: {Descriptive name} (Selected) ✅](#option-a-descriptive-name-selected-)
+      - [Option B: {Descriptive name}](#option-b-descriptive-name)
+      - [Option C: {Descriptive name}](#option-c-descriptive-name)
     - [Outcome 🏁](#outcome-)
     - [Rationale 🧠](#rationale-)
   - [Consequences ⚖️](#consequences-️)
@@ -42,6 +45,46 @@ List the decision drivers that motivate this decision or course of action. This 
 
 Consider a comprehensive set of alternative options. Include weighting or scoring if it improves clarity.
 
+#### Option A: {Descriptive name} (Selected) ✅
+
+Summarise the core idea behind the selected option, including how it works at a high level and any critical constraints or prerequisites.
+
+| Criteria (example) | Score/Notes                                   |
+| ------------------ | --------------------------------------------- |
+| Criterion 1        | ⭐⭐⭐ {reasoning for score}                  |
+| Criterion 2        | ⭐⭐ {reasoning for score}                    |
+| Criterion 3        | ⭐⭐⭐ {reasoning for score}                  |
+| Criterion 4        | ⭐⭐ {reasoning for score}                    |
+| Effort             | {T-shirt size or estimate with justification} |
+
+#### Option B: {Descriptive name}
+
+Describe the second viable option, including the mechanisms involved and notable strengths/weaknesses.
+
+| Criteria (example) | Score/Notes                                   |
+| ------------------ | --------------------------------------------- |
+| Criterion 1        | ⭐⭐ {reasoning for score}                    |
+| Criterion 2        | ⭐⭐ {reasoning for score}                    |
+| Criterion 3        | ⭐ {reasoning for score}                      |
+| Criterion 4        | ⭐⭐⭐ {reasoning for score}                  |
+| Effort             | {T-shirt size or estimate with justification} |
+
+**Why not chosen**: Capture the concrete reasons this option was rejected. Reference measurable risks, constraints, or trade-offs evidenced in the codebase or architecture.
+
+#### Option C: {Descriptive name}
+
+Describe the third option (or more if needed) with enough detail for readers to evaluate it at a glance.
+
+| Criteria (example) | Score/Notes                                   |
+| ------------------ | --------------------------------------------- |
+| Criterion 1        | ⭐⭐ {reasoning for score}                    |
+| Criterion 2        | ⭐ {reasoning for score}                      |
+| Criterion 3        | ⭐ {reasoning for score}                      |
+| Criterion 4        | ⭐⭐ {reasoning for score}                    |
+| Effort             | {T-shirt size or estimate with justification} |
+
+**Why not chosen**: Explain the specific drawbacks, blockers, or context conflicts that ruled out this option.
+
 ### Outcome 🏁
 
 State the decision outcome, based on the information above. State whether the decision is reversible or irreversible, and what would trigger revisiting it.
@@ -68,6 +111,7 @@ Compliance checks can be manual or automated using a fitness function. If automa
 - What it evaluates (inputs/outputs, constraints, thresholds)
 - What evidence it produces (logs, reports, artefacts)
 - What changes are needed in the repository to support the measurement
+- A command or script Copilot can run locally to assert compliance automatically when reading this ADR; update the ADR whenever that command changes so automation stays accurate.
 
 ## Notes 🔗
 
@@ -88,5 +132,5 @@ Use tags to link related ADRs by cross-cutting concern and quality attribute. Pr
 
 ---
 
-> **Version**: 1.0.0
+> **Version**: 1.0.2
 > **Last Amended**: 2026-01-02
