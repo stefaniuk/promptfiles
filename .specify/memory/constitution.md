@@ -261,7 +261,7 @@ Key rules:
   - Function and method parameters and return values must be typed.
   - Data models and structured data must be typed.
   - Avoid `any`-style escape hatches or implicit dynamic typing except where explicitly justified.
-- **TypeScript and Python are not exempt.** Both must use type annotations with static analysis enforced (for example, `strict` mode in TypeScript; mypy, pyright, or ruff in Python).
+- **TypeScript and Python are not exempt.** Both must use type annotations with static analysis enforced.
 - **Shell scripts** (Bash, zsh, and similar) are exempt from static typing, but must:
   - Remain small and focused
   - Validate inputs explicitly
@@ -411,7 +411,7 @@ Any exception must be treated as a governance decision and recorded in the repos
 
 ---
 
-> **Version**: 1.3.0
+> **Version**: 1.3.1
 > **Last Amended**: 2026-01-10
 
 [1]: https://github.com/NHSDigital/software-engineering-quality-framework "GitHub - NHSDigital/software-engineering-quality-framework: ️ Shared best-practice guidance & tools to support software engineering teams"
