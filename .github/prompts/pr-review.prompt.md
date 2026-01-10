@@ -3,7 +3,14 @@ agent: agent
 description: Pull request review using codebase overview context
 ---
 
-**Mandatory preparation:** read [codebase overview](../instructions/include/codebase-overview.md) in full and follow strictly its rules before executing any step below.
+**Mandatory preparation:**
+
+- Read [codebase overview](../instructions/include/codebase-overview.md) in full and follow strictly its rules before executing any step below.
+- Read the following instructions fully for each technology/language and use them to support the review:
+  - [Python instructions](../instructions/python.instructions.md)
+  - [TypeScript instructions](../instructions/typescript.instructions.md)
+  - [Terraform instructions](../instructions/terraform.instructions.md)
+  - [Makefile instructions](../instructions/makefile.instructions.md)
 
 ## Goal
 
@@ -14,7 +21,7 @@ Your output must be grounded in:
 - The actual diff between this branch and `main`
 - The existing design overview documentation under `docs/codebase-overview/`
 
-Where evidence cannot be found, record **Unknown from code – {action}**.
+Where evidence cannot be found, record **Unknown from code – {suggested action}**.
 
 ---
 
@@ -222,7 +229,7 @@ Use this snippet for each significant finding:
 **Evidence**
 
 - Evidence: [/path/to/file](/path/to/file#L10-L40) - {symbol/config key}
-- Evidence: Unknown from code – {action}
+- Evidence: Unknown from code – {suggested action}
 ```
 
 ---
@@ -231,11 +238,11 @@ Use this snippet for each significant finding:
 
 - Be precise and constructive.
 - Prefer specific, small actionable recommendations.
-- Do not speculate; use **Unknown from code – {action}** when evidence is missing.
+- Do not speculate; use **Unknown from code – {suggested action}** when evidence is missing.
 - Use the same component names as in `component-*.md`.
 - Include a **Last Amended** footer in the review file.
 
 ---
 
-> **Version**: 1.2.0
-> **Last Amended**: 2026-01-05
+> **Version**: 1.3.0
+> **Last Amended**: 2026-01-09

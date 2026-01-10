@@ -134,7 +134,7 @@ Capture a brief, evidence-based view of how data moves through the flow.
 
 If any item cannot be supported by code/config, record:
 
-- **Unknown from code – {action}**
+- **Unknown from code – {suggested action}**
 
 #### 2E. Reliability and failure behaviour (only if evidenced)
 
@@ -260,11 +260,11 @@ flowchart LR
 
 ## Evidence
 
-- Evidence: [/path/to/file](/path/to/file#L75-L140) - {handler/function/route/topic/schedule/config key}
-- Evidence: Unknown from code – {action}
+- Evidence: [path/to/file](/path/to/file#L75-L140) - {handler/function/route/topic/schedule/config key}
+- Evidence: Unknown from code – {suggested action}
 ````
 
 ---
 
-> **Version**: 1.2.8
-> **Last Amended**: 2026-01-05
+> **Version**: 1.2.9
+> **Last Amended**: 2026-01-09

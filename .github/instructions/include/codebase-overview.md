@@ -9,7 +9,7 @@ You are producing a design overview for this codebase.
 
 ## Hard rules
 
-- Do not guess: if evidence is missing, write **Unknown from code – {action}**.
+- Do not guess: if evidence is missing, write **Unknown from code – {suggested action}**.
 - Do not invent components, services, flows, or dependencies.
 - Do not rely on documentation claims unless confirmed by code or config.
 - Do not quote or summarise code you have not opened in the workspace.
@@ -58,7 +58,7 @@ You are producing a design overview for this codebase.
   - [codebase-02-component-catalogue](../../prompts/codebase-02-component-catalogue.prompt.md)
   - [codebase-03-runtime-flows](../../prompts/codebase-03-runtime-flows.prompt.md)
   - [codebase-04-domain-analysis](../../prompts/codebase-04-domain-analysis.prompt.md)
-  - [codebase-05-c4-structurizr](../../prompts/codebase-05-c4-structurizr.prompt.md)
+  - [codebase-05-c4-model](../../prompts/codebase-05-c4-model.prompt.md)
 
 ### Iteration rules
 
@@ -69,11 +69,10 @@ You are producing a design overview for this codebase.
 ## Indexing and navigation
 
 - Treat `docs/codebase-overview/README.md` as the canonical landing page.
-- Link every `component-*.md` document from the README.
-- Link every `runtime-flow-*.md` document from the README.
+- Link every `component-*.md`, `runtime-flow-*.md` and `domain-*` document from the README.
 - Maintain an **Unknowns / to verify** section in the README for follow-up work.
 
 ---
 
-> **Version**: 1.2.8
-> **Last Amended**: 2026-01-05
+> **Version**: 1.2.9
+> **Last Amended**: 2026-01-09

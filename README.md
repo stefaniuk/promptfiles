@@ -2,15 +2,17 @@
 
 ## Development
 
+[Awesome GitHub Copilot Customizations](https://github.com/github/awesome-copilot)
+
 ### Instructions
 
 Drop all the relevant instructions and supporting files to your projects `.github/instructions` directory.
 
 ### Prompts
 
-- `/my-documentation-review`
-- `/my-code-compliance-review`
-- `/my-test-automation-quality-review`
+- `/sdd-01-documentation-review`
+- `/sdd-02-code-compliance-review.prompt`
+- `/sdd-03-test-automation-quality-review`
 
 ---
 

@@ -47,7 +47,7 @@ Use workspace search and open relevant files to confirm:
    - Consumer registrations
    - DI wiring / registries / module composition roots
 
-Record any gaps as **Unknown from code – {action}** and avoid guessing.
+Record any gaps as **Unknown from code – {suggested action}** and avoid guessing.
 
 ---
 
@@ -138,7 +138,7 @@ Rules:
   - DI wiring / module composition
   - repository implementations
 - Avoid mapping every class; aim for the main collaborating parts.
-- If you cannot identify components reliably, record **Unknown from code – {action}** and skip the component diagram for that container.
+- If you cannot identify components reliably, record **Unknown from code – {suggested action}** and skip the component diagram for that container.
 
 ---
 
@@ -182,7 +182,7 @@ Also include brief “How to view” notes (repo-local, no external claims), for
 
 - Keep diagrams readable and consistent.
 - Use the evidence-first approach; do not invent externals, containers, or components.
-- When unsure, record **Unknown from code – {action}** rather than guessing.
+- When unsure, record **Unknown from code – {suggested action}** rather than guessing.
 
 ---
 
@@ -282,5 +282,5 @@ workspace "System - Components" "Component diagram for one container." {
 
 ---
 
-> **Version**: 1.0.1
-> **Last Amended**: 2026-01-05
+> **Version**: 1.0.2
+> **Last Amended**: 2026-01-09

@@ -187,7 +187,7 @@ Also add a short "Domain quick facts" subsection (evidence-based):
   - File path links (URLs must be prefixed with `/` so links resolve correctly)
   - Symbols/config keys/schema names/event names
 - When evidence cannot be found, record:
-  - **Unknown from code – {action}**
+  - **Unknown from code – {suggested action}**
 
 ---
 
@@ -198,8 +198,8 @@ Also add a short "Domain quick facts" subsection (evidence-based):
 ```md
 ### Evidence
 
-- Evidence: [/path/to/file](/path/to/file#L10-L32) - {symbol or config key}
-- Evidence: Unknown from code – {action}
+- Evidence: [path/to/file](/path/to/file#L10-L32) - {symbol or config key}
+- Evidence: Unknown from code – {suggested action}
 ```
 
 ### Mermaid context map (example)
@@ -212,5 +212,5 @@ flowchart LR
 
 ---
 
-> **Version**: 1.0.1
-> **Last Amended**: 2026-01-05
+> **Version**: 1.0.2
+> **Last Amended**: 2026-01-09

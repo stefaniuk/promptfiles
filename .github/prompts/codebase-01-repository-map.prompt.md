@@ -121,10 +121,10 @@ Also ensure it is linked from: [codebase overview](../../docs/codebase-overview/
 
 ## Evidence and unknowns (mandatory)
 
-5. For each major statement, add an **Evidence** section with:
+1. For each major statement, add an **Evidence** section with:
    - File path links (URLs must be prefixed with `/` so links resolve correctly)
    - Symbols (function/class names) and/or config keys (env vars, YAML keys)
-6. When a required artefact cannot be found, record:
+2. When a required artefact cannot be found, record:
    - **Unknown from code – {action to confirm}**
 
 ---
@@ -140,11 +140,11 @@ Use the following snippet inside `repository-map.md`:
 
 ### Evidence
 
-- Evidence: [/path/to/file](/path/to/file#L10-L32) - {symbol or config key}
-- Evidence: Unknown from code – {action}
+- Evidence: [path/to/file](/path/to/file#L10-L32) - {symbol or config key}
+- Evidence: Unknown from code – {suggested action}
 ```
 
 ---
 
-> **Version**: 1.3.6
-> **Last Amended**: 2026-01-05
+> **Version**: 1.3.7
+> **Last Amended**: 2026-01-09

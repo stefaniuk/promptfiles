@@ -119,7 +119,7 @@ Include a brief, evidence-based view of how data moves through (or is produced/c
 
 If any item cannot be supported by code/config, record:
 
-- **Unknown from code – {action}**
+- **Unknown from code – {suggested action}**
 
 Add evidence bullets for each of the above categories, for example:
 
@@ -236,11 +236,11 @@ Update: [codebase overview](../../docs/codebase-overview/README.md) with a **Com
 
 ## Evidence
 
-- Evidence: [/path/to/file](/path/to/file#L20-L58) - {symbol or config key}
-- Evidence: Unknown from code – {action}
+- Evidence: [path/to/file](/path/to/file#L20-L58) - {symbol or config key}
+- Evidence: Unknown from code – {suggested action}
 ```
 
 ---
 
-> **Version**: 1.2.7
-> **Last Amended**: 2026-01-05
+> **Version**: 1.2.8
+> **Last Amended**: 2026-01-09
