@@ -116,7 +116,21 @@ Tasks and plans must be structured to reflect this flow (test → implement → 
 
 ---
 
-### 3.7 Engineer for Flow, Led by User Needs
+### 3.7 Required Test Types
+
+All production systems must include the following test types:
+
+- **Unit tests**: Verify individual functions, methods, and classes in isolation. Must cover core logic, edge cases, and error paths.
+- **Integration tests**: Verify that components work correctly together, including interactions with databases, file systems, message queues, and external services (using test doubles where appropriate).
+- **Contract tests**: Verify that service boundaries (APIs, events, messages) conform to their documented contracts. Both provider and consumer perspectives must be covered where applicable.
+
+Additional test types (end-to-end, performance, security) are encouraged where risk or complexity warrants them but are not mandated by this constitution.
+
+Test coverage must be meaningful, not just numerical. Focus on behaviour, boundaries, and failure modes rather than chasing coverage percentages.
+
+---
+
+### 3.8 Engineer for Flow, Led by User Needs
 
 This project adopts the NHS software engineering emphasis on **rapid, safe delivery of high-quality software**, with strong automation and continuous improvement. ([GitHub][1])
 
@@ -131,7 +145,7 @@ Non-negotiables:
 
 ---
 
-### 3.8 Architect for Flow
+### 3.9 Architect for Flow
 
 Design architecture to enable fast, safe flow of change across independent value streams.
 
@@ -411,7 +425,7 @@ Any exception must be treated as a governance decision and recorded in the repos
 
 ---
 
-> **Version**: 1.3.1
+> **Version**: 1.4.0
 > **Last Amended**: 2026-01-10
 
 [1]: https://github.com/NHSDigital/software-engineering-quality-framework "GitHub - NHSDigital/software-engineering-quality-framework: ️ Shared best-practice guidance & tools to support software engineering teams"
