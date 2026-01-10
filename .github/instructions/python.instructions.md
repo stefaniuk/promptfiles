@@ -63,7 +63,7 @@ The system must be **fully developable and testable locally**, even when it inte
 
 Provide repository-standard commands so an engineer can do the following quickly:
 
-- [PY-LCL-001] Bootstrap: `make dev` — installs tooling and dependencies, and prepares a usable local environment
+- [PY-LCL-001] Bootstrap: `make deps` — installs tooling and dependencies, and prepares a usable local environment
 - [PY-LCL-002] Lint/format: `make lint`
 - [PY-LCL-003] Test (fast lane): `make test` — must run quickly (aim: < 10 seconds, provide another make target for slower tests) and deterministically
 - [PY-LCL-004] Full suite: `make test-all` — includes integration/e2e tiers

@@ -95,7 +95,6 @@ Use the `/speckit.constitution` command set below whenever you need deterministi
   - `architecture-review.prompt` (architect for flow)
   - `migrate-from-[tech A]-to-[tech B].prompt`
 - **Instruction packs**
-  - Extend Makefile guidance with the latest repository template rules.
   - Add automation-ready GitHub Actions workflow instructions.
   - Capture Docker and Markdown conventions so every downstream repo inherits the same quality bar.
 - **Spec-kit workflow prompts**

@@ -20,7 +20,7 @@ Enumerate every Makefile (including included `*.mk` modules), detect discrepanci
 
 1. Run `git ls-files 'Makefile' '**/*.mk'` (include bootstrap scripts under `scripts/`, CI configs, and helper shell scripts) to capture the full orchestration footprint.
 2. Categorise each file into **root Makefiles**, **shared modules**, **task-specific includes**, **helper scripts**, or **CI integrations**.
-3. Record locations that declare canonical targets (for example `make dev`, `make lint`, `make test`, `make doctor`) and any scripts they delegate to, so quality gates can be enforced consistently.
+3. Record locations that declare canonical targets (for example `make deps`, `make lint`, `make test`, `make doctor`) and any scripts they delegate to, so quality gates can be enforced consistently.
 
 ### B. Load enforcement context
 
@@ -64,7 +64,7 @@ Enumerate every Makefile (including included `*.mk` modules), detect discrepanci
 ### 5) Validate quality gates and behavioural parity
 
 1. After each batch, run `make lint` and `make test` (or the repository's equivalent canonical targets) until both pass with zero warnings per `[MK-QG-001]`–`[MK-QG-004]`.
-2. If additional targets exist (for example `make dev`, `make doctor`, `make test-all`), run the ones affected by the changes.
+2. If additional targets exist (for example `make deps`, `make doctor`, `make test-all`), run the ones affected by the changes.
 3. Document failures and fixes in the plan file; unresolved issues must be tracked as blockers.
 
 ### 6) Summarise outcomes and next steps

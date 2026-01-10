@@ -69,8 +69,8 @@ Terraform changes must be **fully developable, reviewable, and testable locally*
 
 Provide repository-standard commands so an engineer can do the following quickly:
 
-- [TF-LCL-001] Bootstrap tooling: `make dev` (or equivalent) — installs/validates Terraform and companion tooling.
-- [TF-LCL-002] Format: `make fmt` (must run `terraform fmt -recursive`).
+- [TF-LCL-001] Bootstrap tooling: `make deps` (or equivalent) — installs/validates Terraform and companion tooling.
+- [TF-LCL-002] Format: `make format` (must run `terraform fmt -recursive`).
 - [TF-LCL-003] Validate: `make validate` (must run `terraform validate` with the correct module/stack context).
 - [TF-LCL-004] Plan: `make plan` (must run `terraform plan` against the correct environment inputs).
 - [TF-LCL-005] Lint/scan: `make lint` (must include linting and security scanning per §15).

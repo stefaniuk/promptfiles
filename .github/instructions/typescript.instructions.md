@@ -67,13 +67,13 @@ The system must be **fully developable and testable locally**, even when it inte
 
 Provide repository-standard commands so an engineer can do the following quickly:
 
-- [TS-LCL-001] Bootstrap: `make dev` — installs tooling and dependencies, and prepares a usable local environment
-- [TS-LCL-002] Format: `make fmt`
+- [TS-LCL-001] Bootstrap: `make deps` — installs tooling and dependencies, and prepares a usable local environment
+- [TS-LCL-002] Format: `make format`
 - [TS-LCL-003] Lint: `make lint`
 - [TS-LCL-004] Type-check: `make typecheck`
 - [TS-LCL-005] Test (fast lane): `make test` — must run quickly (aim: < 10 seconds for unit-only; provide another target for slower tests) and deterministically
 - [TS-LCL-006] Full suite: `make test-all` — includes integration/e2e tiers where applicable
-- [TS-LCL-007] Run (dev): `make run` / `make dev-server` — runs with safe defaults (**no cloud dependencies by default**)
+- [TS-LCL-007] Run (dev): `make run` — runs with safe defaults (**no cloud dependencies by default**)
 
 If `make` is not used, provide an equivalent task runner with the same intent and predictable names.
 
