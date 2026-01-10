@@ -12,6 +12,7 @@
 #   - copilot-instructions.md
 #   - constitution.md
 #   - adr-template.md
+#   - docs/.gitignore
 
 set -euo pipefail
 
@@ -30,6 +31,7 @@ SKILLS_DIR="${REPO_ROOT}/.github/skills"
 COPILOT_INSTRUCTIONS="${REPO_ROOT}/.github/copilot-instructions.md"
 CONSTITUTION="${REPO_ROOT}/.specify/memory/constitution.md"
 ADR_TEMPLATE="${REPO_ROOT}/docs/adr/adr-template.md"
+DOCS_GITIGNORE="${REPO_ROOT}/docs/.gitignore"
 
 # ------------------------------------------------------------------------------
 # Functions
@@ -124,6 +126,14 @@ copy_adr_template() {
     cp "${ADR_TEMPLATE}" "${dest}/"
 }
 
+copy_docs_gitignore() {
+    local dest="$1/docs"
+    mkdir -p "${dest}"
+
+    info "Copying docs/.gitignore to ${dest}"
+    cp "${DOCS_GITIGNORE}" "${dest}/"
+}
+
 # ------------------------------------------------------------------------------
 # Main
 # ------------------------------------------------------------------------------
@@ -165,6 +175,7 @@ main() {
     copy_copilot_instructions "${destination}"
     copy_constitution "${destination}"
     copy_adr_template "${destination}"
+    copy_docs_gitignore "${destination}"
 
     echo
     echo "Done. Assets copied to ${destination}"
