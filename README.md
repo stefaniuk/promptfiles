@@ -139,10 +139,10 @@ flowchart TD
 
 The default workflow now introduces explicit governance gates so every downstream repository can see, not infer, the mandatory reviews between specification and implementation:
 
-1. **Documentation Consistency Gate** – `/speckit.documentation.review` now runs before any coding work. It keeps ubiquitous language, identifiers, and traceability consistent across spec.md, plan.md, tasks.md, and supporting artefacts so later phases never inherit contradictory inputs.
+1. **Documentation Consistency Gate** – `/speckit-documentation-review` now runs before any coding work. It keeps ubiquitous language, identifiers, and traceability consistent across spec.md, plan.md, tasks.md, and supporting artefacts so later phases never inherit contradictory inputs.
 2. **Instruction Enforcement Cycle** – After every delivery phase (Setup, Foundational, each user story, and Polish) `/[tech]-enforce-instructions` prompts plus `make lint && make test` produce a visible checklist item. This prevents silent drift from the Makefile, Python, Terraform, and TypeScript guardrails that large systems depend on.
-3. **Code Compliance Review Gate** – `/speckit.code.review` now appears as a closing task, forcing engineers to reconcile implementation against the specification and constitution before calling the feature "done".
-4. **Test Automation Quality Review Gate** – `/speckit.test.review` follows code compliance to ensure the test pyramid remains healthy, high-value gaps are closed, and the automation signal is strong enough to support continuous delivery.
+3. **Code Compliance Review Gate** – `/speckit-code-review` now appears as a closing task, forcing engineers to reconcile implementation against the specification and constitution before calling the feature "done".
+4. **Test Automation Quality Review Gate** – `/speckit-test-review` follows code compliance to ensure the test pyramid remains healthy, high-value gaps are closed, and the automation signal is strong enough to support continuous delivery.
 
 These gates are captured in the spec template, plan template, and tasks template so every generated tasks.md shows Phase 0 governance steps, per-phase enforcement items, and the final two review commands. Benefits for large-scale spec-driven systems include:
 

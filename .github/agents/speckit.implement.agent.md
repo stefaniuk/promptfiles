@@ -54,7 +54,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 
    **A. Run the documentation review**:
 
-   - Execute `/speckit.documentation.review` against the feature directory
+   - Execute `/speckit-documentation-review` against the feature directory
    - This review checks all specification artefacts (spec.md, plan.md, tasks.md, data-model.md, contracts/, checklists/, etc.) for:
      - Ubiquitous language consistency
      - Definition ownership and de-duplication
@@ -69,7 +69,7 @@ You **MUST** consider the user input before proceeding (if not empty).
      - Display the findings summary
      - **BLOCK**: Do not proceed to implementation
      - Remediate all issues following the review's recommendations
-     - Re-run `/speckit.documentation.review` until the documentation set passes
+     - Re-run `/speckit-documentation-review` until the documentation set passes
 
    **C. Gate criteria**:
 
@@ -219,7 +219,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 
     **A. Run the code compliance review**:
 
-    - Execute `/speckit.code.review` against the repository
+    - Execute `/speckit-code-review` against the repository
     - This review checks:
       - Constitution compliance (no violations of non-negotiable rules)
       - Specification coverage (all implemented behaviour is covered by the spec)
@@ -236,7 +236,7 @@ You **MUST** consider the user input before proceeding (if not empty).
         - Code without spec → update specification to match implementation (default) or remove code
         - Spec without code → implement missing behaviour or mark as deferred
         - Underspecified requirements → clarify specification with deterministic acceptance criteria
-      - Re-run `/speckit.code.review` until no issues remain
+      - Re-run `/speckit-code-review` until no issues remain
 
     **C. Gate criteria**:
 
@@ -257,7 +257,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 
     **A. Run the test automation quality review**:
 
-    - Execute `/speckit.test.review` against the repository
+    - Execute `/speckit-test-review` against the repository
     - This review checks:
       - Test pyramid health (unit-test majority, minimal E2E)
       - Unit test quality and behavioural confidence
@@ -277,7 +277,7 @@ You **MUST** consider the user input before proceeding (if not empty).
         - Pyramid imbalance → shift confidence into unit tests where appropriate
         - Spec↔test misalignment → add tests for specified but untested behaviour
       - Re-run `make lint` and `make test` after each fix batch
-      - Re-run `/speckit.test.review` until no high-value issues remain
+      - Re-run `/speckit-test-review` until no high-value issues remain
 
     **C. Gate criteria**:
 
@@ -295,3 +295,8 @@ You **MUST** consider the user input before proceeding (if not empty).
     - Record any deferred low-value improvements as follow-ups
 
 Note: This command assumes a complete task breakdown exists in tasks.md. If tasks are incomplete or missing, suggest running `/speckit.tasks` first to regenerate the task list.
+
+---
+
+> **Version**: 1.0.0
+> **Last Amended**: 2026-01-11

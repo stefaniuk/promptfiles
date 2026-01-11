@@ -44,14 +44,14 @@ You **MUST** consider the user input before proceeding (if not empty).
 4. **Generate tasks.md**: Use `.specify/templates/tasks-template.md` as structure, fill with:
 
    - Correct feature name from plan.md
-   - Phase 0: Governance tasks (prerequisites script, checklist audit, `/speckit.documentation.review`)
+   - Phase 0: Governance tasks (prerequisites script, checklist audit, `/speckit-documentation-review`)
    - Phase 1: Setup tasks (project initialization)
    - Phase 2: Foundational tasks (blocking prerequisites for all user stories)
    - Phase 3+: One phase per user story (in priority order from spec.md)
    - Each phase includes: story goal, independent test criteria, tests (if requested), implementation tasks
    - After every phase (Setup, Foundational, each user story, Polish), append a task that runs the instruction enforcement cycle (`/[tech]-enforce-instructions` + `make lint && make test`)
    - Final Phase: Polish & cross-cutting concerns plus the closing enforcement gate
-   - Final section: Code and test quality gates (`/speckit.code.review` and `/speckit.test.review`)
+   - Final section: Code and test quality gates (`/speckit-code-review` and `/speckit-test-review`)
    - All tasks must follow the strict checklist format (see Task Generation Rules below)
    - Clear file paths for each task
    - Dependencies section showing story completion order
@@ -113,10 +113,10 @@ Every task MUST strictly follow this format:
 1. **Phase 0 tasks**: Always prepend three tasks before Setup:
    - Run `.specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks` to capture FEATURE_DIR and AVAILABLE_DOCS
    - Audit every checklist file under the feature directory; block if any `- [ ]` remain
-   - Run `/speckit.documentation.review` and resolve all findings before implementation
+   - Run `/speckit-documentation-review` and resolve all findings before implementation
 2. **Instruction enforcement cycle**: After every phase (Setup, Foundational, each user story, and Polish), add a dedicated task instructing the implementer to run the applicable `/[tech]-enforce-instructions` prompts and re-run `make lint && make test` until clean.
-3. **Code compliance gate**: Add a task near the end to run `/speckit.code.review`, remediate findings, and re-run quality gates.
-4. **Test automation gate**: Add the final task to run `/speckit.test.review`, address gaps, and re-run quality gates.
+3. **Code compliance gate**: Add a task near the end to run `/speckit-code-review`, remediate findings, and re-run quality gates.
+4. **Test automation gate**: Add the final task to run `/speckit-test-review`, address gaps, and re-run quality gates.
 5. **Blocking semantics**: Describe in each gate task that implementation MUST halt until the gate reports zero issues.
 
 ### Task Organization
@@ -155,3 +155,8 @@ Every task MUST strictly follow this format:
   - Within each story: Tests (if requested) → Models → Services → Endpoints → Integration
   - Each phase should be a complete, independently testable increment
 - **Final Phase**: Polish & Cross-Cutting Concerns
+
+---
+
+> **Version**: 1.0.0
+> **Last Amended**: 2026-01-11
