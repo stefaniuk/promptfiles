@@ -148,13 +148,13 @@ Per [constitution.md §7.8](../../.specify/memory/constitution.md#78-mandatory-l
 
 1. Prefer:
 
-- [PY-QG-001] `make lint`
-- [PY-QG-002] `make test`
+    - [PY-QG-001] `make lint`
+    - [PY-QG-002] `make test`
 
 2. If `make` targets do not exist, discover and run the project's equivalent commands (for example `uv run ruff check .`, `uv run ruff format .`, `uv run pytest`, `python -m pytest`, or framework-specific test runners).
 
-- [PY-QG-003] You must continue iterating until all checks complete successfully with **no errors or warnings**. Do this automatically, without requiring an additional prompt.
-- [PY-QG-004] Warnings must be treated as defects unless explicitly waived in an ADR (rationale + expiry).
+    - [PY-QG-003] You must continue iterating until all checks complete successfully with **no errors or warnings**. Do this automatically, without requiring an additional prompt.
+    - [PY-QG-004] Warnings must be treated as defects unless explicitly waived in an ADR (rationale + expiry).
 
 ---
 

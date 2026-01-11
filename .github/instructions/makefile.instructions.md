@@ -228,13 +228,13 @@ Per operating principles ([MK-OP-002], [MK-OP-005]) **and** [constitution.md §7
 
 1. Prefer:
 
-- [MK-QG-001] `make lint`
-- [MK-QG-002] `make test`
+    - [MK-QG-001] `make lint`
+    - [MK-QG-002] `make test`
 
 2. If `make` targets do not exist, discover and run the project's equivalent commands.
 
-- [MK-QG-003] You must continue iterating until all checks complete successfully with **no errors or warnings**. Do this automatically, without requiring an additional prompt.
-- [MK-QG-004] Warnings must be treated as defects unless explicitly waived in an ADR (rationale + expiry).
+    - [MK-QG-003] You must continue iterating until all checks complete successfully with **no errors or warnings**. Do this automatically, without requiring an additional prompt.
+    - [MK-QG-004] Warnings must be treated as defects unless explicitly waived in an ADR (rationale + expiry).
 
 ---
 

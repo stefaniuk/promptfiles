@@ -6,10 +6,20 @@ format: # Auto-format code @CodeQuality
 	# No formatting required for this repository
 
 lint: # Run linter to check code style and errors @CodeQuality
-	# No linting required for this repository
+	check=all ./scripts/githooks/check-markdown-format.sh
 
 test: # Run all tests @Testing
 	# No tests required for this repository
+
+githooks-config: # Configure Git hooks to run on commit @Configuration
+	pre-commit install \
+		--config scripts/config/pre-commit.yaml \
+		--install-hooks
+
+githooks-run: # Run git hooks configured in this repository @Configuration
+	pre-commit run \
+		--config scripts/config/pre-commit.yaml \
+		--all-files
 
 clean:: # Remove all generated and temporary files (common) @Development
 	find . \( \
@@ -24,9 +34,9 @@ clean:: # Remove all generated and temporary files (common) @Development
 # ==============================================================================
 
 apply: # Copy prompt files assets to a destination repository; mandatory: dest=[path] @Operations
-	@if [ -z "$(dest)" ]; then \
-		echo "Error: dest argument is required. Usage: make apply dest=/path/to/destination"; \
-		exit 1; \
+	if [ -z "$(dest)" ]; then
+		echo "Error: dest argument is required. Usage: make apply dest=/path/to/destination"
+		exit 1
 	fi
 	./scripts/apply.sh "$(dest)"
 

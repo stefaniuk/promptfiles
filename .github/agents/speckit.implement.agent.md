@@ -198,20 +198,20 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 10. Progress tracking and error handling:
 
-- Report progress after each completed task
-- Halt execution if any non-parallel task fails
-- For parallel tasks [P], continue with successful tasks, report failed ones
-- Provide clear error messages with context for debugging
-- Suggest next steps if implementation cannot proceed
-- **IMPORTANT** For completed tasks, make sure to mark the task off as [X] in the tasks file.
+    - Report progress after each completed task
+    - Halt execution if any non-parallel task fails
+    - For parallel tasks [P], continue with successful tasks, report failed ones
+    - Provide clear error messages with context for debugging
+    - Suggest next steps if implementation cannot proceed
+    - **IMPORTANT** For completed tasks, make sure to mark the task off as [X] in the tasks file.
 
 11. Completion validation:
 
-- Verify all required tasks are completed
-- Check that implemented features match the original specification
-- Validate that tests pass and coverage meets requirements
-- Confirm the implementation follows the technical plan
-- Report final status with summary of completed work
+    - Verify all required tasks are completed
+    - Check that implemented features match the original specification
+    - Validate that tests pass and coverage meets requirements
+    - Confirm the implementation follows the technical plan
+    - Report final status with summary of completed work
 
 12. **Code Compliance Review Gate** (run after all phases complete):
 

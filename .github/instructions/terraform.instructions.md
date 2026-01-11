@@ -116,18 +116,18 @@ Per [constitution.md §7.8](../../.specify/memory/constitution.md#78-mandatory-l
 
 1. Prefer:
 
-- [TF-QG-001] `terraform fmt -recursive`
-- [TF-QG-002] `terraform validate`
-- [TF-QG-003] `terraform plan` (against the correct environment inputs)
-- [TF-QG-004] Lint and security scanning (see §15)
+    - [TF-QG-001] `terraform fmt -recursive`
+    - [TF-QG-002] `terraform validate`
+    - [TF-QG-003] `terraform plan` (against the correct environment inputs)
+    - [TF-QG-004] Lint and security scanning (see §15)
 
 2. If the repository provides `make` targets, prefer:
 
-- [TF-QG-005] `make lint`
-- [TF-QG-006] `make test`
+    - [TF-QG-005] `make lint`
+    - [TF-QG-006] `make test`
 
-- [TF-QG-007] You must continue iterating until all checks complete successfully with **no errors or warnings**. Do this automatically, without requiring an additional prompt.
-- [TF-QG-008] Warnings must be treated as defects unless explicitly waived in an ADR (rationale + expiry).
+    - [TF-QG-007] You must continue iterating until all checks complete successfully with **no errors or warnings**. Do this automatically, without requiring an additional prompt.
+    - [TF-QG-008] Warnings must be treated as defects unless explicitly waived in an ADR (rationale + expiry).
 
 ---
 

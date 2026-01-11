@@ -7,7 +7,15 @@
     "speckit.implement": true
   },
   "chat.tools.terminal.autoApprove": {
-    ".specify/scripts/bash/": true,
-    ".specify/scripts/powershell/": true
+    ".specify/scripts/bash/": true
+  },
+  "markdownlint.config": {
+    "MD010": { "ignore_code_languages": ["makefile"] },
+    "MD013": false,
+    "MD024": { "siblings_only": true },
+    "MD029": { "style": "ordered" },
+    "MD033": false,
+    "MD036": false,
+    "MD041": false
   }
 }

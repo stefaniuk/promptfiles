@@ -155,7 +155,7 @@ Structurizr DSL is not ideal for line-level evidence. Do this instead:
 
 Example comment:
 
-```
+```text
 // Inputs:
 // - /docs/codebase-overview/repository-map.md
 // - /docs/codebase-overview/component-001-*.md

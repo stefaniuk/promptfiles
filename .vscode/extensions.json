@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "davidanson.vscode-markdownlint",
+    "editorconfig.editorconfig",
+    "vstirbu.vscode-mermaid-preview",
+    "yzhang.markdown-all-in-one"
+  ],
+  "unwantedRecommendations": []
+}

@@ -151,16 +151,16 @@ Per [constitution.md §7.8](../../.specify/memory/constitution.md#78-mandatory-l
 
 1. Prefer:
 
-- [TS-QG-001] `make fmt`
-- [TS-QG-002] `make lint`
-- [TS-QG-003] `make typecheck`
-- [TS-QG-004] `make test`
+    - [TS-QG-001] `make fmt`
+    - [TS-QG-002] `make lint`
+    - [TS-QG-003] `make typecheck`
+    - [TS-QG-004] `make test`
 
 2. If `make` targets do not exist, discover and run the equivalent commands (for example `pnpm lint`, `pnpm -s typecheck`, `pnpm -s test`).
 
-- [TS-QG-005] You must continue iterating until all checks complete successfully with **no errors or warnings**. Do this automatically, without requiring an additional prompt.
-- [TS-QG-006] Warnings must be treated as defects unless explicitly waived in an ADR (rationale + expiry).
-- [TS-QG-007] Use the repository-provided build, lint, typecheck, and test scripts/targets; avoid ad-hoc commands unless the specification demands it.
+    - [TS-QG-005] You must continue iterating until all checks complete successfully with **no errors or warnings**. Do this automatically, without requiring an additional prompt.
+    - [TS-QG-006] Warnings must be treated as defects unless explicitly waived in an ADR (rationale + expiry).
+    - [TS-QG-007] Use the repository-provided build, lint, typecheck, and test scripts/targets; avoid ad-hoc commands unless the specification demands it.
 
 ---
 
