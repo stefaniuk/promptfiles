@@ -17,7 +17,7 @@
   - Developed independently
   - Tested independently
   - Deployed independently
-  - Demonstrated to users independently
+  - Demonstrated to users independently (each slice should be Show & Tell ready)
 -->
 
 ### User Story 1 - [Brief Title] (Priority: P1)
@@ -33,6 +33,12 @@
 1. **Given** [initial state], **When** [action], **Then** [expected outcome]
 2. **Given** [initial state], **When** [action], **Then** [expected outcome]
 
+**Demo Instructions (show this phase running):**
+
+- **CLI/API**: `[Exact command(s) to run, including sample payloads when useful]`
+- **UI/Navigation**: `[Where to click or which URL/dashboard to open to observe the behaviour]`
+- **Show & Tell cue**: `[Key narrative stakeholders should use while demonstrating this slice]`
+
 ---
 
 ### User Story 2 - [Brief Title] (Priority: P2)
@@ -47,6 +53,12 @@
 
 1. **Given** [initial state], **When** [action], **Then** [expected outcome]
 
+**Demo Instructions (show this phase running):**
+
+- **CLI/API**: `[Exact command(s) to run, including sample payloads when useful]`
+- **UI/Navigation**: `[Where to click or which URL/dashboard to open to observe the behaviour]`
+- **Show & Tell cue**: `[Key narrative stakeholders should use while demonstrating this slice]`
+
 ---
 
 ### User Story 3 - [Brief Title] (Priority: P3)
@@ -60,6 +72,12 @@
 **Acceptance Scenarios**:
 
 1. **Given** [initial state], **When** [action], **Then** [expected outcome]
+
+**Demo Instructions (show this phase running):**
+
+- **CLI/API**: `[Exact command(s) to run, including sample payloads when useful]`
+- **UI/Navigation**: `[Where to click or which URL/dashboard to open to observe the behaviour]`
+- **Show & Tell cue**: `[Key narrative stakeholders should use while demonstrating this slice]`
 
 ---
 

@@ -62,6 +62,18 @@ description: "Task list template for feature implementation"
 - [ ] T005 [P] Configure linting and formatting tools
 - [ ] T006 Run instruction enforcement cycle for Setup outputs (execute `/[tech]-enforce-instructions`, then `make lint && make test`)
 
+### Demo Instructions (show Setup running)
+
+- **Commands**:
+
+  ```bash
+  [List the exact CLI/API commands that prove the setup slice works]
+  ```
+
+- **Navigation**: `[Where to look in the UI/logs to confirm Setup is complete]`
+- **Expected outcome**: `[What success looks like for this phase]`
+- **Show & Tell cue**: `[Talking points stakeholders should cover while demoing Setup]`
+
 ---
 
 ## Phase 2: Foundational (Blocking Prerequisites)
@@ -81,6 +93,18 @@ Examples of foundational tasks (adjust based on your project):
 - [ ] T013 Run instruction enforcement cycle for Foundational outputs (execute `/[tech]-enforce-instructions`, then `make lint && make test`)
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
+
+### Demo Instructions (show Foundational slice running)
+
+- **Commands**:
+
+  ```bash
+  [Exact commands or test suites that demonstrate the foundational capabilities]
+  ```
+
+- **Navigation**: `[Dashboards, health checks, or admin screens to view]`
+- **Expected outcome**: `[Observable impact confirming readiness for user stories]`
+- **Show & Tell cue**: `[Narrative to explain why the foundation unlocks later slices]`
 
 ---
 
@@ -109,6 +133,18 @@ Examples of foundational tasks (adjust based on your project):
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
+### Demo Instructions (show User Story 1 running)
+
+- **Commands**:
+
+  ```bash
+  [CLI/API sequence demonstrating the story end to end]
+  ```
+
+- **Navigation**: `[Exact UI flow, route, or dashboard to walk through]`
+- **Expected outcome**: `[User-facing result to verify]`
+- **Show & Tell cue**: `[Key story beats to highlight during the session]`
+
 ---
 
 ## Phase 4: User Story 2 - [Title] (Priority: P2)
@@ -132,6 +168,18 @@ Examples of foundational tasks (adjust based on your project):
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
+### Demo Instructions (show User Story 2 running)
+
+- **Commands**:
+
+  ```bash
+  [CLI/API sequence demonstrating story 2]
+  ```
+
+- **Navigation**: `[Exact UI flow, route, or dashboard to walk through]`
+- **Expected outcome**: `[User-facing result to verify]`
+- **Show & Tell cue**: `[Key differentiators to emphasise to stakeholders]`
+
 ---
 
 ## Phase 5: User Story 3 - [Title] (Priority: P3)
@@ -154,6 +202,18 @@ Examples of foundational tasks (adjust based on your project):
 
 **Checkpoint**: All user stories should now be independently functional
 
+### Demo Instructions (show User Story 3 running)
+
+- **Commands**:
+
+  ```bash
+  [CLI/API sequence demonstrating story 3]
+  ```
+
+- **Navigation**: `[Exact UI flow, route, or dashboard to walk through]`
+- **Expected outcome**: `[User-facing result to verify]`
+- **Show & Tell cue**: `[Narrative for demonstrating this slice end-to-end]`
+
 ---
 
 [Add more user story phases as needed, following the same pattern]
@@ -171,6 +231,18 @@ Examples of foundational tasks (adjust based on your project):
 - [ ] TXXX Security hardening
 - [ ] TXXX Run quickstart.md validation
 - [ ] TXXX Run instruction enforcement cycle for Polish deliverables (execute `/[tech]-enforce-instructions`, then `make lint && make test`)
+
+### Demo Instructions (show Polish improvements running)
+
+- **Commands**:
+
+  ```bash
+  [Commands/tests that highlight cross-cutting refinements]
+  ```
+
+- **Navigation**: `[Dashboards or UI areas where improvements appear]`
+- **Expected outcome**: `[Signals proving the polish work is live]`
+- **Show & Tell cue**: `[Summary talking points to wrap up the showcase]`
 
 ---
 

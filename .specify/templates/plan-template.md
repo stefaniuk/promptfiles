@@ -44,6 +44,18 @@ _GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
 Document any additional platform or organisational gates (security review, data governance approval, etc.) so they can cascade into tasks.md.
 
+## Phase Demo Playbook
+
+Describe exactly how a stakeholder can experience each completed phase (Setup, Foundational, every user story, Polish) inside a running environment. Include the commands to execute, any seed data needed, and the browser/navigation path to confirm behaviour. Treat this table as the Show & Tell runbook so a stakeholder can lead the session end-to-end. Duplicate or trim rows to match the actual phases in the spec.
+
+| Phase                  | Slice Value Delivered                      | CLI/API Commands to Run                                                 | UI / Navigation Steps (what to open, which flow to click through) | Expected Observation                |
+| ---------------------- | ------------------------------------------ | ----------------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------- |
+| Phase 1 – Setup        | `[What becomes usable after setup]`        | Example: `make bootstrap && ./manage db upgrade`                        | `[URL or app section to open, e.g., https://app.local/health]`    | `[What should be visible/verified]` |
+| Phase 2 – Foundational | `[Which cross-cutting capability unlocks]` | Example: `curl https://api.local/health`                                | `[Dashboards/logs to inspect]`                                    | `[Expected metrics/log entries]`    |
+| User Story 1 / Phase 3 | `[Story title / outcome]`                  | Example: `http POST :8080/api/story1 payload:=@examples/story1.json`    | `[Step-by-step navigation describing the story demo]`             | `[User-facing impact to confirm]`   |
+| User Story 2 / Phase 4 | `[Story title / outcome]`                  | Example: `npm run story2:demo && curl https://api.local/story2/preview` | `[Navigation path showing slice #2]`                              | `[Expected outcome]`                |
+| Polish / Final Phase   | `[Cross-cutting improvements]`             | Example: `pytest tests/perf && ./scripts/report.sh polish`              | `[Where to observe (logs, dashboards, UI)]`                       | `[What changes should be visible]`  |
+
 ## Project Structure
 
 ### Documentation (this feature)

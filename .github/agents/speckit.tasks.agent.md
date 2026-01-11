@@ -37,6 +37,7 @@ You **MUST** consider the user input before proceeding (if not empty).
    - If contracts/ exists: Map endpoints to user stories
    - If research.md exists: Extract decisions for setup tasks
    - Generate tasks organized by user story (see Task Generation Rules below)
+   - For every phase (Setup, Foundational, each user story, Polish), append a **Demo Instructions** block that explains exactly how to run the feature slice in a real environment: cite CLI/API commands, sample payloads, seed data, and the browser/dashboard navigation path users should follow to observe the behaviour once that phase completes. Reuse details from plan.md and quickstart.md so the instructions stay aligned, and write them so a stakeholder can literally host a Show & Tell session using the text.
    - Generate dependency graph showing user story completion order
    - Create parallel execution examples per user story
    - Validate task completeness (each user story has all needed tasks, independently testable)
@@ -75,6 +76,16 @@ The tasks.md should be immediately executable - each task must be specific enoug
 **CRITICAL**: Tasks MUST be organized by user story to enable independent implementation and testing.
 
 **Tests are OPTIONAL**: Only generate test tasks if explicitly requested in the feature specification or if user requests TDD approach.
+
+### Demo Instructions for Every Phase (REQUIRED)
+
+- After listing tasks for **every** phase (Setup, Foundational, each user story, Polish), include a clearly labelled block that documents how stakeholders can see the feature slice running.
+- Each block must include:
+  - CLI/API commands (and sample payloads where relevant) needed to exercise the new behaviour
+  - Prerequisite steps (seed data, toggles) to prepare the environment
+  - Browser navigation / dashboard locations to observe the change
+  - Expected outcome so users can confirm success quickly
+- The instructions must reflect the plan.md Quickstart guidance, include cues for Show & Tell narration, and stay updated if tasks introduce new flows.
 
 ### Checklist Format (REQUIRED)
 
