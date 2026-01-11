@@ -1,184 +1,226 @@
 ---
-applyTo: "**/*.{jsx,tsx,js,ts,css,scss"
+applyTo: "**/*.{jsx,tsx,js,ts,css,scss}"
 ---
 
-# ReactJS Development Instructions
+# ReactJS Development Instructions ⚛️
 
-Instructions for building high-quality ReactJS applications with modern patterns, hooks, and best practices following the official [React documentation](https://react.dev).
+These instructions define **React-specific patterns** for building high-quality applications with modern hooks and component architecture.
 
-## Project Context
+They must remain applicable to:
 
-- Latest React version (React 19+)
-- TypeScript for type safety (when applicable)
-- Functional components with hooks as default
-- Follow React's official style guide and best practices
-- Use modern build tools (Vite, Create React App, or custom Webpack setup)
-- Implement proper component composition and reusability patterns
+- React 19+ functional components with hooks
+- Single Page Applications (SPA) and Server-Side Rendering (SSR)
+- Component libraries and design systems
+- Mobile-responsive web applications
 
-## Development Standards
+For general language and tooling guidance, defer to:
 
-### Architecture
+- [typescript.instructions.md](./typescript.instructions.md) — strict typing, quality gates, testing tiers
 
-- Use functional components with hooks as the primary pattern
-- Implement component composition over inheritance
-- Organize components by feature or domain for scalability
-- Separate presentational and container components clearly
-- Use custom hooks for reusable stateful logic
-- Implement proper component hierarchies with clear data flow
+This file covers **only** what that file does not: React component design, hooks patterns, state management, and UI-specific concerns.
 
-### TypeScript Integration
+They are **non-negotiable** unless an exception is explicitly documented (with rationale and expiry) in an ADR/decision record.
 
-- Use TypeScript interfaces for props, state, and component definitions
-- Define proper types for event handlers and refs
-- Implement generic components where appropriate
-- Use strict mode in `tsconfig.json` for type safety
-- Leverage React's built-in types (`React.FC`, `React.ComponentProps`, etc.)
-- Create union types for component variants and states
-
-### Component Design
-
-- Follow the single responsibility principle for components
-- Use descriptive and consistent naming conventions
-- Implement proper prop validation with TypeScript or PropTypes
-- Design components to be testable and reusable
-- Keep components small and focused on a single concern
-- Use composition patterns (render props, children as functions)
-
-### State Management
-
-- Use `useState` for local component state
-- Implement `useReducer` for complex state logic
-- Leverage `useContext` for sharing state across component trees
-- Consider external state management (Redux Toolkit, Zustand) for complex applications
-- Implement proper state normalization and data structures
-- Use React Query or SWR for server state management
-
-### Hooks and Effects
-
-- Use `useEffect` with proper dependency arrays to avoid infinite loops
-- Implement cleanup functions in effects to prevent memory leaks
-- Use `useMemo` and `useCallback` for performance optimization when needed
-- Create custom hooks for reusable stateful logic
-- Follow the rules of hooks (only call at the top level)
-- Use `useRef` for accessing DOM elements and storing mutable values
-
-### Styling
-
-- Use CSS Modules, Styled Components, or modern CSS-in-JS solutions
-- Implement responsive design with mobile-first approach
-- Follow BEM methodology or similar naming conventions for CSS classes
-- Use CSS custom properties (variables) for theming
-- Implement consistent spacing, typography, and color systems
-- Ensure accessibility with proper ARIA attributes and semantic HTML
-
-### Performance Optimization
-
-- Use `React.memo` for component memoization when appropriate
-- Implement code splitting with `React.lazy` and `Suspense`
-- Optimize bundle size with tree shaking and dynamic imports
-- Use `useMemo` and `useCallback` judiciously to prevent unnecessary re-renders
-- Implement virtual scrolling for large lists
-- Profile components with React DevTools to identify performance bottlenecks
-
-### Data Fetching
-
-- Use modern data fetching libraries (React Query, SWR, Apollo Client)
-- Implement proper loading, error, and success states
-- Handle race conditions and request cancellation
-- Use optimistic updates for better user experience
-- Implement proper caching strategies
-- Handle offline scenarios and network errors gracefully
-
-### Error Handling
-
-- Implement Error Boundaries for component-level error handling
-- Use proper error states in data fetching
-- Implement fallback UI for error scenarios
-- Log errors appropriately for debugging
-- Handle async errors in effects and event handlers
-- Provide meaningful error messages to users
-
-### Forms and Validation
-
-- Use controlled components for form inputs
-- Implement proper form validation with libraries like Formik, React Hook Form
-- Handle form submission and error states appropriately
-- Implement accessibility features for forms (labels, ARIA attributes)
-- Use debounced validation for better user experience
-- Handle file uploads and complex form scenarios
-
-### Routing
-
-- Use React Router for client-side routing
-- Implement nested routes and route protection
-- Handle route parameters and query strings properly
-- Implement lazy loading for route-based code splitting
-- Use proper navigation patterns and back button handling
-- Implement breadcrumbs and navigation state management
-
-### Testing
-
-- Write unit tests for components using React Testing Library
-- Test component behavior, not implementation details
-- Use Jest for test runner and assertion library
-- Implement integration tests for complex component interactions
-- Mock external dependencies and API calls appropriately
-- Test accessibility features and keyboard navigation
-
-### Security
-
-- Sanitize user inputs to prevent XSS attacks
-- Validate and escape data before rendering
-- Use HTTPS for all external API calls
-- Implement proper authentication and authorization patterns
-- Avoid storing sensitive data in localStorage or sessionStorage
-- Use Content Security Policy (CSP) headers
-
-### Accessibility
-
-- Use semantic HTML elements appropriately
-- Implement proper ARIA attributes and roles
-- Ensure keyboard navigation works for all interactive elements
-- Provide alt text for images and descriptive text for icons
-- Implement proper color contrast ratios
-- Test with screen readers and accessibility tools
-
-## Implementation Process
-
-1. Plan component architecture and data flow
-2. Set up project structure with proper folder organization
-3. Define TypeScript interfaces and types
-4. Implement core components with proper styling
-5. Add state management and data fetching logic
-6. Implement routing and navigation
-7. Add form handling and validation
-8. Implement error handling and loading states
-9. Add testing coverage for components and functionality
-10. Optimize performance and bundle size
-11. Ensure accessibility compliance
-12. Add documentation and code comments
-
-## Additional Guidelines
-
-- Follow React's naming conventions (PascalCase for components, camelCase for functions)
-- Use meaningful commit messages and maintain clean git history
-- Implement proper code splitting and lazy loading strategies
-- Document complex components and custom hooks with JSDoc
-- Use ESLint and Prettier for consistent code formatting
-- Keep dependencies up to date and audit for security vulnerabilities
-- Implement proper environment configuration for different deployment stages
-- Use React Developer Tools for debugging and performance analysis
-
-## Common Patterns
-
-- Higher-Order Components (HOCs) for cross-cutting concerns
-- Render props pattern for component composition
-- Compound components for related functionality
-- Provider pattern for context-based state sharing
-- Container/Presentational component separation
-- Custom hooks for reusable logic extraction
+**Identifier scheme.** Every normative rule carries a unique tag in the form `[RJS-<prefix>-NNN]`, where the prefix maps to the containing section (for example `QR` for Quick Reference, `CMP` for Component Design, `HK` for Hooks, `STM` for State Management). Use these identifiers when referencing, planning, or validating requirements.
 
 ---
 
-> **Version**: 1.0.0
+## 0. Quick reference (apply first) 🧠
+
+This section exists so humans and AI assistants can reliably apply the most important rules even when context is tight.
+
+- [RJS-QR-001] **Functional components only**: no class components; use hooks for all stateful logic ([RJS-CMP-001]).
+- [RJS-QR-002] **Component size limit**: split components exceeding ~150 lines or 3 responsibilities ([RJS-CMP-003]).
+- [RJS-QR-003] **Hooks at top level**: never call hooks inside loops, conditions, or nested functions ([RJS-HK-001]).
+- [RJS-QR-004] **Exhaustive deps**: include all referenced values in dependency arrays; use ESLint rule ([RJS-HK-002]).
+- [RJS-QR-005] **Cleanup effects**: return cleanup functions from effects that subscribe, listen, or allocate ([RJS-HK-004]).
+- [RJS-QR-006] **Props as interface**: define props as a TypeScript `interface` (not `type` alias); avoid `React.FC` ([RJS-CMP-005]).
+- [RJS-QR-007] **Error boundaries**: wrap feature boundaries with Error Boundaries; provide fallback UI ([RJS-ERR-001]).
+- [RJS-QR-008] **Semantic HTML first**: use native elements before ARIA; `<button>` not `<div onClick>` ([RJS-A11Y-001]).
+- [RJS-QR-009] **No inline object/array props**: define outside render or memoize to prevent child re-renders ([RJS-PERF-001]).
+- [RJS-QR-010] **Controlled forms**: use controlled inputs with explicit value/onChange; avoid uncontrolled refs for form state ([RJS-FRM-001]).
+
+---
+
+## 1. Component design 🧩
+
+### 1.1 Structure and size
+
+- [RJS-CMP-001] Use **functional components** with hooks; class components are prohibited for new code.
+- [RJS-CMP-002] One component per file; co-locate styles, tests, and types in the same directory.
+- [RJS-CMP-003] **Split when**: component exceeds ~150 lines, handles > 3 distinct responsibilities, or requires > 5 props that could be grouped.
+- [RJS-CMP-004] **Do not split prematurely**: if extraction creates prop-drilling through 3+ levels, reconsider the boundary.
+
+### 1.2 Naming and organisation
+
+- [RJS-CMP-005] Define props as a TypeScript `interface` named `<ComponentName>Props`; avoid `React.FC` (it adds implicit `children` and is discouraged since React 18).
+- [RJS-CMP-006] Use **PascalCase** for component names; **camelCase** for hooks (`useSomething`).
+- [RJS-CMP-007] Organise by feature/domain (`features/user/UserProfile.tsx`), not by type (`components/`, `containers/`).
+
+### 1.3 Composition
+
+- [RJS-CMP-008] Prefer **composition via children** over render props or HOCs for most cases.
+- [RJS-CMP-009] Use **compound components** (for example `<Tabs>`, `<Tabs.Panel>`) when children share implicit state.
+- [RJS-CMP-010] HOCs are acceptable only for cross-cutting concerns (auth wrappers, analytics); document their behaviour.
+
+---
+
+## 2. Hooks ⚡
+
+### 2.1 Rules (non-negotiable)
+
+- [RJS-HK-001] Call hooks **only at the top level** of a component or custom hook; never inside loops, conditions, or nested functions.
+- [RJS-HK-002] Provide **exhaustive dependency arrays**; enable `react-hooks/exhaustive-deps` ESLint rule and treat violations as errors.
+- [RJS-HK-003] If a dependency causes unwanted re-runs, fix the root cause (memoize the value, hoist it, or rethink the effect) — do not suppress the lint rule.
+
+### 2.2 Effects
+
+- [RJS-HK-004] Return a **cleanup function** from any effect that subscribes, adds listeners, or allocates resources.
+- [RJS-HK-005] Avoid effects for derived state; compute inline or use `useMemo`.
+- [RJS-HK-006] For data fetching, prefer a data-fetching library (React Query, SWR, RTK Query) over raw `useEffect` + `fetch`.
+
+### 2.3 Custom hooks
+
+- [RJS-HK-007] Extract a custom hook when: logic is reused across 2+ components, or logic exceeds 15 lines in the component body.
+- [RJS-HK-008] Name custom hooks `use<Purpose>` (for example `useDebounce`, `useLocalStorage`).
+- [RJS-HK-009] Custom hooks must be pure of side effects except via `useEffect`; they must not directly mutate external state.
+
+---
+
+## 3. State management 📊
+
+### 3.1 Choosing the right tool
+
+| Scenario                                                      | Tool                             |
+| ------------------------------------------------------------- | -------------------------------- |
+| UI-local state (toggle, input value)                          | `useState`                       |
+| Complex local state with actions                              | `useReducer`                     |
+| Shared state across < 5 components in a subtree               | `useContext` + `useReducer`      |
+| Server/cache state (fetched data)                             | React Query, SWR, or RTK Query   |
+| Global client state across unrelated trees, or > 10 consumers | Zustand, Jotai, or Redux Toolkit |
+
+- [RJS-STM-001] Default to the **simplest tool** that meets the requirement; escalate only when criteria are met.
+- [RJS-STM-002] Use `useReducer` when state transitions are **> 3 distinct actions** or when next state depends on previous state in complex ways.
+- [RJS-STM-003] Avoid `useContext` for frequently changing values (for example cursor position) — it triggers re-renders of all consumers.
+
+### 3.2 Context usage
+
+- [RJS-STM-004] Split contexts by **update frequency**: separate `UserContext` (rarely changes) from `ThemeContext` (may change on user action).
+- [RJS-STM-005] Provide a **custom hook** for each context (for example `useUser()`) that throws if used outside the provider.
+
+### 3.3 Prop drilling threshold
+
+- [RJS-STM-006] If props pass through **> 2 intermediate components** that do not use them, consider context or composition (`children` pattern).
+
+---
+
+## 4. Performance 🚀
+
+### 4.1 Memoisation decision criteria
+
+- [RJS-PERF-001] **Avoid inline object/array/function props** passed to child components; define outside render or wrap in `useMemo`/`useCallback`.
+- [RJS-PERF-002] Use `React.memo` when: the component is **expensive to render** (> 50 ms in DevTools profiler) **and** receives stable-ish props from parent.
+- [RJS-PERF-003] Use `useMemo` for **expensive computations** (O(n²)+, large array transforms); not for simple derivations.
+- [RJS-PERF-004] Use `useCallback` when passing callbacks to **memoised children** or to dependencies of other hooks.
+- [RJS-PERF-005] Do **not** memoize everything by default; memoisation has memory cost and adds complexity.
+
+### 4.2 Rendering
+
+- [RJS-PERF-006] Virtualise lists exceeding **100 items** (for example `react-window`, `@tanstack/virtual`).
+- [RJS-PERF-007] Use `React.lazy` + `Suspense` for route-level code splitting; aim for initial bundle < 200 KB (gzipped JS).
+- [RJS-PERF-008] Avoid layout thrashing: batch DOM reads before writes; prefer CSS transforms over layout-triggering properties.
+
+---
+
+## 5. Data fetching 📡
+
+- [RJS-DATA-001] Use a **data-fetching library** (React Query, SWR, RTK Query) for server state; it handles caching, deduplication, and background refetch.
+- [RJS-DATA-002] Model fetch state explicitly: `idle | loading | success | error`; never infer state from `data === undefined`.
+- [RJS-DATA-003] Handle **race conditions**: cancel in-flight requests on unmount or dependency change; libraries do this by default.
+- [RJS-DATA-004] For mutations, use **optimistic updates** where rollback is cheap; show pending state otherwise.
+- [RJS-DATA-005] Disable automatic refetch in tests to avoid flakiness; mock at the network layer (MSW) or provide a test query client.
+
+---
+
+## 6. Forms 📝
+
+- [RJS-FRM-001] Use **controlled components** (`value` + `onChange`); avoid uncontrolled (`defaultValue` + ref) except for performance-critical cases (document why).
+- [RJS-FRM-002] For forms with > 5 fields or complex validation, use a form library (React Hook Form, Formik); avoid hand-rolling validation.
+- [RJS-FRM-003] Validate on **blur** for immediate feedback; re-validate on submit; debounce async validation (300–500 ms).
+- [RJS-FRM-004] Associate every input with a `<label>` via `htmlFor`/`id`; use `aria-describedby` for error messages.
+
+---
+
+## 7. Error handling ⚠️
+
+- [RJS-ERR-001] Wrap **feature boundaries** (routes, modals, widgets) with Error Boundaries; provide meaningful fallback UI.
+- [RJS-ERR-002] Log caught errors to a monitoring service (Sentry, Datadog) with context (user ID, route, component stack).
+- [RJS-ERR-003] Handle async errors in event handlers explicitly (`try/catch`); unhandled promise rejections do not trigger Error Boundaries.
+- [RJS-ERR-004] Display **user-safe messages**; hide stack traces in production.
+
+---
+
+## 8. Accessibility ♿
+
+- [RJS-A11Y-001] Use **semantic HTML** first (`<button>`, `<nav>`, `<main>`); add ARIA only when native semantics are insufficient.
+- [RJS-A11Y-002] All interactive elements must be **keyboard accessible**: focusable, operable via Enter/Space, and have visible focus styles.
+- [RJS-A11Y-003] Images require `alt`; decorative images use `alt=""` and `role="presentation"`.
+- [RJS-A11Y-004] Colour contrast must meet **WCAG 2.2 AA** (4.5:1 for normal text, 3:1 for large text/UI).
+- [RJS-A11Y-005] Announce dynamic content changes to screen readers via `aria-live` regions or focus management.
+- [RJS-A11Y-006] Test with axe DevTools and keyboard-only navigation before shipping.
+
+---
+
+## 9. Styling 🎨
+
+- [RJS-STY-001] Choose **one** styling approach per project (CSS Modules, Tailwind, CSS-in-JS); document in README.
+- [RJS-STY-002] Co-locate styles with components; avoid global stylesheets except for resets and design tokens.
+- [RJS-STY-003] Use **CSS custom properties** for theming (colours, spacing, typography); change values, not class names, for theme switching.
+- [RJS-STY-004] Design **mobile-first**: base styles for narrow viewports, progressive enhancement via `min-width` media queries.
+
+---
+
+## 10. Testing 🧪
+
+- [RJS-TST-001] Test **behaviour**, not implementation: assert on visible output, ARIA roles, and user interactions; avoid testing internal state.
+- [RJS-TST-002] Use **React Testing Library**; prefer `getByRole`, `getByLabelText` over `getByTestId`.
+- [RJS-TST-003] Mock network at the boundary (MSW); avoid mocking React internals or hooks.
+- [RJS-TST-004] Provide a **test wrapper** with required providers (router, query client, theme) to avoid boilerplate.
+- [RJS-TST-005] Aim for **80%+ behavioural coverage** of user journeys; 100% line coverage is not a goal.
+
+---
+
+## 11. Anti-patterns ❌
+
+- [RJS-ANT-001] **Do not use class components** for new code; refactor legacy class components opportunistically.
+- [RJS-ANT-002] **Do not use `React.FC`**; it is discouraged since React 18 (implicit `children`, poor generics support).
+- [RJS-ANT-003] **Do not suppress `exhaustive-deps`** without a code comment explaining why and an ADR for systemic cases.
+- [RJS-ANT-004] **Do not store derived state** in `useState`; compute inline or memoize.
+- [RJS-ANT-005] **Do not fetch in `useEffect`** without a data-fetching library or explicit race-condition handling.
+- [RJS-ANT-006] **Do not use `index` as `key`** for dynamic lists where items can reorder, be inserted, or be deleted.
+- [RJS-ANT-007] **Do not use `<div onClick>`** for interactive elements; use `<button>` or `<a>`.
+- [RJS-ANT-008] **Do not mix styling approaches** (for example Tailwind + Styled Components) in the same component tree.
+- [RJS-ANT-009] **Do not prop-drill through > 3 levels**; refactor to context, composition, or state library.
+- [RJS-ANT-010] **Do not inline large objects/arrays in JSX**; they break memoisation and cause unnecessary re-renders.
+
+---
+
+## 12. Quality checklist ✅
+
+Before shipping React code, verify:
+
+- [RJS-CHK-001] Components are functional with hooks; no class components
+- [RJS-CHK-002] No component exceeds ~150 lines or 3 responsibilities
+- [RJS-CHK-003] `exhaustive-deps` lint rule is enabled and passing
+- [RJS-CHK-004] Effects have cleanup functions where needed
+- [RJS-CHK-005] Error Boundaries wrap feature boundaries
+- [RJS-CHK-006] All interactive elements are keyboard accessible
+- [RJS-CHK-007] Colour contrast meets WCAG 2.2 AA
+- [RJS-CHK-008] Tests cover user behaviour, not implementation
+- [RJS-CHK-009] No anti-patterns from §11 are present
+- [RJS-CHK-010] TypeScript code follows [typescript.instructions.md](./typescript.instructions.md)
+
+---
+
+> **Version**: 1.1.0
 > **Last Amended**: 2026-01-11
