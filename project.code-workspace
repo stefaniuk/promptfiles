@@ -37,7 +37,11 @@
       "path": "./docs/codebase-overview"
     },
     {
-      "name": "Docs: Other Documentation",
+      "name": "Docs: Prompt Reports",
+      "path": "./docs/prompt-reports"
+    },
+    {
+      "name": "Docs: Other",
       "path": "./docs/"
     },
     {

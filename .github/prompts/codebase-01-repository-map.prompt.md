@@ -3,7 +3,7 @@ agent: agent
 description: Build a repository map to document architecture, technology stack, and repo-level conventions (evidence-first)
 ---
 
-**Mandatory preparation:** read [codebase overview](../instructions/include/codebase-overview.md) instructions in full and follow strictly its rules before executing any step below.
+**Mandatory preparation:** read [codebase overview](../instructions/include/codebase-overview.include.md) instructions in full and follow strictly its rules before executing any step below.
 
 ## Goal
 
