@@ -31,6 +31,7 @@ This section exists so humans and AI assistants can reliably apply the most impo
 - [MK-QR-007] **Small, testable changes**: prefer incremental improvements; do not rewrite the build system as a "clean-up" ([MK-OP-002], [MK-AI-001]).
 - [MK-QR-008] **Fast feedback**: local development and tests must be quick and confidence-building ([MK-OP-005], [MK-LCL-001]–[MK-LCL-005]).
 - [MK-QR-009] **Run the quality gates** after any Makefile/script change and iterate to clean ([MK-QG-001]–[MK-QG-003]).
+- [MK-QR-010] **Avoid common anti-patterns**: `|| true` without comment, large inline shell, hardcoded paths, unscoped `rm -rf` (§12).
 
 ---
 
@@ -228,13 +229,13 @@ Per operating principles ([MK-OP-002], [MK-OP-005]) **and** [constitution.md §7
 
 1. Prefer:
 
-    - [MK-QG-001] `make lint`
-    - [MK-QG-002] `make test`
+   - [MK-QG-001] `make lint`
+   - [MK-QG-002] `make test`
 
 2. If `make` targets do not exist, discover and run the project's equivalent commands.
 
-    - [MK-QG-003] You must continue iterating until all checks complete successfully with **no errors or warnings**. Do this automatically, without requiring an additional prompt.
-    - [MK-QG-004] Warnings must be treated as defects unless explicitly waived in an ADR (rationale + expiry).
+   - [MK-QG-003] You must continue iterating until all checks complete successfully with **no errors or warnings**. Do this automatically, without requiring an additional prompt.
+   - [MK-QG-004] Warnings must be treated as defects unless explicitly waived in an ADR (rationale + expiry).
 
 ---
 
@@ -430,5 +431,24 @@ HELP_SCRIPT = \
 
 ---
 
-> **Version**: 1.2.0
-> **Last Amended**: 2026-01-10
+## 12. Anti-patterns (recognise and avoid) 🚫
+
+These patterns cause recurring issues in Makefiles and build scripts. Avoid them unless an ADR documents a justified exception.
+
+- [MK-ANT-001] **`|| true` without comment** — masks failures silently; always document why it is safe.
+- [MK-ANT-002] **Large inline shell blocks (>5 lines)** — hard to test and debug; extract to `scripts/**/*.sh`.
+- [MK-ANT-003] **Hardcoded absolute paths** — breaks portability across machines; use variables with sensible defaults.
+- [MK-ANT-004] **`rm -rf` without path constraints** — dangerous; scope to known directories (e.g. `rm -rf $(BUILD_DIR)`).
+- [MK-ANT-005] **Recursive `make` without `$(MAKE)`** — breaks jobserver and flag propagation; always use `$(MAKE)`.
+- [MK-ANT-006] **Secrets in variable defaults** — leaks to logs and process lists; inject via environment at runtime.
+- [MK-ANT-007] **Tab/space inconsistency** — recipes require tabs; mixed indentation breaks execution.
+- [MK-ANT-008] **Targets without help descriptions** — poor discoverability; always add `# description @Category`.
+- [MK-ANT-009] **Silent failures via subshell** — `(command)` can hide exit codes; use `set -e` or check explicitly.
+- [MK-ANT-010] **Over-engineered dependency graphs** — hard to maintain and debug; keep prerequisites simple and explicit.
+- [MK-ANT-011] **`$(shell ...)` in prerequisites** — evaluated at parse time, not execution; can cause surprising behaviour.
+- [MK-ANT-012] **Missing `.PHONY` for non-file targets** — causes skipped execution if a file with that name exists.
+
+---
+
+> **Version**: 1.3.0
+> **Last Amended**: 2026-01-11

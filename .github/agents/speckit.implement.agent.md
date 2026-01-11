@@ -164,6 +164,7 @@ You **MUST** consider the user input before proceeding (if not empty).
      - `*.ts`, `*.tsx`, `*.js` → `/typescript-enforce-instructions`
      - `Makefile`, `*.mk` → `/makefile-enforce-instructions`
      - `*.tf` → `/terraform-enforce-instructions`
+     - Map other `/[tech]-enforce-instructions` prompts for technologies mentioned in plan.md
    - Only include prompts for technologies with files touched or created in the current phase
 
    **B. Run enforcement for each detected technology**:

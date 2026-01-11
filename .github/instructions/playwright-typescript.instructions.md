@@ -16,6 +16,8 @@ They must remain applicable to:
 
 They are **non-negotiable** unless an exception is explicitly documented (with rationale and expiry) in an ADR/decision record.
 
+**Cross-references.** For general TypeScript engineering standards (typing, error handling, code organisation), see [typescript.instructions.md](./typescript.instructions.md). This file focuses exclusively on Playwright-specific testing patterns.
+
 **Identifier scheme.** Every normative rule carries a unique tag in the form `[PW-TS-<prefix>-NNN]`, where the prefix maps to the containing section (for example `QR` for Quick Reference, `LOC` for Locators, `AST` for Assertions, `STR` for Structure). Use these identifiers when referencing, planning, or validating requirements.
 
 ---
@@ -31,6 +33,7 @@ This section exists so humans and AI assistants can reliably apply the most impo
 - [PW-TS-QR-005] **Standard imports**: begin files with `import { test, expect } from '@playwright/test'` ([PW-TS-STR-001]).
 - [PW-TS-QR-006] **Consistent file naming**: follow `<feature>.spec.ts` convention ([PW-TS-ORG-002]).
 - [PW-TS-QR-007] **Use test.describe()**: group related tests logically ([PW-TS-STR-002]).
+- [PW-TS-QR-008] **Avoid common anti-patterns**: `waitForTimeout`, missing `await`, `{ force: true }` clicks, tests without assertions (§9).
 
 ---
 
@@ -67,6 +70,8 @@ This section exists so humans and AI assistants can reliably apply the most impo
 - [PW-TS-STR-002] Group related tests for a feature under a `test.describe()` block.
 - [PW-TS-STR-003] Use `beforeEach` for setup actions common to all tests in a `describe` block (for example navigating to a page).
 - [PW-TS-STR-004] Follow a clear naming convention, such as `Feature - Specific action or scenario`.
+- [PW-TS-STR-005] Keep test functions focused (~30 lines or fewer); split complex scenarios into multiple tests or use helper functions.
+- [PW-TS-STR-006] Use `baseURL` in `playwright.config.ts` instead of hardcoding URLs in tests.
 
 ---
 
@@ -125,6 +130,8 @@ test.describe("Movie Search Feature", () => {
 - [PW-TS-EXE-004] Ensure tests pass consistently and cover the intended functionality.
 - [PW-TS-EXE-005] Use `--ui` flag for interactive debugging.
 - [PW-TS-EXE-006] Use `--trace on` to capture traces for failed tests.
+- [PW-TS-EXE-007] Use `--workers` to control parallelism in CI; ensure tests are isolated and do not share state.
+- [PW-TS-EXE-008] Configure screenshots and videos only on failure (`screenshot: 'only-on-failure'`, `video: 'retain-on-failure'`) to reduce CI time.
 
 ---
 
@@ -140,5 +147,50 @@ Before finalising tests, ensure:
 
 ---
 
-> **Version**: 1.1.0
+## 7. Page Object Model (recommended for larger suites) 📄
+
+For test suites with more than ~10 tests or significant UI complexity, use the Page Object Model pattern.
+
+- [PW-TS-POM-001] Encapsulate page-specific locators and actions in dedicated classes (e.g. `LoginPage`, `DashboardPage`).
+- [PW-TS-POM-002] Keep page objects focused on a single page or component; avoid "god objects".
+- [PW-TS-POM-003] Return `this` or the next page object from action methods to enable chaining.
+- [PW-TS-POM-004] Store page objects in a `pages/` directory alongside `tests/`.
+- [PW-TS-POM-005] Do not include assertions in page objects; keep assertions in test functions.
+
+---
+
+## 8. Test stability and flakiness mitigation 🛡️
+
+E2E tests are prone to flakiness. Apply these rules to improve reliability.
+
+- [PW-TS-STB-001] Isolate tests completely — no shared mutable state, no ordering dependencies.
+- [PW-TS-STB-002] Use Playwright's auto-waiting; never use `page.waitForTimeout()` except for debugging.
+- [PW-TS-STB-003] Prefer `page.waitForLoadState('networkidle')` sparingly and only when necessary; auto-wait handles most cases.
+- [PW-TS-STB-004] Use retries in config (`retries: 2`) as a last resort, not as a substitute for fixing flaky tests.
+- [PW-TS-STB-005] Annotate persistently flaky tests with `test.fixme()` or `test.skip()` and fix or remove them promptly.
+- [PW-TS-STB-006] Seed test data explicitly; do not rely on existing database state.
+- [PW-TS-STB-007] Use `expect` with custom timeouts only when the default (5s) is insufficient due to genuine latency, not to mask slowness.
+
+---
+
+## 9. Anti-patterns (recognise and avoid) 🚫
+
+These patterns cause recurring issues in Playwright TypeScript tests. Avoid them unless an ADR documents a justified exception.
+
+- [PW-TS-ANT-001] **`page.waitForTimeout()` instead of auto-wait** — Playwright waits automatically; explicit waits cause flakiness and slow tests.
+- [PW-TS-ANT-002] **Missing `await` on assertions** — causes silent failures; always `await expect(...)`.
+- [PW-TS-ANT-003] **Hardcoded timeouts to fix flakiness** — masks underlying issues; fix the root cause instead.
+- [PW-TS-ANT-004] **CSS/XPath when role-based locators exist** — brittle and less accessible; prefer `getByRole`, `getByLabel`.
+- [PW-TS-ANT-005] **`{ force: true }` click without justification** — hides real interactivity issues; document why it's necessary.
+- [PW-TS-ANT-006] **Tests without assertions** — false positives; every test must assert at least one outcome.
+- [PW-TS-ANT-007] **Shared mutable state between tests** — causes ordering dependencies and random failures; isolate tests completely.
+- [PW-TS-ANT-008] **Overly broad locators** — causes strict mode violations; be specific enough to match exactly one element.
+- [PW-TS-ANT-009] **Screenshot/video always on** — slows CI significantly; enable only on failure.
+- [PW-TS-ANT-010] **Hardcoded URLs in tests** — breaks across environments; use `baseURL` configuration.
+- [PW-TS-ANT-011] **`try/catch` to suppress test failures** — masks bugs; let tests fail and fix the underlying issue.
+- [PW-TS-ANT-012] **Giant test functions (>50 lines)** — hard to debug and maintain; split by scenario or use `test.step()`.
+
+---
+
+> **Version**: 2.0.0
 > **Last Amended**: 2026-01-11

@@ -35,6 +35,7 @@ This section exists so humans and AI assistants can reliably apply the most impo
 - [TF-QR-009] **Remote state, isolated per environment**: encrypted, versioned, access-controlled ([TF-STATE-001]–[TF-STATE-008]).
 - [TF-QR-010] **Observability baseline**: CloudWatch logs, metrics, alarms, dashboards, and runbook references ([TF-OBS-001]–[TF-OBS-067]).
 - [TF-QR-011] **IaC or nothing**: every AWS change must flow through Terraform under version control ([TF-OP-007]).
+- [TF-QR-012] **Avoid common anti-patterns**: hardcoded ARNs, floating versions, mega-modules, secrets in `.tfvars` (§20).
 
 ---
 
@@ -519,6 +520,7 @@ Logging must be intentional, queryable, and safe.
 **Operational rules:**
 
 - [TF-OBS-020] Prefer structured logs (JSON) for application logs; avoid free-text-only logs.
+  - [TF-OBS-020a] Application logs emitted by Lambda functions, ECS containers, and similar compute must follow the [Structured Logging Baseline](./include/observability-logging-baseline.include.md) field requirements — this is an infrastructure concern because log retention, parsing, and alerting depend on consistent schemas.
 - [TF-OBS-021] Ensure logs include correlation identifiers consistently (request id / trace id / account id / region).
 - [TF-OBS-022] Use CloudWatch Logs Insights-friendly fields and stable event names.
 
@@ -769,5 +771,27 @@ Per [constitution.md §3.5](../../.specify/memory/constitution.md#35-ai-assisted
 
 ---
 
-> **Version**: 1.3.0
-> **Last Amended**: 2026-01-10
+## 20. Anti-patterns (recognise and avoid) 🚫
+
+These patterns cause recurring issues in Terraform codebases. Avoid them unless an ADR documents a justified exception.
+
+- [TF-ANT-001] **Hardcoded ARNs/account IDs** — use variables or data sources; breaks portability across environments.
+- [TF-ANT-002] **`count` with complex conditionals** — prefer `for_each` for clarity and stable resource keys; `count` index shifts cause recreations.
+- [TF-ANT-003] **Inline policies instead of managed policies** — harder to audit, reuse, and track in IAM; prefer `aws_iam_policy` resources.
+- [TF-ANT-004] **`depends_on` for data dependencies** — usually indicates missing explicit references; fix the graph instead.
+- [TF-ANT-005] **`ignore_changes` as a permanent workaround** — masks drift; document with ADR + expiry and plan removal.
+- [TF-ANT-006] **Floating provider versions** — determinism risk; pin explicitly in `required_providers` and commit `.terraform.lock.hcl`.
+- [TF-ANT-007] **State in local backend for shared environments** — blocks collaboration and breaks CI; use remote backend with locking.
+- [TF-ANT-008] **Secrets in `.tfvars` or variable defaults** — leaks to state, logs, and version control; use Secrets Manager/SSM references.
+- [TF-ANT-009] **Wide IAM wildcards (`*` resource + `*` action)** — least privilege violation; scope to specific resources and actions.
+- [TF-ANT-010] **Mega-modules (>300 lines, multiple concerns)** — hard to test, review, and reuse; split by responsibility.
+- [TF-ANT-011] **Copying resources instead of extracting modules** — drift risk and maintenance burden; extract and version shared patterns.
+- [TF-ANT-012] **Missing `description` on variables/outputs** — poor discoverability; always document intent and constraints.
+- [TF-ANT-013] **`terraform apply -auto-approve` in production** — bypasses review; use CI approvals and plan artefacts.
+- [TF-ANT-014] **Unencrypted state bucket** — compliance and security risk; enable SSE-KMS and versioning.
+- [TF-ANT-015] **Log groups without explicit retention** — cost bloat and compliance risk; set `retention_in_days` on every `aws_cloudwatch_log_group`.
+
+---
+
+> **Version**: 1.4.0
+> **Last Amended**: 2026-01-11

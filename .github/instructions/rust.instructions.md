@@ -35,6 +35,8 @@ This section exists so humans and AI assistants can reliably apply the most impo
 - [RS-QR-006] **Unsafe review**: all `unsafe` blocks require a `// SAFETY:` comment and dedicated review ([RS-SAF-001]).
 - [RS-QR-007] **No warnings in CI**: `#![deny(warnings)]` or equivalent in CI; fix, don't suppress ([RS-QG-001]).
 - [RS-QR-008] **Feature flag hygiene**: test with `--no-default-features` and `--all-features` ([RS-ORG-004]).
+- [RS-QR-009] **Structured logging**: use `tracing` for structured logs; follow the baseline field requirements ([RS-OBS-001]).
+- [RS-QR-010] **CLI contract**: exit codes follow `0/1/2` contract; stdout for results, stderr for diagnostics ([RS-CLI-001]).
 
 ---
 
@@ -128,7 +130,31 @@ This section exists so humans and AI assistants can reliably apply the most impo
 
 ---
 
-## 5. Unsafe code 🔓
+## 5. CLI behaviour ⌨️
+
+For Rust CLIs, follow the [CLI Contract](./include/cli-contract.include.md) for exit codes and stream semantics.
+
+### 5.1 Exit codes
+
+- [RS-CLI-001] Exit codes must follow the shared [CLI contract](./include/cli-contract.include.md#1-exit-codes-non-negotiable): `0` success, `1` general failure, `2` usage error.
+- [RS-CLI-002] Use `std::process::ExitCode` or return an exit code from `main` rather than calling `std::process::exit()` mid-execution.
+- [RS-CLI-003] Map `clap` parse errors to exit code `2`; map runtime errors to exit code `1`.
+
+### 5.2 Stream semantics
+
+- [RS-CLI-004] Follow the [CLI contract stream semantics](./include/cli-contract.include.md#2-stdout-vs-stderr-stream-semantics): primary output on `stdout`, diagnostics on `stderr`.
+- [RS-CLI-005] Never interleave progress/debug output onto `stdout`; use `eprintln!` or `tracing` for diagnostics.
+- [RS-CLI-006] When providing `--json` or structured output, ensure `stdout` contains only the machine-readable payload.
+
+### 5.3 Ergonomics
+
+- [RS-CLI-007] Provide `--help`, `--version`, and `--verbose` (or `--quiet`) switches via `clap` derive macros.
+- [RS-CLI-008] Offer `--dry-run` for commands that mutate resources.
+- [RS-CLI-009] Keep CLI entrypoints thin per [CLI-WRP-001](./include/cli-contract.include.md#5-wrappers-and-shared-libraries): parse args, call library functions, return exit code.
+
+---
+
+## 6. Unsafe code 🔓
 
 - [RS-SAF-001] Every `unsafe` block must have a `// SAFETY:` comment immediately above, explaining why invariants are upheld.
 - [RS-SAF-002] `unsafe` code requires **dedicated review** by a second engineer or explicit sign-off in PR.
@@ -138,21 +164,21 @@ This section exists so humans and AI assistants can reliably apply the most impo
 
 ---
 
-## 6. API design 📐
+## 7. API design 📐
 
-### 6.1 Trait implementation
+### 7.1 Trait implementation
 
 - [RS-API-001] Implement `Debug` on **all** public types; derive where possible.
 - [RS-API-002] Implement `Clone`, `PartialEq`, `Eq`, `Hash`, `Default` **only** when semantically meaningful; do not derive blindly.
 - [RS-API-003] Implement `Send` and `Sync` only if the type is genuinely safe to share; rely on auto-impl.
 
-### 6.2 Type safety
+### 7.2 Type safety
 
 - [RS-API-004] Use **newtypes** to distinguish domain concepts (for example `UserId(u64)` vs raw `u64`).
 - [RS-API-005] Avoid `bool` parameters; use enums (for example `Overwrite::Yes` vs `overwrite: bool`).
 - [RS-API-006] Accept `impl AsRef<Path>` or `&str` where flexibility is needed; return owned types.
 
-### 6.3 Future-proofing
+### 7.3 Future-proofing
 
 - [RS-API-007] Struct fields should be **private** with accessors; use `#[non_exhaustive]` for enums/structs exposed publicly.
 - [RS-API-008] Use sealed traits when downstream implementations are not intended.
@@ -160,7 +186,7 @@ This section exists so humans and AI assistants can reliably apply the most impo
 
 ---
 
-## 7. Testing 🧪
+## 8. Testing 🧪
 
 - [RS-TST-001] Unit tests go in `mod tests` within the same file; integration tests go in `tests/`.
 - [RS-TST-002] Test **behaviour**, not implementation; avoid testing private functions directly.
@@ -171,7 +197,40 @@ This section exists so humans and AI assistants can reliably apply the most impo
 
 ---
 
-## 8. Quality gates ✅
+## 9. Observability 🔭
+
+For Rust services and CLIs that produce structured logs, follow the [Structured Logging Baseline](./include/observability-logging-baseline.include.md).
+
+### 9.1 Tooling
+
+- [RS-OBS-001] Use **`tracing`** as the primary logging and instrumentation crate; it integrates with the Rust async ecosystem and supports structured fields.
+- [RS-OBS-002] Use `tracing-subscriber` with JSON formatting for production deployments; use pretty formatting for local development.
+- [RS-OBS-003] Add `#[instrument]` to public functions and async boundaries to capture span context automatically.
+
+### 9.2 Required fields
+
+- [RS-OBS-004] Service/API logs must include the required fields from [§1 of the baseline](./include/observability-logging-baseline.include.md#1-required-fields-services-apis-async-workers): `service`, `version`, `environment`, `request_id`, `operation`, `duration_ms`, and `error_code` (on failure).
+- [RS-OBS-005] CLI logs must include the required fields from [§2 of the baseline](./include/observability-logging-baseline.include.md#2-required-fields-clis): `command`, `args` (sanitised), `exit_code`, `duration_ms`.
+
+### 9.3 Secrecy and safety
+
+- [RS-OBS-006] Apply the secrecy rules from [§3 of the baseline](./include/observability-logging-baseline.include.md#3-sensitive-data--secrecy-rules): never log secrets, tokens, or raw personal data.
+- [RS-OBS-007] Use `tracing`'s `skip` or `skip_all` in `#[instrument]` to exclude sensitive fields from spans.
+- [RS-OBS-008] When logging payloads, truncate large bodies and mark with `truncated=true`.
+
+### 9.4 Event taxonomy
+
+- [RS-OBS-009] Use the event taxonomy from [§4 of the baseline](./include/observability-logging-baseline.include.md#4-event-naming--taxonomy): stable names like `request.start`, `request.end`, `dependency.call`, `dependency.error`.
+- [RS-OBS-010] Emit both start and end spans/events around expensive boundaries (HTTP calls, DB queries, filesystem IO).
+
+### 9.5 Diagnostics
+
+- [RS-OBS-011] Default to `info` level; enable `debug`/`trace` only via explicit configuration (`RUST_LOG` or application config).
+- [RS-OBS-012] Every exception must trigger exactly one `error!` log entry with `error_code` and correlation identifiers, even if the software can recover.
+
+---
+
+## 10. Quality gates ✅
 
 - [RS-QG-001] CI must fail on warnings: use `RUSTFLAGS="-D warnings"` or `#![deny(warnings)]` in CI builds.
 - [RS-QG-002] Run `cargo fmt --check` and `cargo clippy -- -D warnings` before merge.
@@ -181,7 +240,7 @@ This section exists so humans and AI assistants can reliably apply the most impo
 
 ---
 
-## 9. Project organisation 📁
+## 11. Project organisation 📁
 
 - [RS-ORG-001] Use semantic versioning; follow [Cargo SemVer compatibility](https://doc.rust-lang.org/cargo/reference/semver.html).
 - [RS-ORG-002] Include metadata in `Cargo.toml`: `description`, `license`, `repository`, `keywords`, `categories`.
@@ -191,7 +250,7 @@ This section exists so humans and AI assistants can reliably apply the most impo
 
 ---
 
-## 10. Anti-patterns ❌
+## 12. Anti-patterns ❌
 
 - [RS-ANT-001] **Do not** ignore warnings; fix or explicitly allow with a comment explaining why.
 - [RS-ANT-002] **Do not** use `unwrap()` or `expect()` in library code; use `?` or return `Result`.
@@ -203,10 +262,11 @@ This section exists so humans and AI assistants can reliably apply the most impo
 - [RS-ANT-008] **Do not** use `unsafe` without a `// SAFETY:` comment and review.
 - [RS-ANT-009] **Do not** derive `Default` on types where a zero/empty value is semantically invalid.
 - [RS-ANT-010] **Do not** expose `pub` fields on structs intended for evolution; use accessors.
+- [RS-ANT-011] **Do not** log secrets, tokens, or raw personal data; use `skip` in `#[instrument]` for sensitive fields.
 
 ---
 
-## 11. Quality checklist ✅
+## 13. Quality checklist ✅
 
 Before shipping Rust code, verify:
 
@@ -218,10 +278,12 @@ Before shipping Rust code, verify:
 - [RS-CHK-006] Public types implement `Debug`; other traits only when meaningful
 - [RS-CHK-007] Feature flags are tested in combination
 - [RS-CHK-008] No `unwrap()` in library code; justified only in binaries
-- [RS-CHK-009] No anti-patterns from §10 are present
+- [RS-CHK-009] No anti-patterns from §12 are present
 - [RS-CHK-010] Code passes `cargo fmt`, `cargo clippy`, `cargo test`, `cargo doc`
+- [RS-CHK-011] Structured logs follow the [Observability Logging Baseline](./include/observability-logging-baseline.include.md)
+- [RS-CHK-012] CLI binaries follow the [CLI Contract](./include/cli-contract.include.md) for exit codes and streams
 
 ---
 
-> **Version**: 2.0.0
+> **Version**: 1.3.0
 > **Last Amended**: 2026-01-11

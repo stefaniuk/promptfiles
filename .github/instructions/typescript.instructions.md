@@ -37,6 +37,8 @@ This section exists so humans and AI assistants can reliably apply the most impo
 - [TS-QR-012] **Operational visibility**: correlation IDs and structured logs for services ([TS-OBS-001]–[TS-OBS-007]).
 - [TS-QR-013] **Accessible UI by default**: meet WCAG 2.2 AA expectations; keyboard-first and semantic HTML ([TS-UI-001]–[TS-UI-013]).
 - [TS-QR-014] **UI performance**: design for Core Web Vitals and fast interaction feedback ([TS-UI-020]–[TS-UI-027]).
+- [TS-QR-015] **Function size limit**: split functions exceeding ~50 lines or 3 levels of nesting ([TS-CODE-017]).
+- [TS-QR-016] **Module size limit**: keep modules under ~500 lines excluding tests ([TS-CODE-018]).
 
 ---
 
@@ -151,16 +153,16 @@ Per [constitution.md §7.8](../../.specify/memory/constitution.md#78-mandatory-l
 
 1. Prefer:
 
-    - [TS-QG-001] `make fmt`
-    - [TS-QG-002] `make lint`
-    - [TS-QG-003] `make typecheck`
-    - [TS-QG-004] `make test`
+   - [TS-QG-001] `make fmt`
+   - [TS-QG-002] `make lint`
+   - [TS-QG-003] `make typecheck`
+   - [TS-QG-004] `make test`
 
 2. If `make` targets do not exist, discover and run the equivalent commands (for example `pnpm lint`, `pnpm -s typecheck`, `pnpm -s test`).
 
-    - [TS-QG-005] You must continue iterating until all checks complete successfully with **no errors or warnings**. Do this automatically, without requiring an additional prompt.
-    - [TS-QG-006] Warnings must be treated as defects unless explicitly waived in an ADR (rationale + expiry).
-    - [TS-QG-007] Use the repository-provided build, lint, typecheck, and test scripts/targets; avoid ad-hoc commands unless the specification demands it.
+   - [TS-QG-005] You must continue iterating until all checks complete successfully with **no errors or warnings**. Do this automatically, without requiring an additional prompt.
+   - [TS-QG-006] Warnings must be treated as defects unless explicitly waived in an ADR (rationale + expiry).
+   - [TS-QG-007] Use the repository-provided build, lint, typecheck, and test scripts/targets; avoid ad-hoc commands unless the specification demands it.
 
 ---
 
@@ -1005,5 +1007,25 @@ This section defines a **framework-agnostic** baseline for building maintainable
 
 ---
 
-> **Version**: 1.3.1
-> **Last Amended**: 2026-01-10
+## 22. Anti-patterns ❌
+
+- [TS-ANT-001] **Do not** use `any` except as a last resort with a justifying comment; prefer `unknown` at boundaries.
+- [TS-ANT-002] **Do not** fire-and-forget promises; always await or explicitly handle outcomes.
+- [TS-ANT-003] **Do not** make outbound calls without explicit timeouts.
+- [TS-ANT-004] **Do not** log secrets, tokens, or PII.
+- [TS-ANT-005] **Do not** pass secrets via CLI arguments; use environment variables or secret managers.
+- [TS-ANT-006] **Do not** let functions exceed ~50 lines or 3 levels of nesting without extraction.
+- [TS-ANT-007] **Do not** let modules exceed ~500 lines (excluding tests) without splitting by responsibility.
+- [TS-ANT-008] **Do not** use `console.log` in production code; use structured logging utilities.
+- [TS-ANT-009] **Do not** ignore linter or type-checker warnings; fix them or explicitly waive with rationale.
+- [TS-ANT-010] **Do not** expose persistence/internal models directly through public APIs.
+- [TS-ANT-011] **Do not** return HTTP 200 with embedded error messages; use correct status codes.
+- [TS-ANT-012] **Do not** use unbounded concurrency; cap parallelism explicitly.
+- [TS-ANT-013] **Do not** rely on wall-clock sleeps in tests; use fake timers or polling with timeouts.
+- [TS-ANT-014] **Do not** hit real cloud/network in unit tests by default.
+- [TS-ANT-015] **Do not** store access tokens in `localStorage` without documented threat-model acceptance.
+
+---
+
+> **Version**: 1.4.0
+> **Last Amended**: 2026-01-11

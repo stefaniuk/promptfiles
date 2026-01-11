@@ -2,7 +2,7 @@
 applyTo: "**/*.{jsx,tsx,js,ts,css,scss}"
 ---
 
-# ReactJS Development Instructions ⚛️
+# ReactJS Engineering Instructions ⚛️
 
 These instructions define **React-specific patterns** for building high-quality applications with modern hooks and component architecture.
 

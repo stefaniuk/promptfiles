@@ -35,6 +35,7 @@ This section exists so humans and AI assistants can reliably apply the most impo
 - [PY-QR-008] **No secrets in args or logs**: use env vars or secure prompts; never print secrets ([PY-SEC-001]–[PY-SEC-004], [PY-OBS-013]).
 - [PY-QR-009] **Local by default**: no real cloud/network by default; use fakes/emulators; explicit integration mode switches ([PY-EXT-001]–[PY-EXT-007]).
 - [PY-QR-010] **Operational visibility**: correlation IDs and structured logs for APIs; controlled diagnostics only ([PY-OBS-004]–[PY-OBS-010], [PY-OBS-015]–[PY-OBS-026], [PY-ERR-013]).
+- [PY-QR-011] **Avoid common anti-patterns**: bare `except`, mutable defaults, `assert` for validation, global mutable state (§20).
 
 ---
 
@@ -148,13 +149,13 @@ Per [constitution.md §7.8](../../.specify/memory/constitution.md#78-mandatory-l
 
 1. Prefer:
 
-    - [PY-QG-001] `make lint`
-    - [PY-QG-002] `make test`
+   - [PY-QG-001] `make lint`
+   - [PY-QG-002] `make test`
 
 2. If `make` targets do not exist, discover and run the project's equivalent commands (for example `uv run ruff check .`, `uv run ruff format .`, `uv run pytest`, `python -m pytest`, or framework-specific test runners).
 
-    - [PY-QG-003] You must continue iterating until all checks complete successfully with **no errors or warnings**. Do this automatically, without requiring an additional prompt.
-    - [PY-QG-004] Warnings must be treated as defects unless explicitly waived in an ADR (rationale + expiry).
+   - [PY-QG-003] You must continue iterating until all checks complete successfully with **no errors or warnings**. Do this automatically, without requiring an additional prompt.
+   - [PY-QG-004] Warnings must be treated as defects unless explicitly waived in an ADR (rationale + expiry).
 
 ---
 
@@ -954,9 +955,9 @@ Per [constitution.md §7](../../.specify/memory/constitution.md#7-code-quality-g
   - [PY-CODE-002c] domain logic
   - [PY-CODE-002d] I/O boundaries
 - [PY-CODE-003] Prefer intention-revealing names aligned to the domain language.
-- [PY-CODE-004] Keep functions small and single-purpose.
+- [PY-CODE-004] Keep functions small and single-purpose (~50 lines or 3 nesting levels; extract when exceeded).
 - [PY-CODE-005] Keep boundary code separate from domain logic.
-- [PY-CODE-006] Keep modules single-responsibility (avoid "god modules").
+- [PY-CODE-006] Keep modules single-responsibility (~500 lines excluding tests; split when exceeded).
 - [PY-CODE-007] Order code to aid navigation:
   - [PY-CODE-007a] entrypoints and public APIs first
   - [PY-CODE-007b] key behaviour next
@@ -1050,5 +1051,27 @@ Per [constitution.md §3.5](../../.specify/memory/constitution.md#35-ai-assisted
 
 ---
 
-> **Version**: 1.3.2
-> **Last Amended**: 2026-01-10
+## 20. Anti-patterns (recognise and avoid) 🚫
+
+These patterns cause recurring issues in Python codebases. Avoid them unless an ADR documents a justified exception.
+
+- [PY-ANT-001] **Bare `except:` or `except Exception`** — swallows all errors including `KeyboardInterrupt` and `SystemExit`. Catch specific exceptions; if broad handling is needed, log and re-raise or use `except Exception as e:` with explicit handling.
+- [PY-ANT-002] **Mutable default arguments** (`def f(items=[])`) — the list is shared across calls. Use `None` and initialise inside the function.
+- [PY-ANT-003] **Using `assert` for runtime validation** — assertions are stripped in optimised builds (`python -O`). Use explicit `if`/`raise` for input validation.
+- [PY-ANT-004] **Global mutable state for request/CLI context** — breaks thread safety and testability. Pass context explicitly or use framework-provided request-scoped storage.
+- [PY-ANT-005] **Logging inside tight loops without sampling** — floods logs and degrades performance. Log aggregates or sample.
+- [PY-ANT-006] **Hardcoded `time.sleep()` for retries** — no backoff, no jitter, no limit. Use a retry library with exponential backoff (e.g. `tenacity`).
+- [PY-ANT-007] **Mixing `print()` with structured logging** — breaks log aggregation and stream semantics. Use the logging framework consistently.
+- [PY-ANT-008] **Importing entire modules when only one symbol is needed** — pollutes namespace and increases coupling. Prefer `from module import symbol`.
+- [PY-ANT-009] **Catching exceptions only to re-raise unchanged** — adds noise without value. Let exceptions propagate unless you add context or handle them.
+- [PY-ANT-010] **Using `os.path` when `pathlib` is clearer** — `pathlib.Path` is more readable, safer, and cross-platform. Prefer it for new code.
+- [PY-ANT-011] **Nested `try`/`except` blocks** — hard to follow; flatten or extract to helper functions.
+- [PY-ANT-012] **Magic numbers and strings** — define named constants or enums for clarity and searchability.
+- [PY-ANT-013] **Long parameter lists (>5 positional)** — consider a dataclass, TypedDict, or Pydantic model to group related parameters.
+- [PY-ANT-014] **Shadowing built-ins** (`id`, `type`, `list`, `dict`, `input`, `open`) — causes subtle bugs. Choose distinct names.
+- [PY-ANT-015] **Ignoring return values of I/O or validation calls** — silent failures. Check or log outcomes explicitly.
+
+---
+
+> **Version**: 1.4.0
+> **Last Amended**: 2026-01-11

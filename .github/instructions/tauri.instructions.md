@@ -2,7 +2,7 @@
 applyTo: "**/*.{rs,ts,tsx,js,jsx}"
 ---
 
-# Tauri Desktop Application Instructions 🖥️
+# Tauri Engineering Instructions 🖥️
 
 These instructions define **Tauri-specific integration patterns** for building secure, performant desktop applications with a Rust core and web-based UI.
 

@@ -15,6 +15,8 @@ They must remain applicable to:
 
 They are **non-negotiable** unless an exception is explicitly documented (with rationale and expiry) in an ADR/decision record.
 
+**Cross-references.** For general Python engineering standards (typing, error handling, code organisation), see [python.instructions.md](./python.instructions.md). This file focuses exclusively on Playwright-specific testing patterns.
+
 **Identifier scheme.** Every normative rule carries a unique tag in the form `[PW-PY-<prefix>-NNN]`, where the prefix maps to the containing section (for example `QR` for Quick Reference, `LOC` for Locators, `AST` for Assertions, `STR` for Structure). Use these identifiers when referencing, planning, or validating requirements.
 
 ---
@@ -30,6 +32,7 @@ This section exists so humans and AI assistants can reliably apply the most impo
 - [PW-PY-QR-005] **Standard imports**: begin files with `from playwright.sync_api import Page, expect` ([PW-PY-STR-001]).
 - [PW-PY-QR-006] **Consistent file naming**: follow `test_<feature>.py` convention ([PW-PY-ORG-002]).
 - [PW-PY-QR-007] **Prefer expect over assert**: use Playwright's `expect` for more reliable UI tests ([PW-PY-AST-004]).
+- [PW-PY-QR-008] **Avoid common anti-patterns**: `time.sleep()`, `force=True` clicks, shared mutable state, tests without assertions (§9).
 
 ---
 
@@ -64,6 +67,8 @@ This section exists so humans and AI assistants can reliably apply the most impo
 - [PW-PY-STR-002] Use the `page: Page` fixture as an argument in your test functions to interact with the browser page.
 - [PW-PY-STR-003] Place navigation steps like `page.goto()` at the beginning of each test function.
 - [PW-PY-STR-004] For setup actions shared across multiple tests, use standard Pytest fixtures.
+- [PW-PY-STR-005] Keep test functions focused (~30 lines or fewer); split complex scenarios into multiple tests or use helper functions.
+- [PW-PY-STR-006] Use `base_url` in `pytest.ini` or `conftest.py` instead of hardcoding URLs in tests.
 
 ---
 
@@ -109,6 +114,8 @@ def test_get_started_link(page: Page):
 - [PW-PY-EXE-002] Analyse test failures and identify root causes before making changes.
 - [PW-PY-EXE-003] Use `--headed` flag for debugging visual issues.
 - [PW-PY-EXE-004] Use `--trace on` to capture traces for failed tests.
+- [PW-PY-EXE-005] Use `pytest-xdist` with `--numprocesses auto` for parallel execution in CI; ensure tests are isolated.
+- [PW-PY-EXE-006] Enable screenshots and videos only on failure (`--screenshot only-on-failure`, `--video retain-on-failure`) to reduce CI time.
 
 ---
 
@@ -124,5 +131,50 @@ Before finalising tests, ensure:
 
 ---
 
-> **Version**: 1.1.0
+## 7. Page Object Model (recommended for larger suites) 📄
+
+For test suites with more than ~10 tests or significant UI complexity, use the Page Object Model pattern.
+
+- [PW-PY-POM-001] Encapsulate page-specific locators and actions in dedicated classes (e.g. `LoginPage`, `DashboardPage`).
+- [PW-PY-POM-002] Keep page objects focused on a single page or component; avoid "god objects".
+- [PW-PY-POM-003] Return `self` or the next page object from action methods to enable chaining.
+- [PW-PY-POM-004] Store page objects in a `pages/` directory alongside `tests/`.
+- [PW-PY-POM-005] Do not include assertions in page objects; keep assertions in test functions.
+
+---
+
+## 8. Test stability and flakiness mitigation 🛡️
+
+E2E tests are prone to flakiness. Apply these rules to improve reliability.
+
+- [PW-PY-STB-001] Isolate tests completely — no shared mutable state, no ordering dependencies.
+- [PW-PY-STB-002] Use Playwright's auto-waiting; never use `time.sleep()` or `page.wait_for_timeout()` except for debugging.
+- [PW-PY-STB-003] Prefer `wait_for_load_state("networkidle")` sparingly and only when necessary; auto-wait handles most cases.
+- [PW-PY-STB-004] Use retries at the CI level (`--retries 2`) as a last resort, not as a substitute for fixing flaky tests.
+- [PW-PY-STB-005] Quarantine persistently flaky tests (move to a `@pytest.mark.flaky` marker) and fix or remove them promptly.
+- [PW-PY-STB-006] Seed test data explicitly; do not rely on existing database state.
+- [PW-PY-STB-007] Use `expect` with custom timeouts only when the default (5s) is insufficient due to genuine latency, not to mask slowness.
+
+---
+
+## 9. Anti-patterns (recognise and avoid) 🚫
+
+These patterns cause recurring issues in Playwright Python tests. Avoid them unless an ADR documents a justified exception.
+
+- [PW-PY-ANT-001] **`time.sleep()` instead of auto-wait** — Playwright waits automatically; explicit sleeps cause flakiness and slow tests.
+- [PW-PY-ANT-002] **`assert` instead of `expect`** — loses auto-retry; use Playwright's `expect` API for UI assertions.
+- [PW-PY-ANT-003] **Hardcoded timeouts to fix flakiness** — masks underlying issues; fix the root cause instead.
+- [PW-PY-ANT-004] **CSS/XPath when role-based locators exist** — brittle and less accessible; prefer `get_by_role`, `get_by_label`.
+- [PW-PY-ANT-005] **`force=True` click without justification** — hides real interactivity issues; document why it's necessary.
+- [PW-PY-ANT-006] **Tests without assertions** — false positives; every test must assert at least one outcome.
+- [PW-PY-ANT-007] **Shared mutable state between tests** — causes ordering dependencies and random failures; isolate tests completely.
+- [PW-PY-ANT-008] **Overly broad locators** — causes strict mode violations; be specific enough to match exactly one element.
+- [PW-PY-ANT-009] **Screenshot/video always on** — slows CI significantly; enable only on failure.
+- [PW-PY-ANT-010] **Hardcoded URLs in tests** — breaks across environments; use `base_url` configuration.
+- [PW-PY-ANT-011] **Catching exceptions to avoid test failure** — masks bugs; let tests fail and fix the underlying issue.
+- [PW-PY-ANT-012] **Giant test functions (>50 lines)** — hard to debug and maintain; split by scenario or use helpers.
+
+---
+
+> **Version**: 2.0.0
 > **Last Amended**: 2026-01-11
