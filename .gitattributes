@@ -1,0 +1,3 @@
+scripts/docker/** linguist-vendored
+scripts/githooks/** linguist-vendored
+scripts/init.mk linguist-vendored

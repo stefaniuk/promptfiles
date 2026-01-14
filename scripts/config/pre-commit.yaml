@@ -1,8 +1,18 @@
 repos:
   - repo: local
     hooks:
-      - id: check-markdown
-        name: Check Markdown
+      - id: scan-secrets
+        name: Scan secrets
+        entry: bash -c 'check=staged-changes ./scripts/githooks/scan-secrets.sh'
+        language: system
+        pass_filenames: false
+      - id: check-file-format
+        name: Check file format
+        entry: bash -c 'check=staged-changes ./scripts/githooks/check-file-format.sh'
+        language: system
+        pass_filenames: false
+      - id: check-markdown-format
+        name: Check Markdown format
         entry: bash -c 'check=staged-changes ./scripts/githooks/check-markdown-format.sh'
         language: system
         pass_filenames: false

@@ -125,7 +125,9 @@ make githooks-run      # Run all hooks manually
 
 1. Copy `scripts/config/pre-commit.yaml`
 2. Copy the corresponding `scripts/githooks/*.sh` scripts for enabled hooks
-3. Run `make githooks-config`
+3. Add `pre-commit` to `.tool-versions` (e.g., `pre-commit 3.6.0`)
+4. Run `asdf install` to install pre-commit
+5. Run `make githooks-config`
 
 **Verification** (run after adoption):
 
@@ -179,7 +181,15 @@ check=whole-history ./scripts/githooks/scan-secrets.sh    # Full repository hist
 **To adopt**:
 
 1. Copy `scripts/githooks/scan-secrets.sh`, `scripts/config/gitleaks.toml`, and `.gitleaksignore`
-2. Add to `pre-commit.yaml` or run standalone
+2. Add `gitleaks` to `.tool-versions` (e.g., `gitleaks 8.18.4`) for native execution
+3. Optionally add Docker image entry to `.tool-versions` for Docker fallback:
+
+   ```text
+   # docker/ghcr.io/gitleaks/gitleaks v8.18.0@sha256:... # SEE: https://github.com/gitleaks/gitleaks/pkgs/container/gitleaks
+   ```
+
+4. Run `asdf install` to install gitleaks (if using native)
+5. Add to `pre-commit.yaml` or run standalone
 
 **Verification** (run after adoption):
 
@@ -244,7 +254,13 @@ check=branch ./scripts/githooks/check-file-format.sh             # Changes since
 **To adopt**:
 
 1. Copy `.editorconfig` and `scripts/githooks/check-file-format.sh`
-2. Install VS Code extension `editorconfig.editorconfig`
+2. Add Docker image entry to `.tool-versions` for editorconfig-checker:
+
+   ```text
+   # docker/mstruebing/editorconfig-checker 2.7.1@sha256:... # SEE: https://hub.docker.com/r/mstruebing/editorconfig-checker/tags
+   ```
+
+3. Install VS Code extension `editorconfig.editorconfig`
 
 **Verification** (run after adoption):
 
@@ -291,7 +307,13 @@ MD033: false # Allow inline HTML
 **To adopt**:
 
 1. Copy `scripts/githooks/check-markdown-format.sh` and `scripts/config/markdownlint.yaml`
-2. Install VS Code extension `davidanson.vscode-markdownlint`
+2. Add Docker image entry to `.tool-versions` for markdownlint-cli:
+
+   ```text
+   # docker/ghcr.io/igorshubovych/markdownlint-cli v0.37.0@sha256:... # SEE: https://github.com/igorshubovych/markdownlint-cli/pkgs/container/markdownlint-cli
+   ```
+
+3. Install VS Code extension `davidanson.vscode-markdownlint`
 
 **Verification** (run after adoption):
 
@@ -338,7 +360,15 @@ BasedOnStyles = Vale
 **To adopt**:
 
 1. Copy `scripts/githooks/check-english-usage.sh` and `scripts/config/vale/`
-2. Customise vocabulary in `scripts/config/vale/styles/words/`
+2. Add `vale` to `.tool-versions` (e.g., `vale 3.6.0`) for native execution
+3. Optionally add Docker image entry to `.tool-versions` for Docker fallback:
+
+   ```text
+   # docker/jdkato/vale v3.6.0@sha256:... # SEE: https://hub.docker.com/r/jdkato/vale/tags
+   ```
+
+4. Run `asdf install` to install vale (if using native)
+5. Customise vocabulary in `scripts/config/vale/styles/words/`
 
 **Verification** (run after adoption):
 
@@ -409,8 +439,14 @@ See [section 17](#17-tool-version-management-asdf) for full format documentation
 
 1. Copy the entire `scripts/docker/` directory
 2. Copy `scripts/config/hadolint.yaml`
-3. Create your Dockerfile in `infrastructure/images/`
-4. Optionally add Docker image pins to `.tool-versions`
+3. Add Docker image entry to `.tool-versions` for hadolint:
+
+   ```text
+   # docker/hadolint/hadolint 2.12.0-alpine@sha256:... # SEE: https://hub.docker.com/r/hadolint/hadolint/tags
+   ```
+
+4. Create your Dockerfile in `infrastructure/images/`
+5. Optionally add additional Docker image pins to `.tool-versions`
 
 **Verification** (run after adoption):
 
@@ -473,7 +509,14 @@ make terraform-apply   # Apply changes
 
 1. Copy `scripts/githooks/check-terraform-format.sh`
 2. Create `infrastructure/` directory structure
-3. Add Terraform to `.tool-versions`
+3. Add `terraform` to `.tool-versions` (e.g., `terraform 1.7.0`)
+4. Optionally add Docker image entry to `.tool-versions` for Docker fallback:
+
+   ```text
+   # docker/hashicorp/terraform 1.12.2@sha256:... # SEE: https://hub.docker.com/r/hashicorp/terraform/tags
+   ```
+
+5. Run `asdf install` to install terraform
 
 **Verification** (run after adoption):
 
@@ -531,7 +574,14 @@ shellcheck scripts/*.sh
 # Success indicator: No output (silent success) or warnings/errors listed
 ```
 
-**To adopt**: Copy `scripts/shellscript-linter.sh`
+**To adopt**:
+
+1. Copy `scripts/shellscript-linter.sh`
+2. Add Docker image entry to `.tool-versions` for shellcheck:
+
+   ```text
+   # docker/koalaman/shellcheck latest@sha256:... # SEE: https://hub.docker.com/r/koalaman/shellcheck/tags
+   ```
 
 **To remove**: Delete the file
 
@@ -797,7 +847,14 @@ yq eval '.' scripts/config/syft.yaml > /dev/null && echo "syft.yaml valid"
 
 1. Copy `scripts/config/grype.yaml` and `scripts/config/syft.yaml`
 2. Copy `scripts/reports/create-sbom-report.sh` and `scripts/reports/scan-vulnerabilities.sh`
-3. Integrate with your Docker build pipeline or CI/CD workflows
+3. Add Docker image entries to `.tool-versions` for grype and syft:
+
+   ```text
+   # docker/ghcr.io/anchore/grype v0.92.2@sha256:... # SEE: https://github.com/anchore/grype/pkgs/container/grype
+   # docker/ghcr.io/anchore/syft v0.92.0@sha256:... # SEE: https://github.com/anchore/syft/pkgs/container/syft
+   ```
+
+4. Integrate with your Docker build pipeline or CI/CD workflows
 
 **To remove**: Delete the configuration files and scripts
 
@@ -844,7 +901,14 @@ jq '.' lines-of-code-report.json > /dev/null && echo "Valid JSON"
 # Success indicator: File exists, valid JSON, contains "languages" key
 ```
 
-**To adopt**: Copy the script
+**To adopt**:
+
+1. Copy the script
+2. Add Docker image entry to `.tool-versions` for gocloc:
+
+   ```text
+   # docker/ghcr.io/make-ops-tools/gocloc latest@sha256:... # SEE: https://github.com/make-ops-tools/gocloc/pkgs/container/gocloc
+   ```
 
 **To remove**: Delete the script
 
@@ -1245,9 +1309,15 @@ find docs -name "*.md" -type f
 **To adopt**:
 
 1. Copy `scripts/reports/perform-static-analysis.sh` and `scripts/config/sonar-scanner.properties`
-2. Create a SonarCloud account and project at [sonarcloud.io](https://sonarcloud.io)
-3. Add `SONAR_TOKEN` to repository secrets
-4. Configure the workflow to run the script with required environment variables
+2. Add Docker image entry to `.tool-versions` for sonar-scanner:
+
+   ```text
+   # docker/sonarsource/sonar-scanner-cli 10.0@sha256:... # SEE: https://hub.docker.com/r/sonarsource/sonar-scanner-cli/tags
+   ```
+
+3. Create a SonarCloud account and project at [sonarcloud.io](https://sonarcloud.io)
+4. Add `SONAR_TOKEN` to repository secrets
+5. Configure the workflow to run the script with required environment variables
 
 **Verification** (run after adoption):
 

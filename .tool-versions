@@ -1,0 +1,11 @@
+# This file pins tool and Docker image versions for reproducible builds.
+
+gitleaks 8.30.0
+pre-commit 4.5.1
+
+# ==============================================================================
+# The section below is reserved for Docker image versions.
+
+# docker/ghcr.io/gitleaks/gitleaks v8.30.0@sha256:691af3c7c5a48b16f187ce3446d5f194838f91238f27270ed36eef6359a574d9 # SEE: https://github.com/gitleaks/gitleaks/pkgs/container/gitleaks
+# docker/mstruebing/editorconfig-checker 3.6.0@sha256:3fee6fe35c9ec21367b92ca50b3bea856ffc8a7a186044c329ac8bb23b33284a # SEE: https://hub.docker.com/r/mstruebing/editorconfig-checker
+# docker/ghcr.io/igorshubovych/markdownlint-cli v0.47.0@sha256:9f06c8c9a75aa08b87b235b66d618f7df351f09f08faf703177f670e38ee6511 # SEE: https://github.com/igorshubovych/markdownlint-cli/pkgs/container/markdownlint-cli

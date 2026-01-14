@@ -1,0 +1,3 @@
+{
+  "Exclude": [".github/instructions/makefile.instructions.md", ".specify/"]
+}
