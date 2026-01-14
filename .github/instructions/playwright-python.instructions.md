@@ -1,5 +1,5 @@
 ---
-applyTo: "**"
+applyTo: "**/*.{js,ts,tsx}"
 ---
 
 # Playwright Python Test Generation Instructions 🎭

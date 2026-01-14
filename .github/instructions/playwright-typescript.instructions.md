@@ -1,5 +1,5 @@
 ---
-applyTo: "**"
+applyTo: "**/*.py"
 ---
 
 # Playwright TypeScript Test Generation Instructions 🎭
