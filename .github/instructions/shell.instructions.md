@@ -38,6 +38,7 @@ This section exists so humans and AI assistants can reliably apply the most impo
 - [SH-QR-009] **Exit 0 at end**: scripts must end with `exit 0` after successful execution ([SH-ERR-005]).
 - [SH-QR-010] **Test suite patterns**: use Arrange-Act-Assert structure, setup/teardown functions, and summary reporting ([SH-TST-001]–[SH-TST-015]).
 - [SH-QR-011] **Avoid common anti-patterns**: unquoted variables, `cd` without error handling, hardcoded paths (§12).
+- [SH-QR-012] **Explicit returns**: finish every function with an explicit `return <status>` so intent and requirements stay aligned ([SH-FN-008]).
 
 ---
 
@@ -163,9 +164,13 @@ set -euo pipefail
 - [SH-FN-005] Keep functions focused on a single responsibility.
 - [SH-FN-006] Functions should be small enough to fit on one screen (~30–50 lines maximum).
 
-### 3.3 Dual execution pattern (native vs Docker)
+### 3.3 Explicit return statements
 
-- [SH-FN-007] For tool wrapper scripts, implement paired execution functions:
+- [SH-FN-007] End every function with an explicit `return` (usually `return 0` for success, or a non-zero value for failures) so static analysis tools can determine the intended exit status and humans can see the control flow clearly. Do not rely on implicit fall-through to provide the exit code.
+
+### 3.4 Dual execution pattern (native vs Docker)
+
+- [SH-FN-008] For tool wrapper scripts, implement paired execution functions:
   - `run-<tool>-natively` — runs the tool if installed locally
   - `run-<tool>-in-docker` — runs the tool in a Docker container
 
@@ -870,5 +875,5 @@ exit 0
 
 ---
 
-> **Version**: 1.0.2
-> **Last Amended**: 2026-01-14
+> **Version**: 1.0.3
+> **Last Amended**: 2026-01-15
