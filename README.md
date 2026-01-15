@@ -9,6 +9,7 @@ A curated, specification-first library of prompts, instruction packs, skills, an
   - [Operational workflow](#operational-workflow)
     - [How to use these prompts](#how-to-use-these-prompts)
     - [Sync prompt files with `make apply`](#sync-prompt-files-with-make-apply)
+    - [Estimate context window usage with `make count-tokens`](#estimate-context-window-usage-with-make-count-tokens)
     - [Spec-kit governance gates](#spec-kit-governance-gates)
   - [Delivery backlog](#delivery-backlog)
   - [Contributing](#contributing)
@@ -83,6 +84,13 @@ flowchart TD
 - 🛠️ From this repository's root, run `make apply dest=/absolute/path/to/target`. The `dest` argument is mandatory, the helper script will create folders in the target repo if they do not yet exist.
 - 🧳 The task copies `.github/agents`, `.github/instructions` (and `include`), `.github/prompts`, `.github/skills`, `.github/copilot-instructions.md`, `.specify/memory/constitution.md`, `docs/adr/adr-template.md`, and `docs/.gitignore` into the destination.
 - ✅ Review the downstream repo's git status, commit the synced files, and re-run its `make lint` and `make test` targets so Copilot agents there immediately benefit from the updated governance packs.
+
+### Estimate context window usage with `make count-tokens`
+
+- 📊 Run `make count-tokens` to count LLM tokens in the default Copilot directories (`.github`, `.specify`, `docs`).
+- 🔍 Use `make count-tokens args="--all --sort-by tokens"` to scan every markdown file and rank them by token count.
+- 📁 Target specific paths with `make count-tokens args=".github/instructions"`.
+- 🧮 The report shows per-file token counts, directory totals, and context window usage percentages for GPT-4o, GPT-4 Turbo, and Claude models.
 
 ### Spec-kit governance gates
 

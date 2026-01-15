@@ -23,8 +23,14 @@ apply: # Copy prompt files assets to a destination repository; mandatory: dest=[
 	fi
 	./scripts/apply.sh "$(dest)"
 
+count-tokens: clean # Count LLM tokens in markdown files; optional: args=[options] @Operations
+	uv run --with tiktoken python scripts/count-tokens.py $(args)
+
 clean:: # Remove project-specific generated files (main) @Operations
-	rm -rf .github/skills/repository-template/assets
+	rm -rf \
+		.github/skills/repository-template/assets \
+		docs/codebase-overview \
+		docs/prompt-reports
 	find . \( \
 		-name ".coverage" -o \
 		-name ".env" -o \
@@ -42,6 +48,7 @@ ${VERBOSE}.SILENT: \
 	apply \
 	clean \
 	config \
+	count-tokens \
 	format \
 	lint \
 	test \
