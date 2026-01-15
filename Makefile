@@ -23,8 +23,19 @@ apply: # Copy prompt files assets to a destination repository; mandatory: dest=[
 	fi
 	./scripts/apply.sh "$(dest)"
 
-count-tokens: clean # Count LLM tokens in markdown files; optional: args=[options] @Operations
-	uv run --with tiktoken python scripts/count-tokens.py $(args)
+count-tokens: # Count LLM tokens for key instruction packs; optional: args=[files/options] @Operations
+	uv run --with tiktoken python scripts/count-tokens.py \
+		$(if $(args),$(args), \
+			--sort-by tokens \
+			.github/copilot-instructions.md \
+			.specify/memory/constitution.md \
+			.github/instructions/makefile.instructions.md \
+			.github/instructions/shell.instructions.md \
+			.github/instructions/python.instructions.md \
+			.github/instructions/typescript.instructions.md \
+			.github/instructions/terraform.instructions.md \
+			.github/instructions/include \
+		)
 
 clean:: # Remove project-specific generated files (main) @Operations
 	rm -rf \

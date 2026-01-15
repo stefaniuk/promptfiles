@@ -87,10 +87,10 @@ flowchart TD
 
 ### Estimate context window usage with `make count-tokens`
 
-- 📊 Run `make count-tokens` to count LLM tokens in the default Copilot directories (`.github`, `.specify`, `docs`).
+- 📊 Run `make count-tokens` to count LLM tokens in the default Copilot prompt files (instructions, constitution, and includes).
 - 🔍 Use `make count-tokens args="--all --sort-by tokens"` to scan every markdown file and rank them by token count.
-- 📁 Target specific paths with `make count-tokens args=".github/instructions"`.
-- 🧮 The report shows per-file token counts, directory totals, and context window usage percentages for GPT-4o, GPT-4 Turbo, and Claude models.
+- 📁 Target specific paths with `make count-tokens args=".github/instructions .specify"`.
+- 🧮 The report shows per-file token counts, a "No IDs" column (tokens with instruction identifiers like `[ID-<prefix>-NNN]` stripped), and context window usage as a percentage of 200K tokens.
 
 ### Spec-kit governance gates
 

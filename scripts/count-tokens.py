@@ -7,17 +7,18 @@ the token count using tiktoken (OpenAI's tokeniser). It provides a summary
 suitable for understanding context window usage.
 
 Usage:
-    python scripts/count-tokens.py [--model MODEL] [--sort-by {tokens,path}] [PATHS...]
+    python scripts/count-tokens.py [--sort-by {tokens,path}] [PATHS...]
 
 Examples:
     python scripts/count-tokens.py
     python scripts/count-tokens.py .github .specify
-    python scripts/count-tokens.py --model gpt-4o --sort-by tokens
+    python scripts/count-tokens.py --sort-by tokens
 """
 
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -38,16 +39,12 @@ DEFAULT_SEARCH_PATHS = [
     "docs",
 ]
 
-# Model encoding mappings for common models
-MODEL_ENCODINGS = {
-    "gpt-4o": "o200k_base",
-    "gpt-4o-mini": "o200k_base",
-    "gpt-4-turbo": "cl100k_base",
-    "gpt-4": "cl100k_base",
-    "gpt-3.5-turbo": "cl100k_base",
-    "claude-3": "cl100k_base",  # Approximate; Claude uses similar tokenisation
-    "claude-3.5": "cl100k_base",
-}
+# Use a single encoding for reporting to keep outputs consistent
+ENCODING_NAME = "o200k_base"
+CONTEXT_WINDOW_TOKENS = 200_000
+
+# Pattern to match instruction identifiers like [PY-<prefix>-NNN]
+IDENTIFIER_PATTERN = re.compile(r"\[[A-Z]{2,3}-[A-Z]{1,4}-\d{3}[a-z]?\]")
 
 
 @dataclass
@@ -56,24 +53,36 @@ class FileTokenCount:
 
     path: Path
     tokens: int
+    tokens_no_ids: int  # Token count with identifiers stripped
     chars: int
 
 
-def get_encoding(model: str) -> tiktoken.Encoding:
-    """Get the tiktoken encoding for a given model."""
-    encoding_name = MODEL_ENCODINGS.get(model, "cl100k_base")
-    return tiktoken.get_encoding(encoding_name)
+def strip_identifiers(content: str) -> str:
+    """Remove instruction identifiers like [PY-<prefix>-NNN] from content."""
+    return IDENTIFIER_PATTERN.sub("", content)
+
+
+def get_encoding() -> tiktoken.Encoding:
+    """Get the token encoding used for all counts."""
+    return tiktoken.get_encoding(ENCODING_NAME)
 
 
 def count_tokens_in_file(file_path: Path, encoding: tiktoken.Encoding) -> FileTokenCount:
-    """Count tokens in a single file."""
+    """Count tokens in a single file, both with and without identifiers."""
     try:
         content = file_path.read_text(encoding="utf-8")
         tokens = len(encoding.encode(content))
-        return FileTokenCount(path=file_path, tokens=tokens, chars=len(content))
+        content_stripped = strip_identifiers(content)
+        tokens_no_ids = len(encoding.encode(content_stripped))
+        return FileTokenCount(
+            path=file_path,
+            tokens=tokens,
+            tokens_no_ids=tokens_no_ids,
+            chars=len(content),
+        )
     except (OSError, UnicodeDecodeError) as err:
         sys.stderr.write(f"Warning: Could not read {file_path}: {err}\n")
-        return FileTokenCount(path=file_path, tokens=0, chars=0)
+        return FileTokenCount(path=file_path, tokens=0, tokens_no_ids=0, chars=0)
 
 
 def find_markdown_files(base_path: Path) -> list[Path]:
@@ -93,7 +102,6 @@ def format_number(num: int) -> str:
 def print_results(
     results: list[FileTokenCount],
     base_dir: Path,
-    model: str,
     sort_by: str,
 ) -> None:
     """Print the token count results in a readable format."""
@@ -103,65 +111,75 @@ def print_results(
         results = sorted(results, key=lambda r: str(r.path))
 
     total_tokens = sum(r.tokens for r in results)
+    total_tokens_no_ids = sum(r.tokens_no_ids for r in results)
     total_chars = sum(r.chars for r in results)
     total_files = len(results)
 
-    # Calculate column widths
+    # Calculate column widths (include totals to ensure alignment)
     max_path_len = max(len(str(r.path.relative_to(base_dir))) for r in results) if results else 0
-    max_tokens_len = max(len(format_number(r.tokens)) for r in results) if results else 0
+    max_tokens_len = max(
+        max((len(format_number(r.tokens)) for r in results), default=0),
+        len(format_number(total_tokens)),
+    )
+    max_no_ids_len = max(
+        max((len(format_number(r.tokens_no_ids)) for r in results), default=0),
+        len(format_number(total_tokens_no_ids)),
+    )
+    max_chars_len = max(
+        max((len(format_number(r.chars)) for r in results), default=0),
+        len(format_number(total_chars)),
+    )
 
     # Print header
-    print(f"\n{'=' * 70}")
-    print(f"Token Count Report (Model: {model})")
-    print(f"{'=' * 70}\n")
+    print("\nToken Count Report (200K context window)\n")
 
     # Print per-file breakdown
-    print(f"{'File':<{max_path_len}}  {'Tokens':>{max_tokens_len}}  {'Chars':>10}")
-    print(f"{'-' * max_path_len}  {'-' * max_tokens_len}  {'-' * 10}")
+    print(
+        f"{'File':<{max_path_len}}  "
+        f"{'Tokens':>{max_tokens_len}}  "
+        f"{'No IDs':>{max_no_ids_len}}  "
+        f"{'Chars':>{max_chars_len}}"
+    )
+    print(
+        f"{'-' * max_path_len}  "
+        f"{'-' * max_tokens_len}  "
+        f"{'-' * max_no_ids_len}  "
+        f"{'-' * max_chars_len}"
+    )
 
     for result in results:
         rel_path = str(result.path.relative_to(base_dir))
         print(
             f"{rel_path:<{max_path_len}}  "
             f"{format_number(result.tokens):>{max_tokens_len}}  "
-            f"{format_number(result.chars):>10}"
+            f"{format_number(result.tokens_no_ids):>{max_no_ids_len}}  "
+            f"{format_number(result.chars):>{max_chars_len}}"
         )
 
     # Print summary
-    print(f"\n{'-' * 70}")
-    print(f"{'TOTAL':<{max_path_len}}  {format_number(total_tokens):>{max_tokens_len}}  {format_number(total_chars):>10}")
+    print(
+        f"\n{'-' * max_path_len}  "
+        f"{'-' * max_tokens_len}  "
+        f"{'-' * max_no_ids_len}  "
+        f"{'-' * max_chars_len}"
+    )
+    print(
+        f"{'TOTAL':<{max_path_len}}  "
+        f"{format_number(total_tokens):>{max_tokens_len}}  "
+        f"{format_number(total_tokens_no_ids):>{max_no_ids_len}}  "
+        f"{format_number(total_chars):>{max_chars_len}}"
+    )
     print(f"\nSummary:")
-    print(f"  Files scanned:  {total_files}")
-    print(f"  Total tokens:   {format_number(total_tokens)}")
-    print(f"  Total chars:    {format_number(total_chars)}")
+    print(f"  Files scanned:   {total_files}")
+    print(f"  Total tokens:    {format_number(total_tokens)}")
+    print(f"  Without IDs:     {format_number(total_tokens_no_ids)}")
+    print(f"  Total chars:     {format_number(total_chars)}")
     print(f"  Avg tokens/file: {total_tokens // total_files if total_files else 0}")
 
     # Context window guidance
-    print(f"\nContext Window Reference:")
-    print(f"  GPT-4o:         128K tokens ({total_tokens / 128_000 * 100:.1f}% usage)")
-    print(f"  GPT-4 Turbo:    128K tokens ({total_tokens / 128_000 * 100:.1f}% usage)")
-    print(f"  Claude 3.5:     200K tokens ({total_tokens / 200_000 * 100:.1f}% usage)")
-    print(f"  Claude 3 Opus:  200K tokens ({total_tokens / 200_000 * 100:.1f}% usage)")
-
-
-def print_by_directory(
-    results: list[FileTokenCount],
-    base_dir: Path,
-) -> None:
-    """Print token counts grouped by top-level directory."""
-    dir_totals: dict[str, int] = {}
-
-    for result in results:
-        rel_path = result.path.relative_to(base_dir)
-        top_dir = rel_path.parts[0] if len(rel_path.parts) > 1 else "(root)"
-        dir_totals[top_dir] = dir_totals.get(top_dir, 0) + result.tokens
-
-    print("\nTokens by Directory:")
-    print(f"  {'Directory':<30}  {'Tokens':>12}")
-    print(f"  {'-' * 30}  {'-' * 12}")
-
-    for directory, tokens in sorted(dir_totals.items(), key=lambda x: x[1], reverse=True):
-        print(f"  {directory:<30}  {format_number(tokens):>12}")
+    usage_pct = total_tokens / CONTEXT_WINDOW_TOKENS * 100
+    usage_no_ids_pct = total_tokens_no_ids / CONTEXT_WINDOW_TOKENS * 100
+    print(f"\nContext window usage: {usage_pct:.1f}% (without IDs: {usage_no_ids_pct:.1f}%)")
 
 
 def parse_args() -> argparse.Namespace:
@@ -176,12 +194,6 @@ def parse_args() -> argparse.Namespace:
         nargs="*",
         default=DEFAULT_SEARCH_PATHS,
         help=f"Paths to search (default: {', '.join(DEFAULT_SEARCH_PATHS)})",
-    )
-    parser.add_argument(
-        "--model",
-        default="gpt-4o",
-        choices=list(MODEL_ENCODINGS.keys()),
-        help="Model to use for tokenisation (default: gpt-4o)",
     )
     parser.add_argument(
         "--sort-by",
@@ -204,8 +216,8 @@ def main() -> int:
     # Determine base directory (repository root)
     base_dir = Path.cwd()
 
-    # Get encoding for the specified model
-    encoding = get_encoding(args.model)
+    # Get encoding for the canonical model
+    encoding = get_encoding()
 
     # Collect all markdown files
     all_files: list[Path] = []
@@ -228,8 +240,8 @@ def main() -> int:
     results = [count_tokens_in_file(f, encoding) for f in all_files]
 
     # Print results
-    print_results(results, base_dir, args.model, args.sort_by)
-    print_by_directory(results, base_dir)
+    print_results(results, base_dir, args.sort_by)
+    print("\n")
 
     return 0
 
