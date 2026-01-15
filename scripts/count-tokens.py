@@ -43,7 +43,7 @@ DEFAULT_SEARCH_PATHS = [
 ENCODING_NAME = "o200k_base"
 CONTEXT_WINDOW_TOKENS = 200_000
 
-# Pattern to match instruction identifiers like [PY-<prefix>-NNN]
+# Pattern to match instruction identifiers like [ID-<prefix>-NNN]
 IDENTIFIER_PATTERN = re.compile(r"\[[A-Z]{2,3}-[A-Z]{1,4}-\d{3}[a-z]?\]")
 
 
@@ -58,7 +58,7 @@ class FileTokenCount:
 
 
 def strip_identifiers(content: str) -> str:
-    """Remove instruction identifiers like [PY-<prefix>-NNN] from content."""
+    """Remove instruction identifiers like [ID-<prefix>-NNN] from content."""
     return IDENTIFIER_PATTERN.sub("", content)
 
 

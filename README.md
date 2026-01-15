@@ -3,7 +3,7 @@
 # 🤖 AI-assisted Development Prompt Files
 
 [![Spec-Kit](https://img.shields.io/badge/spec--kit-powered-blue?style=for-the-badge)](https://github.com/stefaniuk/promptfiles)
-[![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)](LICENSE)
+[![Licence](https://img.shields.io/badge/licence-MIT-green?style=for-the-badge)](LICENCE.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=for-the-badge)](CONTRIBUTING.md)
 
 **A curated, specification-first library of prompts, instruction packs, skills, and Copilot agents**
@@ -150,7 +150,7 @@ make count-tokens args=".github/instructions .specify"
 The report shows:
 
 - **Tokens** — per-file token counts
-- **No IDs** — counts with identifiers like `[PY-QR-010]` stripped
+- **No IDs** — counts with identifiers like `[ID-<prefix>-NNN]` stripped
 - **Usage %** — context window usage (200K baseline)
 
 ### 🛡️ Governance Gates
@@ -160,9 +160,9 @@ Explicit checkpoints between specification and implementation:
 | Gate                   | Command                         | Purpose                                       |
 | :--------------------- | :------------------------------ | :-------------------------------------------- |
 | 📄 **Documentation**   | `/speckit-documentation-review` | Consistency across spec.md, plan.md, tasks.md |
-| 🧰 **Instructions**    | `/[tech]-enforce-instructions`  | Lint & test at every delivery phase           |
 | ✅ **Code Compliance** | `/speckit-code-review`          | Reconcile implementation with spec            |
 | 🧪 **Test Quality**    | `/speckit-test-review`          | Ensure healthy test pyramid                   |
+| 🧰 **Instructions**    | `/[tech]-enforce-instructions`  | Lint & test at every delivery phase           |
 
 <details>
 <summary><strong>Why governance gates matter</strong></summary>
@@ -207,6 +207,10 @@ Explicit checkpoints between specification and implementation:
 ---
 
 ## 🤝 Contributing
+
+We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide.
+
+**Quick checklist:**
 
 1. **Raise an issue or PR** describing your planned changes
 2. **Keep artefacts in sync** — specs, plans, tasks, and docs must align
