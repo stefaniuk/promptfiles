@@ -12,7 +12,7 @@ description: Generate conventional commit message and description from the curre
 Produce three copy-ready outputs that always reflect the current work, whether the changes live on a dedicated branch or only in the working tree on `main`/detached `HEAD`:
 
 1. A **Branch Name**: if you are already on a feature branch, report whether it is suitable (and suggest an improvement if not); if you are on `main`/detached `HEAD`, propose a new branch using `scope-short-description` (e.g. `auth-add-sso-callback`).
-2. A single-line conventional **Commit Message** (`type(scope?): summary`) that accurately describes the dominant change.
+2. A single-line conventional **Commit Message** (`type(scope): summary`) that accurately describes the dominant change.
 3. A concise **Description** (Markdown) capturing intent and rationale (when evidenced), not just a restatement of file changes.
 
 All artefacts must be fully backed by the diff between `main` and the current `HEAD`, enriched with any staged or unstaged working tree changes.
@@ -50,7 +50,7 @@ done
 ### B. Classify the change
 
 1. Determine the dominant change type(s) for Conventional Commits (`feat`, `fix`, `chore`, `docs`, `refactor`, `test`, `build`, `ci`, `perf`, `revert`).
-2. Identify an optional `scope` by using the most relevant component, package, or directory touched (prefer values already used in the repo; fall back to a short directory name if unsure).
+2. Identify a `scope` by using the most relevant component, package, or directory touched (prefer values already used in the repo; fall back to a short directory name if unsure).
 3. Note any breaking changes or notable follow-ups.
 
 ---
@@ -69,7 +69,7 @@ done
 
 Follow these rules:
 
-1. Format: `type(scope?): summary`.
+1. Format: `type(scope): summary`.
 2. `summary` ≤ 72 characters, present tense, no trailing punctuation.
 3. Mention breaking changes by appending `!` after the type/scope (`feat(api)!: ...`) and list details in the summary block.
 4. Ensure the summary is specific (e.g. `feat(auth): add SSO callback validator`).
@@ -127,5 +127,5 @@ Return content exactly in this shape for easy copy/paste:
 
 ---
 
-> **Version**: 1.2.1
+> **Version**: 1.2.2
 > **Last Amended**: 2025-01-17

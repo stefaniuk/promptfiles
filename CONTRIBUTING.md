@@ -101,9 +101,9 @@ Single-purpose prompt files that guide Copilot through specific tasks.
 - Task requiring specific structure or format
 - Process with defined steps or checklist
 
-**File naming:** `<domain>-<action>.prompt.md`
+**File naming:** `<prefix>.<category-or-action>.prompt.md` (prefix + category + verb)
 
-Examples: `review.speckit-code.prompt.md`, `enforce.python.prompt.md`
+Examples: `speckit.plan.prompt.md`, `codebase.01-repository-map.prompt.md`, `review.speckit-code.prompt.md`, `util.gh-pr.prompt.md`, `enforce.python.prompt.md`
 
 ### Instructions (`.github/instructions/*.instructions.md`)
 
@@ -137,9 +137,9 @@ Copilot agent definitions that combine prompts with specific behaviours.
 - Specialised domain expertise
 - Workflow requiring specific agent configuration
 
-**File naming:** `<namespace>.<action>.md`
+**File naming:** `<namespace>.<action>.agent.md`
 
-Examples: `speckit.specify.md`, `speckit.implement.md`
+Examples: `speckit.specify.agent.md`, `speckit.implement.agent.md`
 
 ### Skills (`.github/skills/<skill-name>/`)
 

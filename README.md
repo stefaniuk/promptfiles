@@ -69,14 +69,14 @@ Everything is shippable by folder, making large organisations faster to onboard.
 
 > **Tip:** Each pack is designed for copy-paste reuse. Pick what you need!
 
-| Pack                                                        | Description                                                                                                                 |
-| :---------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------- |
-| 🤖 **[.github/agents](.github/agents)**                     | Ready-to-run Copilot agents (analyse, clarify, constitution, implement, plan, specify, tasks) tuned for spec-kit ceremonies |
-| 💬 **[.github/prompts](.github/prompts)**                   | Focused prompt files for documentation reviews, governance gates, tests, and refactoring support                            |
-| 📋 **[.github/instructions](.github/instructions)**         | Coding standards and best practice packs scoped by file glob so Copilot always sees the right rules                         |
-| 🧠 **[.github/skills](.github/skills)**                     | Bundled instructions plus helper assets that extend Copilot's capabilities for niche workflows                              |
-| 📝 **[.specify/templates](.specify/templates)**             | Seed specs, plans, and tasks for new features                                                                               |
-| 📄 **[docs/adr/adr-template.md](docs/adr/adr-template.md)** | Opinionated ADR template aligned with spec-kit identifiers                                                                  |
+| Pack                                                        | Description                                                                                                                                           |
+| :---------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🤖 **[.github/agents](.github/agents)**                     | Ready-to-run Copilot agents (analyze, checklist, clarify, constitution, implement, plan, specify, tasks, taskstoissues) tuned for spec-kit ceremonies |
+| 💬 **[.github/prompts](.github/prompts)**                   | Focused prompt files for documentation reviews, governance gates, tests, and refactoring support                                                      |
+| 📋 **[.github/instructions](.github/instructions)**         | Coding standards and best practice packs scoped by file glob so Copilot always sees the right rules                                                   |
+| 🧠 **[.github/skills](.github/skills)**                     | Bundled instructions plus helper assets that extend Copilot's capabilities for niche workflows                                                        |
+| 📝 **[.specify/templates](.specify/templates)**             | Seed specs, plans, and tasks for new features                                                                                                         |
+| 📄 **[docs/adr/adr-template.md](docs/adr/adr-template.md)** | Opinionated ADR template aligned with spec-kit identifiers                                                                                            |
 
 ---
 
@@ -181,13 +181,13 @@ Explicit checkpoints between specification and implementation:
 
 Prompts use a **prefix + category + verb** convention to keep fuzzy search fast and predictable:
 
-| Prefix      | Purpose                                     | Example                         |
-| :---------- | :------------------------------------------ | :------------------------------ |
-| `speckit.`  | Spec-kit lifecycle steps                    | `speckit.plan.prompt.md`        |
-| `codebase.` | Evidence-first codebase documentation flows | `codebase.01-repository-map...` |
-| `enforce.`  | Instruction compliance enforcement          | `enforce.python.prompt.md`      |
-| `review.`   | Review and audit prompts                    | `review.speckit-code.prompt.md` |
-| `util.`     | Operational utilities                       | `util.gh-pr-review.prompt.md`   |
+| Prefix      | Purpose                                     | Example                                |
+| :---------- | :------------------------------------------ | :------------------------------------- |
+| `speckit.`  | Spec-kit lifecycle steps                    | `speckit.plan.prompt.md`               |
+| `codebase.` | Evidence-first codebase documentation flows | `codebase.01-repository-map.prompt.md` |
+| `enforce.`  | Instruction compliance enforcement          | `enforce.python.prompt.md`             |
+| `review.`   | Review and audit prompts                    | `review.speckit-code.prompt.md`        |
+| `util.`     | Operational utilities                       | `util.gh-pr-review.prompt.md`          |
 
 ## 🗺️ Roadmap
 
