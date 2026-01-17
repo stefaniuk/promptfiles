@@ -3,7 +3,7 @@ agent: agent
 description: Document key runtime flows with diagrams (trigger → orchestration → data lineage), evidence-first
 ---
 
-**Mandatory preparation:** read [codebase overview](../instructions/include/codebase-overview.include.md) instructions in full and follow strictly its rules before executing any step below.
+**Mandatory preparation:** read [codebase overview](../instructions/includes/codebase-overview.include.md) instructions in full and follow strictly its rules before executing any step below.
 
 ## Goal
 
@@ -279,5 +279,5 @@ flowchart LR
 
 ---
 
-> **Version**: 1.3.0
-> **Last Amended**: 2026-01-10
+> **Version**: 1.3.1
+> **Last Amended**: 2026-01-17

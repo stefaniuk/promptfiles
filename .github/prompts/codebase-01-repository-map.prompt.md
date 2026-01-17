@@ -3,7 +3,7 @@ agent: agent
 description: Build a repository map to document architecture, technology stack, and repo-level conventions (evidence-first)
 ---
 
-**Mandatory preparation:** read [codebase overview](../instructions/include/codebase-overview.include.md) instructions in full and follow strictly its rules before executing any step below.
+**Mandatory preparation:** read [codebase overview](../instructions/includes/codebase-overview.include.md) instructions in full and follow strictly its rules before executing any step below.
 
 ## Goal
 
@@ -188,5 +188,5 @@ Use the following snippet inside `repository-map.md`:
 
 ---
 
-> **Version**: 1.4.0
-> **Last Amended**: 2026-01-10
+> **Version**: 1.4.1
+> **Last Amended**: 2026-01-17

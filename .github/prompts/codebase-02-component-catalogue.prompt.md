@@ -3,7 +3,7 @@ agent: agent
 description: Create component-level summaries (responsibilities, interfaces, data, and extension points)
 ---
 
-**Mandatory preparation:** read [codebase overview](../instructions/include/codebase-overview.include.md) instructions in full and follow strictly its rules before executing any step below.
+**Mandatory preparation:** read [codebase overview](../instructions/includes/codebase-overview.include.md) instructions in full and follow strictly its rules before executing any step below.
 
 ## Goal
 
@@ -269,5 +269,5 @@ Update: [codebase overview](../../docs/codebase-overview/README.md) with a **Com
 
 ---
 
-> **Version**: 1.3.0
-> **Last Amended**: 2026-01-10
+> **Version**: 1.3.1
+> **Last Amended**: 2026-01-17

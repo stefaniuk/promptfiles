@@ -123,7 +123,7 @@ Provide repository-standard targets so an engineer can operate the repo quickly:
 
 - [MK-UX-007] Public targets must document required variables (mandatory/optional) in the help description.
 - [MK-UX-008] Public targets must not rely on interactive prompts in CI paths; provide non-interactive defaults and flags.
-- [MK-UX-009] Treat every `make` target as a CLI surface that follows the shared [CLI contract](./include/cli-contract-baseline.include.md): keep targets thin, delegate real work to scripts, honour exit-code/stream rules, and refactor when behaviour drifts from the underlying tooling.
+- [MK-UX-009] Treat every `make` target as a CLI surface that follows the shared [CLI contract](./includes/cli-contract-baseline.include.md): keep targets thin, delegate real work to scripts, honour exit-code/stream rules, and refactor when behaviour drifts from the underlying tooling.
 
 ---
 
@@ -233,8 +233,8 @@ Per operating principles ([MK-OP-002], [MK-OP-005]) **and** [constitution.md §7
    - [MK-QG-002] `make test`
 
 2. If `make` targets do not exist, discover and run the project's equivalent commands.
-   - [MK-QG-003] Follow the shared [quality gates baseline](./include/quality-gates-baseline.include.md) for iteration and warning handling rules.
-   - [MK-QG-004] Follow the shared [quality gates baseline](./include/quality-gates-baseline.include.md) for command selection and equivalents.
+   - [MK-QG-003] Follow the shared [quality gates baseline](./includes/quality-gates-baseline.include.md) for iteration and warning handling rules.
+   - [MK-QG-004] Follow the shared [quality gates baseline](./includes/quality-gates-baseline.include.md) for command selection and equivalents.
 
 ---
 
@@ -244,7 +244,7 @@ This section defines expectations when AI assistants modify Makefiles or build s
 
 ### 10.1 Scope and intent
 
-- [MK-AI-001] Follow the shared [AI change baseline](./include/ai-assisted-change-baseline.include.md) for scope, quality, and governance.
+- [MK-AI-001] Follow the shared [AI change baseline](./includes/ai-assisted-change-baseline.include.md) for scope, quality, and governance.
 
 ### 10.2 New target checklist
 

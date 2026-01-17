@@ -61,7 +61,7 @@ These principles extend [constitution.md §3](../../.specify/memory/constitution
 
 The system must be **fully developable and testable locally**, even when it integrates with external services as part of a larger system.
 
-Follow the shared [local-first developer experience baseline](./include/local-first-dev-baseline.include.md) for common expectations, plus the language-specific requirements below.
+Follow the shared [local-first developer experience baseline](./includes/local-first-dev-baseline.include.md) for common expectations, plus the language-specific requirements below.
 
 ### 2.1 Single-command workflow (must exist)
 
@@ -152,8 +152,8 @@ Per [constitution.md §7.8](../../.specify/memory/constitution.md#78-mandatory-l
    - [PY-QG-003] `make test`
 
 2. If `make` targets do not exist, discover and run the project's equivalent commands (for example `uv run ruff check .`, `uv run ruff format .`, `uv run mypy .`, `uv run pytest`, `python -m pytest`, or framework-specific test runners).
-   - [PY-QG-004] Follow the shared [quality gates baseline](./include/quality-gates-baseline.include.md) for iteration and warning handling rules.
-   - [PY-QG-005] Follow the shared [quality gates baseline](./include/quality-gates-baseline.include.md) for command selection and equivalents.
+   - [PY-QG-004] Follow the shared [quality gates baseline](./includes/quality-gates-baseline.include.md) for iteration and warning handling rules.
+   - [PY-QG-005] Follow the shared [quality gates baseline](./includes/quality-gates-baseline.include.md) for command selection and equivalents.
 
 ---
 
@@ -172,8 +172,8 @@ Python projects have contracts, even when they are "just code"; treat every boun
   - [PY-CTR-001d] exit codes
   - [PY-CTR-001e] stdout/stderr behaviour
   - [PY-CTR-001f] output formats
-- [PY-CTR-001g] CLI entrypoints must remain thin adapters per the shared [CLI contract](./include/cli-contract-baseline.include.md#5-wrappers-and-shared-libraries): parse + validate inputs, delegate to shared library code, and forward exit codes; move any business logic into reusable modules.
-- [PY-CTR-001h] When CLIs target managed/cloud runtimes (for example AWS Lambda), follow the [CLI contract cloud guidance](./include/cli-contract-baseline.include.md#6-cloud-and-serverless-workloads): flush streams explicitly and keep diagnostics CloudWatch/Stackdriver-friendly.
+- [PY-CTR-001g] CLI entrypoints must remain thin adapters per the shared [CLI contract](./includes/cli-contract-baseline.include.md#5-wrappers-and-shared-libraries): parse + validate inputs, delegate to shared library code, and forward exit codes; move any business logic into reusable modules.
+- [PY-CTR-001h] When CLIs target managed/cloud runtimes (for example AWS Lambda), follow the [CLI contract cloud guidance](./includes/cli-contract-baseline.include.md#6-cloud-and-serverless-workloads): flush streams explicitly and keep diagnostics CloudWatch/Stackdriver-friendly.
 - [PY-CTR-002] Backwards-incompatible changes must be **intentional, documented, and reviewable**.
 
 #### Help, discoverability, and documentation
@@ -246,14 +246,14 @@ Python projects have contracts, even when they are "just code"; treat every boun
 
 #### Exit codes (must be consistent)
 
-- [PY-BEH-004] Exit codes must follow the shared [CLI contract](./include/cli-contract-baseline.include.md#1-exit-codes-non-negotiable) (`0` success, `1` general failure, `2` usage error) unless an ADR approves a deviation.
+- [PY-BEH-004] Exit codes must follow the shared [CLI contract](./includes/cli-contract-baseline.include.md#1-exit-codes-non-negotiable) (`0` success, `1` general failure, `2` usage error) unless an ADR approves a deviation.
 - [PY-BEH-005] Never signal failure only via text; exit codes must reflect outcomes.
 - [PY-BEH-006] When no specific code is reserved, default to `1` for operational failures per the CLI contract and document any additional codes.
 - [PY-BEH-007] If automation depends on specific failure modes, define and test those exit codes, referencing the CLI contract for documentation expectations.
 
 #### Stdout vs stderr (non-negotiable)
 
-- [PY-BEH-008] Follow the [CLI contract stream semantics](./include/cli-contract-baseline.include.md#2-stdout-vs-stderr-stream-semantics): keep primary outputs on `stdout`, diagnostics on `stderr`.
+- [PY-BEH-008] Follow the [CLI contract stream semantics](./includes/cli-contract-baseline.include.md#2-stdout-vs-stderr-stream-semantics): keep primary outputs on `stdout`, diagnostics on `stderr`.
 - [PY-BEH-009] Diagnostics (progress, warnings, debug, human-readable errors) must never pollute `stdout`.
 - [PY-BEH-010] The tool must behave correctly when stdout is piped or redirected; treat `stderr` as the only channel for diagnostics.
 - [PY-BEH-010a] Flush `stdout`/`stderr` explicitly before exiting short-lived serverless handlers so managed platforms do not drop trailing diagnostics.
@@ -533,7 +533,7 @@ For CLIs:
 - [PY-OBS-012] Structured logging (JSON) should be available when useful:
   - [PY-OBS-012a] `--log-format json` (or equivalent)
   - [PY-OBS-012b] `--log-level` (INFO/WARNING/ERROR/DEBUG)
-- [PY-OBS-013] When emitting structured output, include the CLI invocation fields defined in the [Structured Logging Baseline](./include/observability-logging-baseline.include.md#2-required-fields-clis) and never log secrets, tokens, credentials, or raw personal data.
+- [PY-OBS-013] When emitting structured output, include the CLI invocation fields defined in the [Structured Logging Baseline](./includes/observability-logging-baseline.include.md#2-required-fields-clis) and never log secrets, tokens, credentials, or raw personal data.
 - [PY-OBS-014] Prefer event-style logs with stable names:
   - [PY-OBS-014a] `command.start`, `command.end`, `step.start`, `step.end`, `dependency.call`, `dependency.error`
 
@@ -541,16 +541,16 @@ For APIs (mandatory structured logging):
 
 Logs must be structured (prefer JSON), queryable, and consistent.
 
-- [PY-OBS-015] Service/API logs must include the required fields defined in the [Structured Logging Baseline](./include/observability-logging-baseline.include.md#1-required-fields-services-apis); do not fork or trim that list locally.
+- [PY-OBS-015] Service/API logs must include the required fields defined in the [Structured Logging Baseline](./includes/observability-logging-baseline.include.md#1-required-fields-services-apis); do not fork or trim that list locally.
 - [PY-OBS-016] HTTP metadata (method, path template, status code) and timing/outcome fields from the baseline are mandatory for every request log entry.
-- [PY-OBS-017] Apply the baseline secrecy rules ([section 3](./include/observability-logging-baseline.include.md#3-sensitive-data--secrecy-rules)): never log secrets, credentials, or raw personal data; mask or truncate payloads when logging is explicitly required.
-- [PY-OBS-018] Use the baseline event taxonomy ([section 4](./include/observability-logging-baseline.include.md#4-event-naming--taxonomy)) so request/dependency events stay searchable across repos.
+- [PY-OBS-017] Apply the baseline secrecy rules ([section 3](./includes/observability-logging-baseline.include.md#3-sensitive-data--secrecy-rules)): never log secrets, credentials, or raw personal data; mask or truncate payloads when logging is explicitly required.
+- [PY-OBS-018] Use the baseline event taxonomy ([section 4](./includes/observability-logging-baseline.include.md#4-event-naming--taxonomy)) so request/dependency events stay searchable across repos.
 - [PY-OBS-019] Prefer high-signal logs only:
   - [PY-OBS-019a] start/end of request (one each)
   - [PY-OBS-019b] key domain decision points (not every line)
   - [PY-OBS-019c] boundary calls (DB, AWS, HTTP)
   - [PY-OBS-019d] errors (once, with structured context)
-  - [PY-OBS-019e] When `DEBUG`/diagnostic logging is enabled, emit a single function/method entry log for every call path, capturing the operation name and a sanitised summary of arguments per the [Structured Logging Baseline §5](./include/observability-logging-baseline.include.md#5-diagnostics--sampling); never include sensitive data.
+  - [PY-OBS-019e] When `DEBUG`/diagnostic logging is enabled, emit a single function/method entry log for every call path, capturing the operation name and a sanitised summary of arguments per the [Structured Logging Baseline §5](./includes/observability-logging-baseline.include.md#5-diagnostics--sampling); never include sensitive data.
 
 Log level policy:
 
@@ -1061,7 +1061,7 @@ These apply when the API is deployed on AWS Lambda (even when using a framework 
 
 Per [constitution.md §3.5](../../.specify/memory/constitution.md#35-ai-assisted-development-discipline--change-governance), when you create or modify code:
 
-- [PY-AI-001] Follow the shared [AI change baseline](./include/ai-assisted-change-baseline.include.md) for scope, quality, and governance.
+- [PY-AI-001] Follow the shared [AI change baseline](./includes/ai-assisted-change-baseline.include.md) for scope, quality, and governance.
 - [PY-AI-002] Update documentation/contracts only when required by the specification.
 
 ---
@@ -1110,5 +1110,5 @@ These patterns cause recurring issues in Python codebases. Avoid them unless an 
 
 ---
 
-> **Version**: 1.6.1
+> **Version**: 1.6.2
 > **Last Amended**: 2026-01-17

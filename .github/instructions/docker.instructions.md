@@ -608,8 +608,8 @@ Per [constitution.md §7.8](../../.specify/memory/constitution.md#78-mandatory-l
 
 ### 12.2 Iteration requirement
 
-- [DF-QG-004] Follow the shared [quality gates baseline](./include/quality-gates-baseline.include.md) for iteration and warning handling rules.
-- [DF-QG-005] Follow the shared [quality gates baseline](./include/quality-gates-baseline.include.md) for command selection and equivalents.
+- [DF-QG-004] Follow the shared [quality gates baseline](./includes/quality-gates-baseline.include.md) for iteration and warning handling rules.
+- [DF-QG-005] Follow the shared [quality gates baseline](./includes/quality-gates-baseline.include.md) for command selection and equivalents.
 
 ---
 
@@ -656,7 +656,7 @@ These patterns cause recurring issues in Dockerfiles. Avoid them unless an ADR d
 
 Per [constitution.md §3.5](../../.specify/memory/constitution.md#35-ai-assisted-development-discipline--change-governance), when you create or modify Dockerfiles:
 
-- [DF-AI-001] Follow the shared [AI change baseline](./include/ai-assisted-change-baseline.include.md) for scope, quality, and governance.
+- [DF-AI-001] Follow the shared [AI change baseline](./includes/ai-assisted-change-baseline.include.md) for scope, quality, and governance.
 - [DF-AI-002] Use the established patterns: instruction order, `set -ex`, build dependencies, cleanup.
 - [DF-AI-003] Run `make docker-lint` and iterate until clean.
 
@@ -668,5 +668,5 @@ Use the template at [templates/Dockerfile.template](./templates/Dockerfile.templ
 
 ---
 
-> **Version**: 1.1.0
+> **Version**: 1.1.1
 > **Last Amended**: 2026-01-17

@@ -71,7 +71,8 @@ make lint && make test
 .github/
 ├── agents/           # Copilot agent definitions
 ├── instructions/     # Coding standards by language/framework
-│   └── include/      # Shared instruction fragments
+│   ├── includes/     # Shared instruction fragments
+│   └── templates/    # Instruction templates
 ├── prompts/          # Task-specific prompts
 ├── skills/           # Bundled capabilities with assets
 └── copilot-instructions.md  # Global Copilot instructions

@@ -18,7 +18,7 @@ They are **non-negotiable** unless an exception is explicitly documented (with r
 
 **Cross-references.** For general TypeScript engineering standards (typing, error handling, code organisation), see [typescript.instructions.md](./typescript.instructions.md). This file focuses exclusively on Playwright-specific testing patterns.
 
-**Shared baseline.** For language-agnostic Playwright guidance, see [playwright-baseline.include.md](./include/playwright-baseline.include.md).
+**Shared baseline.** For language-agnostic Playwright guidance, see [playwright-baseline.include.md](./includes/playwright-baseline.include.md).
 
 **Identifier scheme.** Every normative rule carries a unique tag in the form `[PW-TS-<prefix>-NNN]`, where the prefix maps to the containing section (for example `QR` for Quick Reference, `LOC` for Locators, `AST` for Assertions, `STR` for Structure). Use these identifiers when referencing, planning, or validating requirements.
 
@@ -165,7 +165,7 @@ For test suites with more than ~10 tests or significant UI complexity, use the P
 
 E2E tests are prone to flakiness. Apply these rules to improve reliability.
 
-- [PW-TS-STB-001] Follow the shared [Playwright baseline](./include/playwright-baseline.include.md) for isolation, data hygiene, retries, and timeout discipline.
+- [PW-TS-STB-001] Follow the shared [Playwright baseline](./includes/playwright-baseline.include.md) for isolation, data hygiene, retries, and timeout discipline.
 - [PW-TS-STB-002] Use Playwright's auto-waiting; never use `page.waitForTimeout()` except for debugging.
 - [PW-TS-STB-003] Prefer `page.waitForLoadState('networkidle')` sparingly and only when necessary; auto-wait handles most cases.
 - [PW-TS-STB-004] Annotate persistently flaky tests with `test.fixme()` or `test.skip()` and fix or remove them promptly.
@@ -176,7 +176,7 @@ E2E tests are prone to flakiness. Apply these rules to improve reliability.
 
 These patterns cause recurring issues in Playwright TypeScript tests. Avoid them unless an ADR documents a justified exception.
 
-- [PW-TS-ANT-006] Follow the shared [Playwright baseline](./include/playwright-baseline.include.md) for common anti-patterns (assertions, shared state, URLs, and CI artefacts).
+- [PW-TS-ANT-006] Follow the shared [Playwright baseline](./includes/playwright-baseline.include.md) for common anti-patterns (assertions, shared state, URLs, and CI artefacts).
 - [PW-TS-ANT-001] **`page.waitForTimeout()` instead of auto-wait** — Playwright waits automatically; explicit waits cause flakiness and slow tests.
 - [PW-TS-ANT-002] **Missing `await` on assertions** — causes silent failures; always `await expect(...)`.
 - [PW-TS-ANT-003] **Hardcoded timeouts to fix flakiness** — masks underlying issues; fix the root cause instead.
@@ -187,5 +187,5 @@ These patterns cause recurring issues in Playwright TypeScript tests. Avoid them
 
 ---
 
-> **Version**: 1.1.0
+> **Version**: 1.1.1
 > **Last Amended**: 2026-01-17

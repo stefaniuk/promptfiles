@@ -3,7 +3,7 @@ agent: agent
 description: Produce AWS infrastructure diagram from Terraform (evidence-first, consistent with C4 container naming)
 ---
 
-**Mandatory preparation:** read [codebase overview](../instructions/include/codebase-overview.include.md) instructions in full and follow strictly its rules before executing any step below.
+**Mandatory preparation:** read [codebase overview](../instructions/includes/codebase-overview.include.md) instructions in full and follow strictly its rules before executing any step below.
 
 ## Goal
 
@@ -162,5 +162,5 @@ Example evidence snippet:
 
 ---
 
-> **Version**: 1.1.0
-> **Last Amended**: 2026-01-10
+> **Version**: 1.1.1
+> **Last Amended**: 2026-01-17

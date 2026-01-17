@@ -3,7 +3,7 @@ agent: agent
 description: Produce C4 model diagrams (Context, Container, Component) in Structurizr DSL (evidence-first, consistent naming)
 ---
 
-**Mandatory preparation:** read [codebase overview](../instructions/include/codebase-overview.include.md) instructions in full and follow strictly its rules before executing any step below.
+**Mandatory preparation:** read [codebase overview](../instructions/includes/codebase-overview.include.md) instructions in full and follow strictly its rules before executing any step below.
 
 ## Goal
 
@@ -286,5 +286,5 @@ workspace "System - Components" "Component diagram for one container." {
 
 ---
 
-> **Version**: 1.1.0
-> **Last Amended**: 2026-01-10
+> **Version**: 1.1.1
+> **Last Amended**: 2026-01-17

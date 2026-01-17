@@ -66,7 +66,7 @@ Determinism notes (how to avoid accidental drift):
 
 Terraform changes must be **fully developable, reviewable, and testable locally**, even when the target environment is controlled via CI/CD.
 
-Follow the shared [local-first developer experience baseline](./include/local-first-dev-baseline.include.md) for common expectations, plus the Terraform-specific requirements below.
+Follow the shared [local-first developer experience baseline](./includes/local-first-dev-baseline.include.md) for common expectations, plus the Terraform-specific requirements below.
 
 ### 2.1 Single-command workflow (must exist)
 
@@ -123,8 +123,8 @@ Per [constitution.md §7.8](../../.specify/memory/constitution.md#78-mandatory-l
    - [TF-QG-005] `make lint`
    - [TF-QG-006] `make test`
 
-   - [TF-QG-007] Follow the shared [quality gates baseline](./include/quality-gates-baseline.include.md) for iteration and warning handling rules.
-   - [TF-QG-008] Follow the shared [quality gates baseline](./include/quality-gates-baseline.include.md) for command selection and equivalents.
+   - [TF-QG-007] Follow the shared [quality gates baseline](./includes/quality-gates-baseline.include.md) for iteration and warning handling rules.
+   - [TF-QG-008] Follow the shared [quality gates baseline](./includes/quality-gates-baseline.include.md) for command selection and equivalents.
 
 ---
 
@@ -516,7 +516,7 @@ Logging must be intentional, queryable, and safe.
 **Operational rules:**
 
 - [TF-OBS-020] Prefer structured logs (JSON) for application logs; avoid free-text-only logs.
-  - [TF-OBS-020a] Application logs emitted by Lambda functions, ECS containers, and similar compute must follow the [Structured Logging Baseline](./include/observability-logging-baseline.include.md) field requirements — this is an infrastructure concern because log retention, parsing, and alerting depend on consistent schemas.
+  - [TF-OBS-020a] Application logs emitted by Lambda functions, ECS containers, and similar compute must follow the [Structured Logging Baseline](./includes/observability-logging-baseline.include.md) field requirements — this is an infrastructure concern because log retention, parsing, and alerting depend on consistent schemas.
 - [TF-OBS-021] Ensure logs include correlation identifiers consistently (request id / trace id / account id / region).
 - [TF-OBS-022] Use CloudWatch Logs Insights-friendly fields and stable event names.
 
@@ -758,7 +758,7 @@ Per [constitution.md §3.6](../../.specify/memory/constitution.md#36-design-for-
 
 Per [constitution.md §3.5](../../.specify/memory/constitution.md#35-ai-assisted-development-discipline--change-governance), when you create or modify Terraform:
 
-- [TF-AI-001] Follow the shared [AI change baseline](./include/ai-assisted-change-baseline.include.md) for scope, quality, and governance.
+- [TF-AI-001] Follow the shared [AI change baseline](./includes/ai-assisted-change-baseline.include.md) for scope, quality, and governance.
 - [TF-AI-002] Preserve determinism and environment isolation.
 - [TF-AI-003] Always produce and review a plan (and keep it for the PR where possible).
 
@@ -786,5 +786,5 @@ These patterns cause recurring issues in Terraform codebases. Avoid them unless 
 
 ---
 
-> **Version**: 1.5.0
+> **Version**: 1.5.1
 > **Last Amended**: 2026-01-17

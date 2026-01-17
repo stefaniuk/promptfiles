@@ -8,7 +8,7 @@ description: Enforce repository-wide compliance with typescript.instructions.md
 - Read the [constitution](../../.specify/memory/constitution.md) for non-negotiable rules, if you have not done already.
 - Read the [TypeScript instructions](../instructions/typescript.instructions.md).
 - Reference identifiers (for example `[TS-QR-001]`) as you must assess compliance against each of them across the codebase and remediate any deviations.
-- Read the [codebase overview instructions](../instructions/include/codebase-overview.include.md) and adopt the approach for gathering supporting evidence.
+- Read the [codebase overview instructions](../instructions/includes/codebase-overview.include.md) and adopt the approach for gathering supporting evidence.
 
 ## User Input
 
@@ -102,5 +102,5 @@ Context for prioritization: $ARGUMENTS
 
 ---
 
-> **Version**: 1.1.1
-> **Last Amended**: 2026-01-11
+> **Version**: 1.1.2
+> **Last Amended**: 2026-01-17

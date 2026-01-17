@@ -132,17 +132,17 @@ This section exists so humans and AI assistants can reliably apply the most impo
 
 ## 5. CLI behaviour ⌨️
 
-For Rust CLIs, follow the [CLI Contract](./include/cli-contract-baseline.include.md) for exit codes and stream semantics.
+For Rust CLIs, follow the [CLI Contract](./includes/cli-contract-baseline.include.md) for exit codes and stream semantics.
 
 ### 5.1 Exit codes
 
-- [RS-CLI-001] Exit codes must follow the shared [CLI contract](./include/cli-contract-baseline.include.md#1-exit-codes-non-negotiable): `0` success, `1` general failure, `2` usage error.
+- [RS-CLI-001] Exit codes must follow the shared [CLI contract](./includes/cli-contract-baseline.include.md#1-exit-codes-non-negotiable): `0` success, `1` general failure, `2` usage error.
 - [RS-CLI-002] Use `std::process::ExitCode` or return an exit code from `main` rather than calling `std::process::exit()` mid-execution.
 - [RS-CLI-003] Map `clap` parse errors to exit code `2`; map runtime errors to exit code `1`.
 
 ### 5.2 Stream semantics
 
-- [RS-CLI-004] Follow the [CLI contract stream semantics](./include/cli-contract-baseline.include.md#2-stdout-vs-stderr-stream-semantics): primary output on `stdout`, diagnostics on `stderr`.
+- [RS-CLI-004] Follow the [CLI contract stream semantics](./includes/cli-contract-baseline.include.md#2-stdout-vs-stderr-stream-semantics): primary output on `stdout`, diagnostics on `stderr`.
 - [RS-CLI-005] Never interleave progress/debug output onto `stdout`; use `eprintln!` or `tracing` for diagnostics.
 - [RS-CLI-006] When providing `--json` or structured output, ensure `stdout` contains only the machine-readable payload.
 
@@ -150,7 +150,7 @@ For Rust CLIs, follow the [CLI Contract](./include/cli-contract-baseline.include
 
 - [RS-CLI-007] Provide `--help`, `--version`, and `--verbose` (or `--quiet`) switches via `clap` derive macros.
 - [RS-CLI-008] Offer `--dry-run` for commands that mutate resources.
-- [RS-CLI-009] Keep CLI entrypoints thin per [CLI-WRP-001](./include/cli-contract-baseline.include.md#5-wrappers-and-shared-libraries): parse args, call library functions, return exit code.
+- [RS-CLI-009] Keep CLI entrypoints thin per [CLI-WRP-001](./includes/cli-contract-baseline.include.md#5-wrappers-and-shared-libraries): parse args, call library functions, return exit code.
 
 ---
 
@@ -199,7 +199,7 @@ For Rust CLIs, follow the [CLI Contract](./include/cli-contract-baseline.include
 
 ## 9. Observability 🔭
 
-For Rust services and CLIs that produce structured logs, follow the [Structured Logging Baseline](./include/observability-logging-baseline.include.md).
+For Rust services and CLIs that produce structured logs, follow the [Structured Logging Baseline](./includes/observability-logging-baseline.include.md).
 
 ### 9.1 Tooling
 
@@ -209,18 +209,18 @@ For Rust services and CLIs that produce structured logs, follow the [Structured 
 
 ### 9.2 Required fields
 
-- [RS-OBS-004] Service/API logs must include the required fields from [§1 of the baseline](./include/observability-logging-baseline.include.md#1-required-fields-services-apis-async-workers): `service`, `version`, `environment`, `request_id`, `operation`, `duration_ms`, and `error_code` (on failure).
-- [RS-OBS-005] CLI logs must include the required fields from [§2 of the baseline](./include/observability-logging-baseline.include.md#2-required-fields-clis): `command`, `args` (sanitised), `exit_code`, `duration_ms`.
+- [RS-OBS-004] Service/API logs must include the required fields from [§1 of the baseline](./includes/observability-logging-baseline.include.md#1-required-fields-services-apis-async-workers): `service`, `version`, `environment`, `request_id`, `operation`, `duration_ms`, and `error_code` (on failure).
+- [RS-OBS-005] CLI logs must include the required fields from [§2 of the baseline](./includes/observability-logging-baseline.include.md#2-required-fields-clis): `command`, `args` (sanitised), `exit_code`, `duration_ms`.
 
 ### 9.3 Secrecy and safety
 
-- [RS-OBS-006] Apply the secrecy rules from [§3 of the baseline](./include/observability-logging-baseline.include.md#3-sensitive-data--secrecy-rules): never log secrets, tokens, or raw personal data.
+- [RS-OBS-006] Apply the secrecy rules from [§3 of the baseline](./includes/observability-logging-baseline.include.md#3-sensitive-data--secrecy-rules): never log secrets, tokens, or raw personal data.
 - [RS-OBS-007] Use `tracing`'s `skip` or `skip_all` in `#[instrument]` to exclude sensitive fields from spans.
 - [RS-OBS-008] When logging payloads, truncate large bodies and mark with `truncated=true`.
 
 ### 9.4 Event taxonomy
 
-- [RS-OBS-009] Use the event taxonomy from [§4 of the baseline](./include/observability-logging-baseline.include.md#4-event-naming--taxonomy): stable names like `request.start`, `request.end`, `dependency.call`, `dependency.error`.
+- [RS-OBS-009] Use the event taxonomy from [§4 of the baseline](./includes/observability-logging-baseline.include.md#4-event-naming--taxonomy): stable names like `request.start`, `request.end`, `dependency.call`, `dependency.error`.
 - [RS-OBS-010] Emit both start and end spans/events around expensive boundaries (HTTP calls, DB queries, filesystem IO).
 
 ### 9.5 Diagnostics
@@ -280,10 +280,10 @@ Before shipping Rust code, verify:
 - [RS-CHK-008] No `unwrap()` in library code; justified only in binaries
 - [RS-CHK-009] No anti-patterns from §12 are present
 - [RS-CHK-010] Code passes `cargo fmt`, `cargo clippy`, `cargo test`, `cargo doc`
-- [RS-CHK-011] Structured logs follow the [Observability Logging Baseline](./include/observability-logging-baseline.include.md)
-- [RS-CHK-012] CLI binaries follow the [CLI Contract](./include/cli-contract-baseline.include.md) for exit codes and streams
+- [RS-CHK-011] Structured logs follow the [Observability Logging Baseline](./includes/observability-logging-baseline.include.md)
+- [RS-CHK-012] CLI binaries follow the [CLI Contract](./includes/cli-contract-baseline.include.md) for exit codes and streams
 
 ---
 
-> **Version**: 1.3.1
+> **Version**: 1.3.2
 > **Last Amended**: 2026-01-17

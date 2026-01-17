@@ -9,9 +9,19 @@ include scripts/init.mk
 format: # Auto-format code @Quality
 	# No formatting required for this repository
 
-lint: # Run linter to check code style and errors @Quality
+lint-file-format: # Check file formats @Quality
 	check=all ./scripts/githooks/check-file-format.sh
+
+lint-markdown-format: # Check markdown formatting @Quality
 	check=all ./scripts/githooks/check-markdown-format.sh
+
+lint-markdown-links: # Check markdown links @Quality
+	lychee --config lychee.toml "**/*.md"
+
+lint: # Run linter to check code style and errors @Quality
+	$(MAKE) lint-file-format
+	$(MAKE) lint-markdown-format
+# $(MAKE) lint-markdown-links
 
 test: # Run all tests @Testing
 	# No tests required for this repository
@@ -38,7 +48,7 @@ count-tokens: # Count LLM tokens for key instruction packs; optional: args=[file
 			.github/instructions/python.instructions.md \
 			.github/instructions/typescript.instructions.md \
 			.github/instructions/terraform.instructions.md \
-			.github/instructions/include \
+			.github/instructions/includes \
 		)
 
 clean:: # Remove project-specific generated files (main) @Operations

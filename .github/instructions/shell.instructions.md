@@ -462,8 +462,8 @@ Per [constitution.md §7.8](../../.specify/memory/constitution.md#78-mandatory-l
 
 ### 10.2 Iteration requirement
 
-- [SH-QG-004] Follow the shared [quality gates baseline](./include/quality-gates-baseline.include.md) for iteration and warning handling rules.
-- [SH-QG-005] Follow the shared [quality gates baseline](./include/quality-gates-baseline.include.md) for command selection and equivalents.
+- [SH-QG-004] Follow the shared [quality gates baseline](./includes/quality-gates-baseline.include.md) for iteration and warning handling rules.
+- [SH-QG-005] Follow the shared [quality gates baseline](./includes/quality-gates-baseline.include.md) for command selection and equivalents.
 
 ---
 
@@ -772,7 +772,7 @@ These patterns cause recurring issues in shell scripts. Avoid them unless an ADR
 
 Per [constitution.md §3.5](../../.specify/memory/constitution.md#35-ai-assisted-development-discipline--change-governance), when you create or modify shell scripts:
 
-- [SH-AI-001] Follow the shared [AI change baseline](./include/ai-assisted-change-baseline.include.md) for scope, quality, and governance.
+- [SH-AI-001] Follow the shared [AI change baseline](./includes/ai-assisted-change-baseline.include.md) for scope, quality, and governance.
 - [SH-AI-002] Use the established patterns: header structure, `main()` entry point, kebab-case functions.
 - [SH-AI-003] Run ShellCheck and iterate until clean.
 

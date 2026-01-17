@@ -15,7 +15,7 @@ set -euo pipefail
 #
 # Copies:
 #   - Agent files (.github/agents)
-#   - Instruction files (.github/instructions and include)
+#   - Instruction files (.github/instructions, includes and templates subdirectories)
 #   - Prompt files (.github/prompts)
 #   - Skills files (.github/skills, recursively)
 #   - copilot-instructions.md
@@ -155,10 +155,16 @@ function copy-instructions() {
   # Copy top-level instruction files
   find "${INSTRUCTIONS_DIR}" -maxdepth 1 -name "*.md" -type f -exec cp {} "${dest_instructions}/" \;
 
-  # Copy include directory if it exists
-  if [[ -d "${INSTRUCTIONS_DIR}/include" ]]; then
-    mkdir -p "${dest_instructions}/include"
-    find "${INSTRUCTIONS_DIR}/include" -name "*.md" -type f -exec cp {} "${dest_instructions}/include/" \;
+  # Copy includes directory if it exists
+  if [[ -d "${INSTRUCTIONS_DIR}/includes" ]]; then
+    mkdir -p "${dest_instructions}/includes"
+    cp -R "${INSTRUCTIONS_DIR}/includes/." "${dest_instructions}/includes/"
+  fi
+
+  # Copy templates directory if it exists
+  if [[ -d "${INSTRUCTIONS_DIR}/templates" ]]; then
+    mkdir -p "${dest_instructions}/templates"
+    cp -R "${INSTRUCTIONS_DIR}/templates/." "${dest_instructions}/templates/"
   fi
 }
 

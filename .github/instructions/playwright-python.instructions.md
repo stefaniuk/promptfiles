@@ -17,7 +17,7 @@ They are **non-negotiable** unless an exception is explicitly documented (with r
 
 **Cross-references.** For general Python engineering standards (typing, error handling, code organisation), see [python.instructions.md](./python.instructions.md). This file focuses exclusively on Playwright-specific testing patterns.
 
-**Shared baseline.** For language-agnostic Playwright guidance, see [playwright-baseline.include.md](./include/playwright-baseline.include.md).
+**Shared baseline.** For language-agnostic Playwright guidance, see [playwright-baseline.include.md](./includes/playwright-baseline.include.md).
 
 **Identifier scheme.** Every normative rule carries a unique tag in the form `[PW-PY-<prefix>-NNN]`, where the prefix maps to the containing section (for example `QR` for Quick Reference, `LOC` for Locators, `AST` for Assertions, `STR` for Structure). Use these identifiers when referencing, planning, or validating requirements.
 
@@ -149,7 +149,7 @@ For test suites with more than ~10 tests or significant UI complexity, use the P
 
 E2E tests are prone to flakiness. Apply these rules to improve reliability.
 
-- [PW-PY-STB-001] Follow the shared [Playwright baseline](./include/playwright-baseline.include.md) for isolation, data hygiene, retries, and timeout discipline.
+- [PW-PY-STB-001] Follow the shared [Playwright baseline](./includes/playwright-baseline.include.md) for isolation, data hygiene, retries, and timeout discipline.
 - [PW-PY-STB-002] Use Playwright's auto-waiting; never use `time.sleep()` or `page.wait_for_timeout()` except for debugging.
 - [PW-PY-STB-003] Prefer `wait_for_load_state("networkidle")` sparingly and only when necessary; auto-wait handles most cases.
 - [PW-PY-STB-004] Quarantine persistently flaky tests (move to a `@pytest.mark.flaky` marker) and fix or remove them promptly.
@@ -160,7 +160,7 @@ E2E tests are prone to flakiness. Apply these rules to improve reliability.
 
 These patterns cause recurring issues in Playwright Python tests. Avoid them unless an ADR documents a justified exception.
 
-- [PW-PY-ANT-006] Follow the shared [Playwright baseline](./include/playwright-baseline.include.md) for common anti-patterns (assertions, shared state, URLs, and CI artefacts).
+- [PW-PY-ANT-006] Follow the shared [Playwright baseline](./includes/playwright-baseline.include.md) for common anti-patterns (assertions, shared state, URLs, and CI artefacts).
 - [PW-PY-ANT-001] **`time.sleep()` instead of auto-wait** — Playwright waits automatically; explicit sleeps cause flakiness and slow tests.
 - [PW-PY-ANT-002] **`assert` instead of `expect`** — loses auto-retry; use Playwright's `expect` API for UI assertions.
 - [PW-PY-ANT-003] **Hardcoded timeouts to fix flakiness** — masks underlying issues; fix the root cause instead.
@@ -171,5 +171,5 @@ These patterns cause recurring issues in Playwright Python tests. Avoid them unl
 
 ---
 
-> **Version**: 1.1.0
+> **Version**: 1.1.1
 > **Last Amended**: 2026-01-17
