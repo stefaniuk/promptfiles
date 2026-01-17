@@ -126,10 +126,10 @@ If any item cannot be supported by code/config, record:
 
 Add evidence bullets for each of the above categories, for example:
 
-- Evidence: [/path/to/migrations](/path/to/migrations) - {table/entity}
-- Evidence: [/path/to/producer](/path/to/producer#L10-L40) - {event name/topic}
-- Evidence: [/path/to/consumer](/path/to/consumer#L50-L120) - {handler/topic}
-- Evidence: [/path/to/schema](/path/to/schema) - {schema name/version}
+- Evidence: `/path/to/migrations` - {table/entity}
+- Evidence: `/path/to/producer#L10-L40` - {event name/topic}
+- Evidence: `/path/to/consumer#L50-L120` - {handler/topic}
+- Evidence: `/path/to/schema` - {schema name/version}
 
 #### 2F. Cross-cutting concerns (component-specific, no duplication)
 
