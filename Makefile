@@ -16,6 +16,9 @@ lint: # Run linter to check code style and errors @Quality
 test: # Run all tests @Testing
 	# No tests required for this repository
 
+clone-rt: # Clone the repository template into .github/skills/repository-template @Operations
+	.github/skills/repository-template/scripts/git-clone-repository-template.sh
+
 apply: # Copy prompt files assets to a destination repository; mandatory: dest=[path] @Operations
 	if [ -z "$(dest)" ]; then
 		echo "Error: dest argument is required. Usage: make apply dest=/path/to/destination"
