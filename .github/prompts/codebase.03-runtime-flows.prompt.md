@@ -7,7 +7,7 @@ description: Document key runtime flows with diagrams (trigger → orchestration
 
 ## Goal
 
-Create (or update): [runtime flows](../../docs/codebase-overview/runtime-flow-*.md)
+Create (or update): runtime flows `../../docs/codebase-overview/runtime-flow-*.md`
 
 Also ensure they are linked from: [codebase overview](../../docs/codebase-overview/README.md) output
 

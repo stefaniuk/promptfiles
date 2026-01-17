@@ -7,11 +7,11 @@ description: Produce C4 model diagrams (Context, Container, Component) in Struct
 
 ## Goal
 
-Create (or update) Structurizr DSL files under `docs/codebase-overview/c4/`:
+Create (or update) Structurizr DSL files under `docs/codebase-overview/`:
 
-- `docs/codebase-overview/c4/01-context.dsl`
-- `docs/codebase-overview/c4/02-container.dsl`
-- `docs/codebase-overview/c4/03-component-*.dsl` (one per container/context as needed)
+- `docs/codebase-overview/c4-01-context.dsl`
+- `docs/codebase-overview/c4-02-container.dsl`
+- `docs/codebase-overview/c4-03-component-*.dsl` (one per container/context as needed)
 
 Also ensure they are linked from: [codebase overview](../../docs/codebase-overview/README.md) output
 
@@ -71,7 +71,7 @@ Record any gaps as **Unknown from code – {suggested action}** and avoid guessi
 
 ### 2) Create Context diagram (Structurizr DSL)
 
-Create/update: `docs/codebase-overview/c4/01-context.dsl`
+Create/update: `docs/codebase-overview/c4-01-context.dsl`
 
 Include:
 
@@ -91,7 +91,7 @@ Rules:
 
 ### 3) Create Container diagram (Structurizr DSL)
 
-Create/update: `docs/codebase-overview/c4/02-container.dsl`
+Create/update: `docs/codebase-overview/c4-02-container.dsl`
 
 Include containers for each deployable unit:
 
@@ -124,7 +124,7 @@ Create component diagrams for containers where it adds value:
 
 For each chosen container, create/update:
 
-- `docs/codebase-overview/c4/03-component-{container-name}.dsl`
+- `docs/codebase-overview/c4-03-component-{container-name}.dsl`
 
 Include:
 
@@ -171,9 +171,9 @@ Example comment:
 
 Update: [codebase overview](../../docs/codebase-overview/README.md) with a **C4 Diagrams (Structurizr DSL)** section linking to:
 
-- `c4/01-context.dsl`
-- `c4/02-container.dsl`
-- `c4/03-component-*.dsl`
+- `c4-01-context.dsl`
+- `c4-02-container.dsl`
+- `c4-03-component-*.dsl`
 
 Also include brief "How to view" notes (repo-local, no external claims), for example:
 

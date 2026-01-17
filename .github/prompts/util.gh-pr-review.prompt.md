@@ -1,15 +1,17 @@
 ---
-description: Pull request review using codebase overview context
+description: Generate pull request review using codebase overview context
 ---
 
 **Mandatory preparation:**
 
 - Read [codebase overview](../instructions/includes/codebase-overview-baseline.include.md) in full and follow strictly its rules before executing any step below.
-- Read the following instructions fully for each technology/language and use them to support the review:
-  - [Python instructions](../instructions/python.instructions.md)
-  - [TypeScript instructions](../instructions/typescript.instructions.md)
-  - [Terraform instructions](../instructions/terraform.instructions.md)
-  - [Makefile instructions](../instructions/makefile.instructions.md)
+- Read the technology-specific instructions for each language touched in this PR and use them to support the review. Common ones:
+  - [Makefile](../instructions/makefile.instructions.md)
+  - [Shell](../instructions/shell.instructions.md)
+  - [Docker](../instructions/docker.instructions.md)
+  - [Python](../instructions/python.instructions.md)
+  - [TypeScript](../instructions/typescript.instructions.md)
+  - [Terraform](../instructions/terraform.instructions.md)
 
 ## Goal
 
@@ -28,32 +30,46 @@ Where evidence cannot be found, record **Unknown from code – {suggested action
 
 ### A. Load design overview context (read before reviewing code)
 
-1. Read the repository documentation under `docs/codebase-overview/`:
+1. Read the repository documentation that exists under `docs/codebase-overview/`:
    - `README.md`
    - `repository-map.md`
-   - `loc-report.txt` (if present)
+   - `loc-report.txt`
    - `component-*.md`
    - `runtime-flow-*.md`
-   - `domain-*.md` (if present)
-   - `c4/*.dsl` (if present)
+   - `domain-*.md`
+   - `c4-*.dsl`
+   - `*-infrastructure.*`
 2. Note which components, flows, bounded contexts, and interfaces are relevant to the change set.
 
 ### B. Establish an accurate diff against `main`
 
-1. Ensure `main` is available locally (fetch if needed).
-2. Produce a diff summary:
-   - `git diff --stat main...HEAD`
-   - `git diff --name-status main...HEAD`
-3. Capture the full diff for review:
-   - `git diff main...HEAD`
-4. Identify the change category (one or more):
+Run the labelled batch below **once** from the repository root so each command prints a `>>> <command>` header followed by its output. This keeps every datum tied to the command that produced it and avoids duplicate executions.
+
+```bash
+if ! git show-ref --verify --quiet refs/heads/main; then
+  printf '\n>>> %s\n' "git fetch origin main:main"
+  git fetch origin main:main
+fi
+for cmd in \
+  "git diff --stat main...HEAD" \
+  "git diff main...HEAD" \
+  "git status -sb" \
+  "git rev-parse --abbrev-ref HEAD"; do
+    printf '\n>>> %s\n' "$cmd"
+    eval "$cmd"
+done
+```
+
+1. Use `git diff --stat` for the overview and `git diff main...HEAD` for full context.
+2. Capture branch/working-tree details from `git status -sb` and `git rev-parse --abbrev-ref HEAD`.
+3. Identify the change category (one or more):
    - Bug fix
    - New feature
    - Refactor
    - Dependency/tooling change
    - Build/CI change
    - Documentation only
-5. Identify impacted areas:
+4. Identify impacted areas:
    - Entry points / routes / handlers / consumers / schedulers
    - Data stores / schemas / migrations
    - External integrations
@@ -66,12 +82,12 @@ If the diff cannot be produced, record **Unknown from code – run git diff agai
 ### C. Detect prior reviews and new commits (incremental review)
 
 1. Define the review output file path for today:
-   - `docs/prompt-reports/pr-review-YYYY-MM-DD.md` (use today's date)
+   - `docs/prompt-reports/pr-review-YYYYMMDD.md` (use today's date)
 2. If the file already exists:
    - Read it fully.
    - Treat it as the previous review baseline for this branch.
    - Identify which previous findings may already be addressed and which remain open.
-   - Detect whether there are additional changes since that review by re-running the diff against `main` and comparing it to the files/areas previously discussed.
+   - Detect whether there are additional changes since that review by comparing the captured diff output to the files/areas previously discussed.
    - Focus the new review on:
      - Newly changed files/behaviour
      - Previously raised issues that are still present
@@ -184,11 +200,11 @@ Use the following checklist and report findings with evidence links and file pat
 
 Write all review output to:
 
-- `docs/prompt-reports/pr-review-YYYY-MM-DD.md` (use today's date)
+- `docs/prompt-reports/pr-review-YYYYMMDD.md` (use today's date)
 
 If the file exists, append a new section:
 
-- `## Review update – YYYY-MM-DD – HH:MM`
+- `## Review update – YYYY-MM-DD – hh:mm:ss`
 
 and include:
 
@@ -243,5 +259,5 @@ Use this snippet for each significant finding:
 
 ---
 
-> **Version**: 1.3.4
-> **Last Amended**: 2026-01-17
+> **Version**: 1.3.7
+> **Last Amended**: 2025-01-17

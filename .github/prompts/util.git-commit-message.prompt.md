@@ -35,7 +35,6 @@ for cmd in \
   "git diff main...HEAD" \
   "git status -sb" \
   "git rev-parse --abbrev-ref HEAD" \
-  "git status -sb" \
   "git log -3 --oneline"; do
     printf '\n>>> %s\n' "$cmd"
     eval "$cmd"

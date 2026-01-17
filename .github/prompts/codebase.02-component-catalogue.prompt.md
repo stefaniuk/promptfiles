@@ -7,7 +7,7 @@ description: Create component-level summaries (responsibilities, interfaces, dat
 
 ## Goal
 
-Create (or update): [component catalogue](../../docs/codebase-overview/component-*.md)
+Create (or update): component catalogue `../../docs/codebase-overview/component-*.md`
 
 Also ensure they are linked from:[codebase overview](../../docs/codebase-overview/README.md) output
 
