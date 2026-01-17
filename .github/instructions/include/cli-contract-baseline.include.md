@@ -1,6 +1,6 @@
-# CLI Contract ⌨️
+# CLI Contract Baseline ⌨️
 
-This shared note defines the **canonical CLI contract** for exit codes and standard stream semantics across languages. Individual instruction sets must link here instead of duplicating the guidance.
+Use this shared baseline for the **canonical CLI contract** (exit codes and stream semantics) across languages. Individual instruction sets must link here instead of duplicating the guidance.
 
 **Identifier scheme.** Every normative rule carries a unique tag in the form `[CLI-<prefix>-NNN]`, where the prefix maps to the containing section (for example `EXIT` for Exit Codes, `STR` for Streams, `DOC` for Documentation, `ERG` for Ergonomics, `WRP` for Wrappers, `CLD` for Cloud). Use these identifiers when referencing, planning, or validating requirements.
 
@@ -58,5 +58,5 @@ This shared note defines the **canonical CLI contract** for exit codes and stand
 
 ---
 
-> **Version**: 1.2.0
-> **Last Amended**: 2026-01-11
+> **Version**: 1.2.1
+> **Last Amended**: 2026-01-17

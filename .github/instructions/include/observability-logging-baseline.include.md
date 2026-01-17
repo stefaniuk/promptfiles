@@ -1,6 +1,6 @@
 # Observability Logging Baseline 🔭
 
-Use this shared checklist for any runtime that produces structured logs (services, CLIs, workers, UI backends). Instruction sets must link here so log expectations change in **one** place.
+Use this shared baseline checklist for any runtime that produces structured logs (services, CLIs, workers, UI backends). Instruction sets must link here so log expectations change in **one** place.
 
 **Identifier scheme.** Every normative rule carries a unique tag in the form `[OBS-<prefix>-NNN]`, where the prefix maps to the containing section (for example `SVC` for Services, `CLI` for CLIs, `SEC` for Secrecy, `TAX` for Taxonomy, `DIA` for Diagnostics, `TST` for Testing). Use these identifiers when referencing, planning, or validating requirements.
 
@@ -67,5 +67,5 @@ For CLI invocations (especially long-running ones):
 
 ---
 
-> **Version**: 1.2.0
-> **Last Amended**: 2026-01-11
+> **Version**: 1.2.1
+> **Last Amended**: 2026-01-17

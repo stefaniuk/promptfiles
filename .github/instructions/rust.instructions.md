@@ -132,17 +132,17 @@ This section exists so humans and AI assistants can reliably apply the most impo
 
 ## 5. CLI behaviour ⌨️
 
-For Rust CLIs, follow the [CLI Contract](./include/cli-contract.include.md) for exit codes and stream semantics.
+For Rust CLIs, follow the [CLI Contract](./include/cli-contract-baseline.include.md) for exit codes and stream semantics.
 
 ### 5.1 Exit codes
 
-- [RS-CLI-001] Exit codes must follow the shared [CLI contract](./include/cli-contract.include.md#1-exit-codes-non-negotiable): `0` success, `1` general failure, `2` usage error.
+- [RS-CLI-001] Exit codes must follow the shared [CLI contract](./include/cli-contract-baseline.include.md#1-exit-codes-non-negotiable): `0` success, `1` general failure, `2` usage error.
 - [RS-CLI-002] Use `std::process::ExitCode` or return an exit code from `main` rather than calling `std::process::exit()` mid-execution.
 - [RS-CLI-003] Map `clap` parse errors to exit code `2`; map runtime errors to exit code `1`.
 
 ### 5.2 Stream semantics
 
-- [RS-CLI-004] Follow the [CLI contract stream semantics](./include/cli-contract.include.md#2-stdout-vs-stderr-stream-semantics): primary output on `stdout`, diagnostics on `stderr`.
+- [RS-CLI-004] Follow the [CLI contract stream semantics](./include/cli-contract-baseline.include.md#2-stdout-vs-stderr-stream-semantics): primary output on `stdout`, diagnostics on `stderr`.
 - [RS-CLI-005] Never interleave progress/debug output onto `stdout`; use `eprintln!` or `tracing` for diagnostics.
 - [RS-CLI-006] When providing `--json` or structured output, ensure `stdout` contains only the machine-readable payload.
 
@@ -150,7 +150,7 @@ For Rust CLIs, follow the [CLI Contract](./include/cli-contract.include.md) for 
 
 - [RS-CLI-007] Provide `--help`, `--version`, and `--verbose` (or `--quiet`) switches via `clap` derive macros.
 - [RS-CLI-008] Offer `--dry-run` for commands that mutate resources.
-- [RS-CLI-009] Keep CLI entrypoints thin per [CLI-WRP-001](./include/cli-contract.include.md#5-wrappers-and-shared-libraries): parse args, call library functions, return exit code.
+- [RS-CLI-009] Keep CLI entrypoints thin per [CLI-WRP-001](./include/cli-contract-baseline.include.md#5-wrappers-and-shared-libraries): parse args, call library functions, return exit code.
 
 ---
 
@@ -281,9 +281,9 @@ Before shipping Rust code, verify:
 - [RS-CHK-009] No anti-patterns from §12 are present
 - [RS-CHK-010] Code passes `cargo fmt`, `cargo clippy`, `cargo test`, `cargo doc`
 - [RS-CHK-011] Structured logs follow the [Observability Logging Baseline](./include/observability-logging-baseline.include.md)
-- [RS-CHK-012] CLI binaries follow the [CLI Contract](./include/cli-contract.include.md) for exit codes and streams
+- [RS-CHK-012] CLI binaries follow the [CLI Contract](./include/cli-contract-baseline.include.md) for exit codes and streams
 
 ---
 
-> **Version**: 1.3.0
-> **Last Amended**: 2026-01-11
+> **Version**: 1.3.1
+> **Last Amended**: 2026-01-17

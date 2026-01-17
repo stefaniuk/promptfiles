@@ -172,8 +172,8 @@ Python projects have contracts, even when they are "just code"; treat every boun
   - [PY-CTR-001d] exit codes
   - [PY-CTR-001e] stdout/stderr behaviour
   - [PY-CTR-001f] output formats
-- [PY-CTR-001g] CLI entrypoints must remain thin adapters per the shared [CLI contract](./include/cli-contract.include.md#5-wrappers-and-shared-libraries): parse + validate inputs, delegate to shared library code, and forward exit codes; move any business logic into reusable modules.
-- [PY-CTR-001h] When CLIs target managed/cloud runtimes (for example AWS Lambda), follow the [CLI contract cloud guidance](./include/cli-contract.include.md#6-cloud-and-serverless-workloads): flush streams explicitly and keep diagnostics CloudWatch/Stackdriver-friendly.
+- [PY-CTR-001g] CLI entrypoints must remain thin adapters per the shared [CLI contract](./include/cli-contract-baseline.include.md#5-wrappers-and-shared-libraries): parse + validate inputs, delegate to shared library code, and forward exit codes; move any business logic into reusable modules.
+- [PY-CTR-001h] When CLIs target managed/cloud runtimes (for example AWS Lambda), follow the [CLI contract cloud guidance](./include/cli-contract-baseline.include.md#6-cloud-and-serverless-workloads): flush streams explicitly and keep diagnostics CloudWatch/Stackdriver-friendly.
 - [PY-CTR-002] Backwards-incompatible changes must be **intentional, documented, and reviewable**.
 
 #### Help, discoverability, and documentation
@@ -246,14 +246,14 @@ Python projects have contracts, even when they are "just code"; treat every boun
 
 #### Exit codes (must be consistent)
 
-- [PY-BEH-004] Exit codes must follow the shared [CLI contract](./include/cli-contract.include.md#1-exit-codes-non-negotiable) (`0` success, `1` general failure, `2` usage error) unless an ADR approves a deviation.
+- [PY-BEH-004] Exit codes must follow the shared [CLI contract](./include/cli-contract-baseline.include.md#1-exit-codes-non-negotiable) (`0` success, `1` general failure, `2` usage error) unless an ADR approves a deviation.
 - [PY-BEH-005] Never signal failure only via text; exit codes must reflect outcomes.
 - [PY-BEH-006] When no specific code is reserved, default to `1` for operational failures per the CLI contract and document any additional codes.
 - [PY-BEH-007] If automation depends on specific failure modes, define and test those exit codes, referencing the CLI contract for documentation expectations.
 
 #### Stdout vs stderr (non-negotiable)
 
-- [PY-BEH-008] Follow the [CLI contract stream semantics](./include/cli-contract.include.md#2-stdout-vs-stderr-stream-semantics): keep primary outputs on `stdout`, diagnostics on `stderr`.
+- [PY-BEH-008] Follow the [CLI contract stream semantics](./include/cli-contract-baseline.include.md#2-stdout-vs-stderr-stream-semantics): keep primary outputs on `stdout`, diagnostics on `stderr`.
 - [PY-BEH-009] Diagnostics (progress, warnings, debug, human-readable errors) must never pollute `stdout`.
 - [PY-BEH-010] The tool must behave correctly when stdout is piped or redirected; treat `stderr` as the only channel for diagnostics.
 - [PY-BEH-010a] Flush `stdout`/`stderr` explicitly before exiting short-lived serverless handlers so managed platforms do not drop trailing diagnostics.
@@ -1110,5 +1110,5 @@ These patterns cause recurring issues in Python codebases. Avoid them unless an 
 
 ---
 
-> **Version**: 1.6.0
+> **Version**: 1.6.1
 > **Last Amended**: 2026-01-17

@@ -123,7 +123,7 @@ Provide repository-standard targets so an engineer can operate the repo quickly:
 
 - [MK-UX-007] Public targets must document required variables (mandatory/optional) in the help description.
 - [MK-UX-008] Public targets must not rely on interactive prompts in CI paths; provide non-interactive defaults and flags.
-- [MK-UX-009] Treat every `make` target as a CLI surface that follows the shared [CLI contract](./include/cli-contract.include.md): keep targets thin, delegate real work to scripts, honour exit-code/stream rules, and refactor when behaviour drifts from the underlying tooling.
+- [MK-UX-009] Treat every `make` target as a CLI surface that follows the shared [CLI contract](./include/cli-contract-baseline.include.md): keep targets thin, delegate real work to scripts, honour exit-code/stream rules, and refactor when behaviour drifts from the underlying tooling.
 
 ---
 
@@ -291,5 +291,5 @@ These patterns cause recurring issues in Makefiles and build scripts. Avoid them
 
 ---
 
-> **Version**: 1.4.0
+> **Version**: 1.4.1
 > **Last Amended**: 2026-01-17

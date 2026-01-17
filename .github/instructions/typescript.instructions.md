@@ -192,8 +192,8 @@ TypeScript projects have contracts, even when they are "just code"; treat every 
   - [TS-CTR-009d] exit codes
   - [TS-CTR-009e] stdout/stderr behaviour
   - [TS-CTR-009f] output formats
-- [TS-CTR-009g] CLI entrypoints must remain thin adapters per the shared [CLI contract](./include/cli-contract.include.md#5-wrappers-and-shared-libraries): parse + validate input, delegate to shared modules, and forward exit codes instead of duplicating business logic.
-- [TS-CTR-009h] When CLIs run inside managed runtimes (Lambda, Cloud Run, Functions), follow the [CLI contract cloud guidance](./include/cli-contract.include.md#6-cloud-and-serverless-workloads): keep stdout/stderr compact, avoid ANSI noise unless supported, and flush streams explicitly before exit.
+- [TS-CTR-009g] CLI entrypoints must remain thin adapters per the shared [CLI contract](./include/cli-contract-baseline.include.md#5-wrappers-and-shared-libraries): parse + validate input, delegate to shared modules, and forward exit codes instead of duplicating business logic.
+- [TS-CTR-009h] When CLIs run inside managed runtimes (Lambda, Cloud Run, Functions), follow the [CLI contract cloud guidance](./include/cli-contract-baseline.include.md#6-cloud-and-serverless-workloads): keep stdout/stderr compact, avoid ANSI noise unless supported, and flush streams explicitly before exit.
 - [TS-CTR-010] Backwards-incompatible changes must be **intentional, documented, and reviewable**.
 
 #### Help, discoverability, and documentation
@@ -360,14 +360,14 @@ TypeScript projects have contracts, even when they are "just code"; treat every 
 
 #### Exit codes (must be consistent)
 
-- [TS-BEH-012] Exit codes must follow the shared [CLI contract](./include/cli-contract.include.md#1-exit-codes-non-negotiable) (`0` success, `1` general failure, `2` usage error) unless an ADR records a justified deviation.
+- [TS-BEH-012] Exit codes must follow the shared [CLI contract](./include/cli-contract-baseline.include.md#1-exit-codes-non-negotiable) (`0` success, `1` general failure, `2` usage error) unless an ADR records a justified deviation.
 - [TS-BEH-013] Never signal failure only via text; exit codes must reflect outcomes.
 - [TS-BEH-014] When no specific mapping exists, default to `1` for operational failures per the CLI contract and document any reserved codes.
 - [TS-BEH-015] If automation depends on specific failure modes, define, document, and test those exit codes referencing the CLI contract expectations.
 
 #### Stdout vs stderr (non-negotiable)
 
-- [TS-BEH-016] Follow the [CLI contract stream semantics](./include/cli-contract.include.md#2-stdout-vs-stderr-stream-semantics): emit primary outputs on `stdout`, diagnostics on `stderr`.
+- [TS-BEH-016] Follow the [CLI contract stream semantics](./include/cli-contract-baseline.include.md#2-stdout-vs-stderr-stream-semantics): emit primary outputs on `stdout`, diagnostics on `stderr`.
 - [TS-BEH-017] Diagnostics (progress, warnings, debug, human-readable errors) must never contaminate `stdout`.
 - [TS-BEH-018] Commands must behave correctly when stdout is piped or redirected; no diagnostic leakage to `stdout`.
 - [TS-BEH-018a] Flush `stdout`/`stderr` explicitly in short-lived serverless environments so hosted runtimes do not truncate diagnostics.
@@ -1017,5 +1017,5 @@ This section defines a **framework-agnostic** baseline for building maintainable
 
 ---
 
-> **Version**: 1.5.0
+> **Version**: 1.5.1
 > **Last Amended**: 2026-01-17
