@@ -61,6 +61,8 @@ These principles extend [constitution.md §3](../../.specify/memory/constitution
 
 The system must be **fully developable and testable locally**, even when it integrates with external services as part of a larger system.
 
+Follow the shared [local-first developer experience baseline](./include/local-first-dev-baseline.include.md) for common expectations, plus the language-specific requirements below.
+
 ### 2.1 Single-command workflow (must exist)
 
 Provide repository-standard commands so an engineer can do the following quickly:
@@ -73,8 +75,6 @@ Provide repository-standard commands so an engineer can do the following quickly
 - [PY-LCL-006] Full suite: `make test-all` — includes integration/e2e tiers
 - [PY-LCL-007] Run CLI locally: `make run` — runs with safe defaults (**no cloud dependencies by default**)
 - [PY-LCL-008] Run API locally: `make up` / `make down` — starts/stops local dependency stack (if applicable)
-
-If `make` is not used, provide an equivalent task runner with the same intent and predictable names.
 
 ### 2.2 Reproducible toolchain (avoid "works on my machine")
 
@@ -101,8 +101,6 @@ Provide a `pre-commit` configuration that runs the same checks as CI in a fast, 
 - [PY-LCL-018] type checks (mypy); run at least on changed files — this is the primary safety net for AI-generated code
 - [PY-LCL-019] secret scanning (for example gitleaks)
 
-Hooks must be quick; heavy checks belong in CI and explicit local targets.
-
 ### 2.4 OCI images for parity and zero-setup (strongly recommended)
 
 Provide an OCI-based option so behaviour is consistent across laptops and CI:
@@ -113,8 +111,6 @@ Provide an OCI-based option so behaviour is consistent across laptops and CI:
   - [PY-LCL-020c] any required system packages
 - [PY-LCL-021] Provide one command to use it:
   - [PY-LCL-021a] `make docker-test` / `make docker-run` (or Dev Containers), etc.
-
-Rules:
 
 - [PY-LCL-022] OCI support must be **optional** (native dev still works), but it must be maintained.
 - [PY-LCL-023] Never bake secrets into images.
@@ -151,15 +147,13 @@ Define clear tiers with predictable markers/commands:
 Per [constitution.md §7.8](../../.specify/memory/constitution.md#78-mandatory-local-quality-gates), after making **any** change to implementation code or tests, you must run the repository's **canonical** quality gates:
 
 1. Prefer:
-
    - [PY-QG-001] `make lint`
    - [PY-QG-002] `make typecheck`
    - [PY-QG-003] `make test`
 
 2. If `make` targets do not exist, discover and run the project's equivalent commands (for example `uv run ruff check .`, `uv run ruff format .`, `uv run mypy .`, `uv run pytest`, `python -m pytest`, or framework-specific test runners).
-
-   - [PY-QG-004] You must continue iterating until all checks complete successfully with **no errors or warnings**. Do this automatically, without requiring an additional prompt.
-   - [PY-QG-005] Warnings must be treated as defects unless explicitly waived in an ADR (rationale + expiry).
+   - [PY-QG-004] Follow the shared [quality gates baseline](./include/quality-gates-baseline.include.md) for iteration and warning handling rules.
+   - [PY-QG-005] Follow the shared [quality gates baseline](./include/quality-gates-baseline.include.md) for command selection and equivalents.
 
 ---
 
@@ -1067,12 +1061,8 @@ These apply when the API is deployed on AWS Lambda (even when using a framework 
 
 Per [constitution.md §3.5](../../.specify/memory/constitution.md#35-ai-assisted-development-discipline--change-governance), when you create or modify code:
 
-- [PY-AI-001] Do not invent requirements or expand scope.
-- [PY-AI-002] Ensure behaviour matches the specification and is deterministic and testable.
-- [PY-AI-003] Keep changes minimal and aligned with the existing architecture.
-- [PY-AI-004] Update documentation/contracts only when required by the specification.
-- [PY-AI-005] Run the quality gates and keep iterating until clean.
-- [PY-AI-006] If you must deviate from these instructions, propose an ADR/decision record (rationale + expiry).
+- [PY-AI-001] Follow the shared [AI change baseline](./include/ai-assisted-change-baseline.include.md) for scope, quality, and governance.
+- [PY-AI-002] Update documentation/contracts only when required by the specification.
 
 ---
 
@@ -1120,5 +1110,5 @@ These patterns cause recurring issues in Python codebases. Avoid them unless an 
 
 ---
 
-> **Version**: 1.5.0
-> **Last Amended**: 2026-01-14
+> **Version**: 1.6.0
+> **Last Amended**: 2026-01-17

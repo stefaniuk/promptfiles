@@ -1,5 +1,5 @@
 ---
-applyTo: "**/*.{jsx,tsx,js,ts,css,scss}"
+applyTo: "**/*.{jsx,tsx,js,ts}"
 ---
 
 # ReactJS Engineering Instructions ⚛️
@@ -162,12 +162,11 @@ This section exists so humans and AI assistants can reliably apply the most impo
 
 ## 8. Accessibility ♿
 
-- [RJS-A11Y-001] Use **semantic HTML** first (`<button>`, `<nav>`, `<main>`); add ARIA only when native semantics are insufficient.
-- [RJS-A11Y-002] All interactive elements must be **keyboard accessible**: focusable, operable via Enter/Space, and have visible focus styles.
-- [RJS-A11Y-003] Images require `alt`; decorative images use `alt=""` and `role="presentation"`.
-- [RJS-A11Y-004] Colour contrast must meet **WCAG 2.2 AA** (4.5:1 for normal text, 3:1 for large text/UI).
-- [RJS-A11Y-005] Announce dynamic content changes to screen readers via `aria-live` regions or focus management.
-- [RJS-A11Y-006] Test with axe DevTools and keyboard-only navigation before shipping.
+Follow the TypeScript UI accessibility baseline in [typescript.instructions.md](./typescript.instructions.md) for comprehensive requirements.
+
+- [RJS-A11Y-001] Prefer native semantics over custom widgets; reach for ARIA only when required.
+- [RJS-A11Y-002] Ensure all interactive elements are keyboard accessible with visible focus states.
+- [RJS-A11Y-003] Validate accessibility with automated tooling (for example axe) and keyboard-only navigation.
 
 ---
 
@@ -222,5 +221,5 @@ Before shipping React code, verify:
 
 ---
 
-> **Version**: 1.1.0
-> **Last Amended**: 2026-01-11
+> **Version**: 1.2.0
+> **Last Amended**: 2026-01-17

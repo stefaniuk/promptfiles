@@ -1,0 +1,45 @@
+FROM image:version
+
+ARG APT_PROXY
+ARG APT_PROXY_SSL
+ENV TOOL_VERSION="1.0.0" \
+    TOOL_DOWNLOAD_URL="https://example.com/download"
+
+RUN set -ex; \
+    \
+    buildDependencies=" \
+        build-essential \
+        curl \
+    "; \
+    if [ -n "$APT_PROXY" ]; then \
+        echo "Acquire::http { Proxy \"http://${APT_PROXY}\"; };" > /etc/apt/apt.conf.d/00proxy; \
+    fi; \
+    if [ -n "$APT_PROXY_SSL" ]; then \
+        echo "Acquire::https { Proxy \"https://${APT_PROXY_SSL}\"; };" >> /etc/apt/apt.conf.d/00proxy; \
+    fi; \
+    apt-get --yes update; \
+    apt-get --yes install --no-install-recommends \
+        $buildDependencies \
+        runtime-package \
+    ; \
+    \
+    # Build steps here...
+    curl -L "$TOOL_DOWNLOAD_URL" -o /tmp/tool.tar.gz; \
+    tar -xf /tmp/tool.tar.gz -C /usr/local; \
+    \
+    # Cleanup
+    apt-get purge --yes --auto-remove $buildDependencies; \
+    rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/* /var/cache/apt/*; \
+    rm -f /etc/apt/apt.conf.d/00proxy
+
+COPY assets/ /app/
+
+RUN set -ex; \
+    addgroup --system appgroup; \
+    adduser --system --ingroup appgroup appuser; \
+    chown -R appuser:appgroup /app
+
+VOLUME [ "/app/data" ]
+EXPOSE 8080
+USER appuser
+CMD [ "/app/entrypoint.sh" ]

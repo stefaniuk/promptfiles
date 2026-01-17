@@ -65,6 +65,8 @@ These principles extend [constitution.md §3](../../.specify/memory/constitution
 
 The system must be **fully developable and testable locally**, even when it integrates with external services as part of a larger system.
 
+Follow the shared [local-first developer experience baseline](./include/local-first-dev-baseline.include.md) for common expectations, plus the language-specific requirements below.
+
 ### 2.1 Single-command workflow (must exist)
 
 Provide repository-standard commands so an engineer can do the following quickly:
@@ -76,8 +78,6 @@ Provide repository-standard commands so an engineer can do the following quickly
 - [TS-LCL-005] Test (fast lane): `make test` — must run quickly (aim: < 10 seconds for unit-only; provide another target for slower tests) and deterministically
 - [TS-LCL-006] Full suite: `make test-all` — includes integration/e2e tiers where applicable
 - [TS-LCL-007] Run (dev): `make run` — runs with safe defaults (**no cloud dependencies by default**)
-
-If `make` is not used, provide an equivalent task runner with the same intent and predictable names.
 
 ### 2.2 Reproducible toolchain (avoid "works on my machine")
 
@@ -102,8 +102,6 @@ Provide a `pre-commit`, Husky, or equivalent configuration that runs the same ch
 - [TS-LCL-016] tests (fast lane)
 - [TS-LCL-017] secret scanning (for example gitleaks)
 
-Hooks must be quick; heavy checks belong in CI and explicit local targets.
-
 ### 2.4 OCI images for parity and zero-setup (strongly recommended)
 
 Provide an OCI-based option so behaviour is consistent across laptops and CI:
@@ -114,8 +112,6 @@ Provide an OCI-based option so behaviour is consistent across laptops and CI:
   - [TS-LCL-018c] any required system packages
 - [TS-LCL-019] Provide one command to use it:
   - `make docker-test` / `make docker-run` (or Dev Containers), etc.
-
-Rules:
 
 - [TS-LCL-020] OCI support must be **optional** (native dev still works), but it must be maintained.
 - [TS-LCL-021] Never bake secrets into images.
@@ -152,17 +148,15 @@ Define clear tiers with predictable markers/commands:
 Per [constitution.md §7.8](../../.specify/memory/constitution.md#78-mandatory-local-quality-gates), after making **any** change to implementation code or tests, you must run the repository's **canonical** quality gates:
 
 1. Prefer:
-
    - [TS-QG-001] `make format`
    - [TS-QG-002] `make lint`
    - [TS-QG-003] `make typecheck`
    - [TS-QG-004] `make test`
 
 2. If `make` targets do not exist, discover and run the equivalent commands (for example `pnpm lint`, `pnpm -s typecheck`, `pnpm -s test`).
-
-   - [TS-QG-005] You must continue iterating until all checks complete successfully with **no errors or warnings**. Do this automatically, without requiring an additional prompt.
-   - [TS-QG-006] Warnings must be treated as defects unless explicitly waived in an ADR (rationale + expiry).
-   - [TS-QG-007] Use the repository-provided build, lint, typecheck, and test scripts/targets; avoid ad-hoc commands unless the specification demands it.
+   - [TS-QG-005] Follow the shared [quality gates baseline](./include/quality-gates-baseline.include.md) for iteration and warning handling rules.
+   - [TS-QG-006] Follow the shared [quality gates baseline](./include/quality-gates-baseline.include.md) for command selection and equivalents.
+   - [TS-QG-007] Follow the shared [quality gates baseline](./include/quality-gates-baseline.include.md) for repository-target usage.
 
 ---
 
@@ -822,12 +816,8 @@ Per [constitution.md §7](../../.specify/memory/constitution.md#7-code-quality-g
 
 Per [constitution.md §3.5](../../.specify/memory/constitution.md#35-ai-assisted-development-discipline--change-governance), when you create or modify code:
 
-- [TS-AI-001] Do not invent requirements or expand scope.
-- [TS-AI-002] Ensure behaviour matches the specification and is deterministic and testable.
-- [TS-AI-003] Keep changes minimal and aligned with the existing architecture.
-- [TS-AI-004] Update documentation/contracts only when required by the specification.
-- [TS-AI-005] Run the quality gates and keep iterating until clean.
-- [TS-AI-006] If you must deviate from these instructions, propose an ADR/decision record (rationale + expiry).
+- [TS-AI-001] Follow the shared [AI change baseline](./include/ai-assisted-change-baseline.include.md) for scope, quality, and governance.
+- [TS-AI-002] Update documentation/contracts only when required by the specification.
 
 ---
 
@@ -1027,5 +1017,5 @@ This section defines a **framework-agnostic** baseline for building maintainable
 
 ---
 
-> **Version**: 1.4.1
-> **Last Amended**: 2026-01-14
+> **Version**: 1.5.0
+> **Last Amended**: 2026-01-17

@@ -1,5 +1,5 @@
 ---
-applyTo: "**/*.{js,ts,tsx}"
+applyTo: "**/*.py"
 ---
 
 # Playwright Python Test Generation Instructions 🎭
@@ -16,6 +16,8 @@ They must remain applicable to:
 They are **non-negotiable** unless an exception is explicitly documented (with rationale and expiry) in an ADR/decision record.
 
 **Cross-references.** For general Python engineering standards (typing, error handling, code organisation), see [python.instructions.md](./python.instructions.md). This file focuses exclusively on Playwright-specific testing patterns.
+
+**Shared baseline.** For language-agnostic Playwright guidance, see [playwright-baseline.include.md](./include/playwright-baseline.include.md).
 
 **Identifier scheme.** Every normative rule carries a unique tag in the form `[PW-PY-<prefix>-NNN]`, where the prefix maps to the containing section (for example `QR` for Quick Reference, `LOC` for Locators, `AST` for Assertions, `STR` for Structure). Use these identifiers when referencing, planning, or validating requirements.
 
@@ -147,13 +149,10 @@ For test suites with more than ~10 tests or significant UI complexity, use the P
 
 E2E tests are prone to flakiness. Apply these rules to improve reliability.
 
-- [PW-PY-STB-001] Isolate tests completely — no shared mutable state, no ordering dependencies.
+- [PW-PY-STB-001] Follow the shared [Playwright baseline](./include/playwright-baseline.include.md) for isolation, data hygiene, retries, and timeout discipline.
 - [PW-PY-STB-002] Use Playwright's auto-waiting; never use `time.sleep()` or `page.wait_for_timeout()` except for debugging.
 - [PW-PY-STB-003] Prefer `wait_for_load_state("networkidle")` sparingly and only when necessary; auto-wait handles most cases.
-- [PW-PY-STB-004] Use retries at the CI level (`--retries 2`) as a last resort, not as a substitute for fixing flaky tests.
-- [PW-PY-STB-005] Quarantine persistently flaky tests (move to a `@pytest.mark.flaky` marker) and fix or remove them promptly.
-- [PW-PY-STB-006] Seed test data explicitly; do not rely on existing database state.
-- [PW-PY-STB-007] Use `expect` with custom timeouts only when the default (5s) is insufficient due to genuine latency, not to mask slowness.
+- [PW-PY-STB-004] Quarantine persistently flaky tests (move to a `@pytest.mark.flaky` marker) and fix or remove them promptly.
 
 ---
 
@@ -161,20 +160,16 @@ E2E tests are prone to flakiness. Apply these rules to improve reliability.
 
 These patterns cause recurring issues in Playwright Python tests. Avoid them unless an ADR documents a justified exception.
 
+- [PW-PY-ANT-006] Follow the shared [Playwright baseline](./include/playwright-baseline.include.md) for common anti-patterns (assertions, shared state, URLs, and CI artefacts).
 - [PW-PY-ANT-001] **`time.sleep()` instead of auto-wait** — Playwright waits automatically; explicit sleeps cause flakiness and slow tests.
 - [PW-PY-ANT-002] **`assert` instead of `expect`** — loses auto-retry; use Playwright's `expect` API for UI assertions.
 - [PW-PY-ANT-003] **Hardcoded timeouts to fix flakiness** — masks underlying issues; fix the root cause instead.
 - [PW-PY-ANT-004] **CSS/XPath when role-based locators exist** — brittle and less accessible; prefer `get_by_role`, `get_by_label`.
 - [PW-PY-ANT-005] **`force=True` click without justification** — hides real interactivity issues; document why it's necessary.
-- [PW-PY-ANT-006] **Tests without assertions** — false positives; every test must assert at least one outcome.
-- [PW-PY-ANT-007] **Shared mutable state between tests** — causes ordering dependencies and random failures; isolate tests completely.
 - [PW-PY-ANT-008] **Overly broad locators** — causes strict mode violations; be specific enough to match exactly one element.
-- [PW-PY-ANT-009] **Screenshot/video always on** — slows CI significantly; enable only on failure.
-- [PW-PY-ANT-010] **Hardcoded URLs in tests** — breaks across environments; use `base_url` configuration.
 - [PW-PY-ANT-011] **Catching exceptions to avoid test failure** — masks bugs; let tests fail and fix the underlying issue.
-- [PW-PY-ANT-012] **Giant test functions (>50 lines)** — hard to debug and maintain; split by scenario or use helpers.
 
 ---
 
-> **Version**: 2.0.0
-> **Last Amended**: 2026-01-11
+> **Version**: 1.1.0
+> **Last Amended**: 2026-01-17

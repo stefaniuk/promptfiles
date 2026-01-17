@@ -66,6 +66,8 @@ Determinism notes (how to avoid accidental drift):
 
 Terraform changes must be **fully developable, reviewable, and testable locally**, even when the target environment is controlled via CI/CD.
 
+Follow the shared [local-first developer experience baseline](./include/local-first-dev-baseline.include.md) for common expectations, plus the Terraform-specific requirements below.
+
 ### 2.1 Single-command workflow (must exist)
 
 Provide repository-standard commands so an engineer can do the following quickly:
@@ -76,8 +78,6 @@ Provide repository-standard commands so an engineer can do the following quickly
 - [TF-LCL-004] Plan: `make plan` (must run `terraform plan` against the correct environment inputs).
 - [TF-LCL-005] Lint/scan: `make lint` (must include linting and security scanning per §15).
 - [TF-LCL-006] Full local suite: `make test` / `make test-all` (where the repo adopts `terraform test` or module contract tests per §18).
-
-If `make` is not used, provide an equivalent task runner with the same intent and predictable names.
 
 ### 2.2 Reproducible toolchain (avoid "works on my machine")
 
@@ -99,8 +99,6 @@ Provide a `pre-commit` configuration that runs the same checks as CI in a fast, 
 - [TF-LCL-014] security scanning (fast lane; heavy scans belong in CI)
 - [TF-LCL-015] secret scanning (for example `gitleaks`)
 
-Hooks must be quick; heavy checks belong in CI and explicit local targets.
-
 ### 2.4 OCI images for parity and zero-setup (strongly recommended)
 
 Provide an OCI-based option so behaviour is consistent across laptops and CI. If the repo uses Dev Containers or OCI images:
@@ -116,19 +114,17 @@ Provide an OCI-based option so behaviour is consistent across laptops and CI. If
 Per [constitution.md §7.8](../../.specify/memory/constitution.md#78-mandatory-local-quality-gates), after making **any** Terraform change, run the repository's **canonical** quality gates:
 
 1. Prefer:
-
-    - [TF-QG-001] `terraform fmt -recursive`
-    - [TF-QG-002] `terraform validate`
-    - [TF-QG-003] `terraform plan` (against the correct environment inputs)
-    - [TF-QG-004] Lint and security scanning (see §15)
+   - [TF-QG-001] `terraform fmt -recursive`
+   - [TF-QG-002] `terraform validate`
+   - [TF-QG-003] `terraform plan` (against the correct environment inputs)
+   - [TF-QG-004] Lint and security scanning (see §15)
 
 2. If the repository provides `make` targets, prefer:
+   - [TF-QG-005] `make lint`
+   - [TF-QG-006] `make test`
 
-    - [TF-QG-005] `make lint`
-    - [TF-QG-006] `make test`
-
-    - [TF-QG-007] You must continue iterating until all checks complete successfully with **no errors or warnings**. Do this automatically, without requiring an additional prompt.
-    - [TF-QG-008] Warnings must be treated as defects unless explicitly waived in an ADR (rationale + expiry).
+   - [TF-QG-007] Follow the shared [quality gates baseline](./include/quality-gates-baseline.include.md) for iteration and warning handling rules.
+   - [TF-QG-008] Follow the shared [quality gates baseline](./include/quality-gates-baseline.include.md) for command selection and equivalents.
 
 ---
 
@@ -762,12 +758,9 @@ Per [constitution.md §3.6](../../.specify/memory/constitution.md#36-design-for-
 
 Per [constitution.md §3.5](../../.specify/memory/constitution.md#35-ai-assisted-development-discipline--change-governance), when you create or modify Terraform:
 
-- [TF-AI-001] Do not invent requirements or expand scope.
-- [TF-AI-002] Keep changes minimal and aligned with the current architecture.
-- [TF-AI-003] Preserve determinism and environment isolation.
-- [TF-AI-004] Always produce and review a plan (and keep it for the PR where possible).
-- [TF-AI-005] Ensure the quality gates pass and keep iterating until clean.
-- [TF-AI-006] If you must deviate, propose an ADR/decision record (rationale + expiry).
+- [TF-AI-001] Follow the shared [AI change baseline](./include/ai-assisted-change-baseline.include.md) for scope, quality, and governance.
+- [TF-AI-002] Preserve determinism and environment isolation.
+- [TF-AI-003] Always produce and review a plan (and keep it for the PR where possible).
 
 ---
 
@@ -793,5 +786,5 @@ These patterns cause recurring issues in Terraform codebases. Avoid them unless 
 
 ---
 
-> **Version**: 1.4.0
-> **Last Amended**: 2026-01-11
+> **Version**: 1.5.0
+> **Last Amended**: 2026-01-17

@@ -229,14 +229,12 @@ Provide repository-standard targets so an engineer can operate the repo quickly:
 Per operating principles ([MK-OP-002], [MK-OP-005]) **and** [constitution.md §7.8](../../.specify/memory/constitution.md#78-mandatory-local-quality-gates), after making **any** change to Makefiles, scripts, or build configuration, you must run the repository's **canonical** quality gates:
 
 1. Prefer:
-
    - [MK-QG-001] `make lint`
    - [MK-QG-002] `make test`
 
 2. If `make` targets do not exist, discover and run the project's equivalent commands.
-
-   - [MK-QG-003] You must continue iterating until all checks complete successfully with **no errors or warnings**. Do this automatically, without requiring an additional prompt.
-   - [MK-QG-004] Warnings must be treated as defects unless explicitly waived in an ADR (rationale + expiry).
+   - [MK-QG-003] Follow the shared [quality gates baseline](./include/quality-gates-baseline.include.md) for iteration and warning handling rules.
+   - [MK-QG-004] Follow the shared [quality gates baseline](./include/quality-gates-baseline.include.md) for command selection and equivalents.
 
 ---
 
@@ -246,9 +244,7 @@ This section defines expectations when AI assistants modify Makefiles or build s
 
 ### 10.1 Scope and intent
 
-- [MK-AI-001] Do not invent targets or workflows not needed by the repo.
-- [MK-AI-002] Keep changes minimal and aligned with existing conventions.
-- [MK-AI-003] Avoid inventing requirements, widening scope, or introducing behaviour not present in the specification.
+- [MK-AI-001] Follow the shared [AI change baseline](./include/ai-assisted-change-baseline.include.md) for scope, quality, and governance.
 
 ### 10.2 New target checklist
 
@@ -268,170 +264,11 @@ When modifying existing targets:
 - [MK-AI-010] Document any behavioural changes in commit messages or PR descriptions.
 - [MK-AI-011] Verify the change works in both local and CI contexts.
 
-### 10.4 Deviations
-
-- [MK-AI-012] If you must deviate from these instructions, propose an ADR/decision record (rationale + expiry).
-
 ---
 
-### 11. Makefile format (non-negotiable) 📐
+## 11. Makefile format (non-negotiable) 📐
 
-The following is the **default Makefile format**. Projects must adopt this naming convention, structure, and formatting as their baseline. Targets may be added, removed, or customised to suit project needs, but the overall layout and style must remain consistent.
-
-```makefile
-# ==============================================================================
-# Development workflow targets
-# ==============================================================================
-
-env: # Create a fresh virtual environment, removing any existing one @Development
-	# TODO: Delete any existing virtual environment and create a clean isolated environment
-
-deps: # Install production dependencies plus the dev extra, strictly from the lock file @Development
-	# TODO: Install production and development dependencies from the lock file
-
-deps-prod: # Install production (runtime) dependencies, strictly from the lock file @Development
-	# TODO: Install exact versions from the lock file to ensure reproducible builds
-
-deps-update: # Resolve and install all dependencies, allowing versions to be updated in the lock file @Development
-	# TODO: Resolve latest compatible versions, regenerate lock file, and install
-
-format: # Auto-format code @CodeQuality
-	# TODO: Apply consistent code style and formatting rules to all source files
-
-lint: # Run linter to check code style and errors @CodeQuality
-	# TODO: Analyse source files for style violations, potential bugs, and code smells
-
-typecheck: # Run static type checker @CodeQuality
-	# TODO: Run mypy, or equivalent to catch type errors before runtime
-
-test: # Run all tests @Testing
-	# TODO: Execute the test suite and generate coverage report
-	# Use `test-integration`, `test-contract`, `test-e2e` etc. for extended suites if applicable
-
-run: # Start the application locally @Operations
-	# TODO: Launch the application entrypoint for local development
-
-up: # Spin up local services @Operations
-	# TODO: Start containerised infrastructure such as databases, caches, and queues
-
-down: # Tear down local services @Operations
-	# TODO: Stop and remove local containers and associated resources
-
-clean:: # Remove all generated and temporary files (common) @Development
-	find . \( \
-		-name ".coverage" -o \
-		-name ".env" -o \
-		-name "*.log" -o \
-		-name "coverage.xml" \
-	\) -prune -exec rm -rf {} +
-
-config:: # Configure development environment (common) @Setup
-	# TODO: Set up git hooks, initialise environment variables, and configure local settings
-
-install:: # Install development tool (common) @Setup
-	# TODO: Install required CLI tools and language runtimes for local development
-
-# ==============================================================================
-# CI/CD GitHub actions/workflows targets
-# ==============================================================================
-
-dependencies: # Install production dependencies needed to build the project @Pipeline
-	# TODO: Install locked production dependencies required for the build step
-
-build: # Build the project artefact @Pipeline
-	# TODO: Compile source code and package distributable artefact
-
-publish: # Publish the project artefact @Pipeline
-	# TODO: Upload artefact to registry or package repository
-
-deploy: # Deploy the project artefact to the target environment @Pipeline
-	# TODO: Provision infrastructure and release artefact to target environment
-
-# ==============================================================================
-# Helper targets (do not edit)
-# ==============================================================================
-
-help: # Print help @Others
-	printf "\nUsage: \033[3m\033[93m[arg1=val1] [arg2=val2] \033[0m\033[0m\033[32mmake\033[0m\033[34m <command>\033[0m\n\n"
-	perl -e '$(HELP_SCRIPT)' $(MAKEFILE_LIST)
-
-list-variables: # List all the variables available to make @Others
-	$(foreach v, $(sort $(.VARIABLES)),
-		$(if $(filter-out default automatic, $(origin $v)),
-			$(if $(and $(patsubst %_PASSWORD,,$v), $(patsubst %_PASS,,$v), $(patsubst %_KEY,,$v), $(patsubst %_SECRET,,$v)),
-				$(info $v=$($v) ($(value $v)) [$(flavor $v),$(origin $v)]),
-				$(info $v=****** (******) [$(flavor $v),$(origin $v)])
-			)
-		)
-	)
-
-# ==============================================================================
-# Make configuration (do not edit)
-# ==============================================================================
-
-.DEFAULT_GOAL := help
-.EXPORT_ALL_VARIABLES:
-.NOTPARALLEL:
-.ONESHELL:
-.PHONY: * # Please do not change this line! The alternative usage of it introduces unnecessary complexity and is considered an anti-pattern.
-MAKEFLAGS := --no-print-director
-SHELL := /bin/bash
-ifeq (true, $(shell [[ "${VERBOSE}" =~ ^(true|yes|y|on|1|TRUE|YES|Y|ON)$$ ]] && echo true))
-	.SHELLFLAGS := -cex
-else
-	.SHELLFLAGS := -ce
-endif
-${VERBOSE}.SILENT:
-
-# This script parses all the make target descriptions and renders the help output.
-HELP_SCRIPT = \
-	\
-	use Text::Wrap; \
-	%help_info; \
-	my $$max_command_length = 0; \
-	my $$terminal_width = `tput cols` || 120; chomp($$terminal_width); \
-	\
-	while(<>){ \
-		next if /^_/; \
-		\
-		if (/^([\w-_]+)\s*:.*\#(.*?)(@(\w+))?\s*$$/) { \
-			my $$command = $$1; \
-			my $$description = $$2; \
-			$$description =~ s/@\w+//; \
-			my $$category_key = $$4 // 'Others'; \
-			(my $$category_name = $$category_key) =~ s/(?<=[a-z])([A-Z])/\ $$1/g; \
-			$$category_name = lc($$category_name); \
-			$$category_name =~ s/^(.)/\U$$1/; \
-			\
-			push @{$$help_info{$$category_name}}, [$$command, $$description]; \
-			$$max_command_length = (length($$command) > 37) ? 40 : $$max_command_length; \
-		} \
-	} \
-	\
-	my $$description_width = $$terminal_width - $$max_command_length - 4; \
-	$$Text::Wrap::columns = $$description_width; \
-	\
-	for my $$category (sort { $$a eq 'Others' ? 1 : $$b eq 'Others' ? -1 : $$a cmp $$b } keys %help_info) { \
-		print "\033[1m$$category\033[0m:\n\n"; \
-		for my $$item (sort { $$a->[0] cmp $$b->[0] } @{$$help_info{$$category}}) { \
-			my $$description = $$item->[1]; \
-			my @desc_lines = split("\n", wrap("", "", $$description)); \
-			my $$first_line_description = shift @desc_lines; \
-			\
-			$$first_line_description =~ s/(\w+)(\|\w+)?=/\033[3m\033[93m$$1$$2\033[0m=/g; \
-			\
-			my $$formatted_command = $$item->[0]; \
-			$$formatted_command = substr($$formatted_command, 0, 37) . "..." if length($$formatted_command) > 37; \
-			\
-			print sprintf("  \033[0m\033[34m%-$${max_command_length}s\033[0m%s %s\n", $$formatted_command, $$first_line_description); \
-			for my $$line (@desc_lines) { \
-				$$line =~ s/(\w+)(\|\w+)?=/\033[3m\033[93m$$1$$2\033[0m=/g; \
-				print sprintf(" %-$${max_command_length}s  %s\n", " ", $$line); \
-			} \
-			print "\n"; \
-		} \
-	}
-```
+The default Makefile format lives in [templates/Makefile.template](./templates/Makefile.template). Projects must adopt this naming convention, structure, and formatting as their baseline. Targets may be added, removed, or customised to suit project needs, but the overall layout and style must remain consistent.
 
 ---
 
@@ -454,5 +291,5 @@ These patterns cause recurring issues in Makefiles and build scripts. Avoid them
 
 ---
 
-> **Version**: 1.3.1
-> **Last Amended**: 2026-01-14
+> **Version**: 1.4.0
+> **Last Amended**: 2026-01-17

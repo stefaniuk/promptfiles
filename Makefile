@@ -34,6 +34,7 @@ count-tokens: # Count LLM tokens for key instruction packs; optional: args=[file
 			.specify/memory/constitution.md \
 			.github/instructions/makefile.instructions.md \
 			.github/instructions/shell.instructions.md \
+			.github/instructions/docker.instructions.md \
 			.github/instructions/python.instructions.md \
 			.github/instructions/typescript.instructions.md \
 			.github/instructions/terraform.instructions.md \

@@ -1,5 +1,5 @@
 ---
-applyTo: "**/Dockerfile"
+applyTo: "{**/Dockerfile,**/Dockerfile.*}"
 ---
 
 # Dockerfile Engineering Instructions (container image development) 🐳
@@ -27,7 +27,7 @@ They are **non-negotiable** unless an exception is explicitly documented (with r
 This section exists so humans and AI assistants can reliably apply the most important rules even when context is tight.
 
 - [DF-QR-001] **Pin base image versions**: never use `latest`; pin to specific version with digest where possible ([DF-FROM-001], [DF-FROM-002]).
-- [DF-QR-002] **Instruction order**: `FROM` → `ARG` → `ENV` → `RUN` (install) → `COPY` → `RUN` (configure) → `VOLUME` → `EXPOSE` → `USER` → `CMD`/`ENTRYPOINT` → Metadata ([DF-STR-001]).
+- [DF-QR-002] **Instruction order**: `FROM` → `ARG` → `ENV` → `RUN` (install) → `COPY` → `RUN` (configure) → `VOLUME` → `EXPOSE` → `WORKDIR` → `USER` → `CMD`/`ENTRYPOINT` → Metadata ([DF-STR-001]).
 - [DF-QR-003] **Multi-line RUN with `set -ex`**: start RUN blocks with `set -ex` or `set -ex;` for debugging and fail-fast behaviour ([DF-RUN-001], [DF-RUN-002]).
 - [DF-QR-004] **Build dependencies pattern**: define, install, use, then purge build dependencies in a single RUN layer ([DF-RUN-004]–[DF-RUN-006]).
 - [DF-QR-005] **Clean up in every RUN**: remove temp files, package manager caches, and build artefacts at the end of each RUN ([DF-RUN-007]).
@@ -608,8 +608,8 @@ Per [constitution.md §7.8](../../.specify/memory/constitution.md#78-mandatory-l
 
 ### 12.2 Iteration requirement
 
-- [DF-QG-004] You must continue iterating until all checks complete successfully with **no errors or warnings**. Do this automatically, without requiring an additional prompt.
-- [DF-QG-005] Warnings must be treated as defects unless explicitly waived in an ADR (rationale + expiry).
+- [DF-QG-004] Follow the shared [quality gates baseline](./include/quality-gates-baseline.include.md) for iteration and warning handling rules.
+- [DF-QG-005] Follow the shared [quality gates baseline](./include/quality-gates-baseline.include.md) for command selection and equivalents.
 
 ---
 
@@ -656,68 +656,17 @@ These patterns cause recurring issues in Dockerfiles. Avoid them unless an ADR d
 
 Per [constitution.md §3.5](../../.specify/memory/constitution.md#35-ai-assisted-development-discipline--change-governance), when you create or modify Dockerfiles:
 
-- [DF-AI-001] Do not invent requirements or expand scope.
-- [DF-AI-002] Ensure behaviour matches the specification and is deterministic and reproducible.
-- [DF-AI-003] Keep changes minimal and aligned with the existing Dockerfile conventions.
-- [DF-AI-004] Use the established patterns: instruction order, `set -ex`, build dependencies, cleanup.
-- [DF-AI-005] Run `make docker-lint` and iterate until clean.
-- [DF-AI-006] If you must deviate from these instructions, propose an ADR/decision record (rationale + expiry).
+- [DF-AI-001] Follow the shared [AI change baseline](./include/ai-assisted-change-baseline.include.md) for scope, quality, and governance.
+- [DF-AI-002] Use the established patterns: instruction order, `set -ex`, build dependencies, cleanup.
+- [DF-AI-003] Run `make docker-lint` and iterate until clean.
 
 ---
 
 ## 16. Dockerfile template 📝
 
-Use this template when creating new Dockerfiles:
-
-```dockerfile
-FROM image:version
-
-ARG APT_PROXY
-ARG APT_PROXY_SSL
-ENV TOOL_VERSION="1.0.0" \
-    TOOL_DOWNLOAD_URL="https://example.com/download"
-
-RUN set -ex; \
-    \
-    buildDependencies=" \
-        build-essential \
-        curl \
-    "; \
-    if [ -n "$APT_PROXY" ]; then \
-      echo "Acquire::http { Proxy \"http://${APT_PROXY}\"; };" > /etc/apt/apt.conf.d/00proxy; \
-    fi; \
-    if [ -n "$APT_PROXY_SSL" ]; then \
-      echo "Acquire::https { Proxy \"https://${APT_PROXY_SSL}\"; };" >> /etc/apt/apt.conf.d/00proxy; \
-    fi; \
-    apt-get --yes update; \
-    apt-get --yes install --no-install-recommends \
-        $buildDependencies \
-        runtime-package \
-    ; \
-    \
-    # Build steps here...
-    curl -L "$TOOL_DOWNLOAD_URL" -o /tmp/tool.tar.gz; \
-    tar -xf /tmp/tool.tar.gz -C /usr/local; \
-    \
-    # Cleanup
-    apt-get purge --yes --auto-remove $buildDependencies; \
-    rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/* /var/cache/apt/*; \
-    rm -f /etc/apt/apt.conf.d/00proxy
-
-COPY assets/ /app/
-
-RUN set -ex; \
-    addgroup --system appgroup; \
-    adduser --system --ingroup appgroup appuser; \
-    chown -R appuser:appgroup /app
-
-VOLUME [ "/app/data" ]
-EXPOSE 8080
-USER appuser
-CMD [ "/app/entrypoint.sh" ]
-```
+Use the template at [templates/Dockerfile.template](./templates/Dockerfile.template) when creating new Dockerfiles.
 
 ---
 
-> **Version**: 1.0.0
+> **Version**: 1.1.0
 > **Last Amended**: 2026-01-17

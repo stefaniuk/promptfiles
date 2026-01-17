@@ -1,5 +1,5 @@
 ---
-applyTo: "**/*.py"
+applyTo: "**/*.{ts,tsx}"
 ---
 
 # Playwright TypeScript Test Generation Instructions 🎭
@@ -17,6 +17,8 @@ They must remain applicable to:
 They are **non-negotiable** unless an exception is explicitly documented (with rationale and expiry) in an ADR/decision record.
 
 **Cross-references.** For general TypeScript engineering standards (typing, error handling, code organisation), see [typescript.instructions.md](./typescript.instructions.md). This file focuses exclusively on Playwright-specific testing patterns.
+
+**Shared baseline.** For language-agnostic Playwright guidance, see [playwright-baseline.include.md](./include/playwright-baseline.include.md).
 
 **Identifier scheme.** Every normative rule carries a unique tag in the form `[PW-TS-<prefix>-NNN]`, where the prefix maps to the containing section (for example `QR` for Quick Reference, `LOC` for Locators, `AST` for Assertions, `STR` for Structure). Use these identifiers when referencing, planning, or validating requirements.
 
@@ -163,13 +165,10 @@ For test suites with more than ~10 tests or significant UI complexity, use the P
 
 E2E tests are prone to flakiness. Apply these rules to improve reliability.
 
-- [PW-TS-STB-001] Isolate tests completely — no shared mutable state, no ordering dependencies.
+- [PW-TS-STB-001] Follow the shared [Playwright baseline](./include/playwright-baseline.include.md) for isolation, data hygiene, retries, and timeout discipline.
 - [PW-TS-STB-002] Use Playwright's auto-waiting; never use `page.waitForTimeout()` except for debugging.
 - [PW-TS-STB-003] Prefer `page.waitForLoadState('networkidle')` sparingly and only when necessary; auto-wait handles most cases.
-- [PW-TS-STB-004] Use retries in config (`retries: 2`) as a last resort, not as a substitute for fixing flaky tests.
-- [PW-TS-STB-005] Annotate persistently flaky tests with `test.fixme()` or `test.skip()` and fix or remove them promptly.
-- [PW-TS-STB-006] Seed test data explicitly; do not rely on existing database state.
-- [PW-TS-STB-007] Use `expect` with custom timeouts only when the default (5s) is insufficient due to genuine latency, not to mask slowness.
+- [PW-TS-STB-004] Annotate persistently flaky tests with `test.fixme()` or `test.skip()` and fix or remove them promptly.
 
 ---
 
@@ -177,20 +176,16 @@ E2E tests are prone to flakiness. Apply these rules to improve reliability.
 
 These patterns cause recurring issues in Playwright TypeScript tests. Avoid them unless an ADR documents a justified exception.
 
+- [PW-TS-ANT-006] Follow the shared [Playwright baseline](./include/playwright-baseline.include.md) for common anti-patterns (assertions, shared state, URLs, and CI artefacts).
 - [PW-TS-ANT-001] **`page.waitForTimeout()` instead of auto-wait** — Playwright waits automatically; explicit waits cause flakiness and slow tests.
 - [PW-TS-ANT-002] **Missing `await` on assertions** — causes silent failures; always `await expect(...)`.
 - [PW-TS-ANT-003] **Hardcoded timeouts to fix flakiness** — masks underlying issues; fix the root cause instead.
 - [PW-TS-ANT-004] **CSS/XPath when role-based locators exist** — brittle and less accessible; prefer `getByRole`, `getByLabel`.
 - [PW-TS-ANT-005] **`{ force: true }` click without justification** — hides real interactivity issues; document why it's necessary.
-- [PW-TS-ANT-006] **Tests without assertions** — false positives; every test must assert at least one outcome.
-- [PW-TS-ANT-007] **Shared mutable state between tests** — causes ordering dependencies and random failures; isolate tests completely.
 - [PW-TS-ANT-008] **Overly broad locators** — causes strict mode violations; be specific enough to match exactly one element.
-- [PW-TS-ANT-009] **Screenshot/video always on** — slows CI significantly; enable only on failure.
-- [PW-TS-ANT-010] **Hardcoded URLs in tests** — breaks across environments; use `baseURL` configuration.
 - [PW-TS-ANT-011] **`try/catch` to suppress test failures** — masks bugs; let tests fail and fix the underlying issue.
-- [PW-TS-ANT-012] **Giant test functions (>50 lines)** — hard to debug and maintain; split by scenario or use `test.step()`.
 
 ---
 
-> **Version**: 2.0.0
-> **Last Amended**: 2026-01-11
+> **Version**: 1.1.0
+> **Last Amended**: 2026-01-17
