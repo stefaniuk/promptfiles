@@ -1,0 +1,27 @@
+name: "Count lines of code"
+description: "Count lines of code"
+inputs:
+  build_datetime:
+    description: "Build datetime, set by the CI/CD pipeline workflow"
+    required: true
+  build_timestamp:
+    description: "Build timestamp, set by the CI/CD pipeline workflow"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: "Create CLOC report"
+      shell: bash
+      run: |
+        export BUILD_DATETIME=${{ inputs.build_datetime }}
+        ./scripts/reports/create-lines-of-code-report.sh
+    - name: "Compress CLOC report"
+      shell: bash
+      run: zip lines-of-code-report.json.zip lines-of-code-report.json
+    - name: "Upload CLOC report as an artefact"
+      if: ${{ !env.ACT }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: lines-of-code-report.json.zip
+        path: ./lines-of-code-report.json.zip
+        retention-days: 21

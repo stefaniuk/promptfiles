@@ -2,6 +2,15 @@ name: "Commit stage"
 
 on:
   workflow_call:
+    inputs:
+      build_datetime:
+        description: "Build datetime, set by the CI/CD pipeline workflow"
+        required: true
+        type: string
+      build_timestamp:
+        description: "Build timestamp, set by the CI/CD pipeline workflow"
+        required: true
+        type: string
 
 jobs:
   scan-secrets:
@@ -48,3 +57,18 @@ jobs:
           fetch-depth: 0 # Full history is needed to compare branches
       - name: "Check Markdown links"
         uses: ./.github/actions/check-markdown-links
+  count-lines-of-code:
+    name: "Count lines of code"
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    timeout-minutes: 2
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v6
+      - name: "Count lines of code"
+        uses: ./.github/actions/create-lines-of-code-report
+        with:
+          build_datetime: "${{ inputs.build_datetime }}"
+          build_timestamp: "${{ inputs.build_timestamp }}"

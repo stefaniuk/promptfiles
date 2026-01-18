@@ -8,7 +8,27 @@ on:
     types: [opened, reopened, synchronize]
 
 jobs:
+  metadata:
+    name: "Set CI/CD metadata"
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    outputs:
+      build_datetime: ${{ steps.variables.outputs.build_datetime }}
+      build_timestamp: ${{ steps.variables.outputs.build_timestamp }}
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v6
+      - name: "Set CI/CD variables"
+        id: variables
+        run: |
+          datetime=$(date -u +'%Y-%m-%dT%H:%M:%S%z')
+          echo "build_datetime=$datetime" >> $GITHUB_OUTPUT
+          echo "build_timestamp=$(date --date=$datetime -u +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
   commit-stage:
     name: "Commit stage"
+    needs: [metadata]
     uses: ./.github/workflows/stage-1-commit.yaml
+    with:
+      build_datetime: "${{ needs.metadata.outputs.build_datetime }}"
+      build_timestamp: "${{ needs.metadata.outputs.build_timestamp }}"
     secrets: inherit
