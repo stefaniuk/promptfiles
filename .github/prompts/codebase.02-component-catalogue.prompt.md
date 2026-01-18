@@ -5,7 +5,7 @@ description: Create component-level summaries (responsibilities, interfaces, dat
 
 **Mandatory preparation:** read [codebase overview](../instructions/includes/codebase-overview-baseline.include.md) instructions in full and follow strictly its rules before executing any step below.
 
-## Goal
+## Goal 🎯
 
 Create (or update): component catalogue `../../docs/codebase-overview/component-*.md`
 
@@ -13,7 +13,7 @@ Also ensure they are linked from:[codebase overview](../../docs/codebase-overvie
 
 ---
 
-## Discovery (run before writing)
+## Discovery (run before writing) 🔍
 
 ### A. Refresh what is already known
 
@@ -47,7 +47,7 @@ Also ensure they are linked from:[codebase overview](../../docs/codebase-overvie
 
 ---
 
-## Steps
+## Steps 👣
 
 ### 1) Select components (explicit criteria)
 
@@ -269,5 +269,5 @@ Update: [codebase overview](../../docs/codebase-overview/README.md) with a **Com
 
 ---
 
-> **Version**: 1.3.2
+> **Version**: 1.3.3
 > **Last Amended**: 2026-01-17

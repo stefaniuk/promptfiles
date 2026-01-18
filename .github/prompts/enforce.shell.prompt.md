@@ -10,7 +10,7 @@ description: Enforce repository-wide compliance with shell.instructions.md
 - Reference identifiers (for example `[SH-QR-001]`) as you must assess compliance against each of them across the codebase and remediate any deviations.
 - Read the [codebase overview instructions](../instructions/includes/codebase-overview-baseline.include.md) and adopt the approach for gathering supporting evidence.
 
-## User Input
+## User Input ⌨️
 
 ```text
 $ARGUMENTS
@@ -18,13 +18,13 @@ $ARGUMENTS
 
 You **MUST** consider the user input before proceeding (if not empty).
 
-## Goal
+## Goal 🎯
 
 Enumerate every shell script artefact in the repository, detect any discrepancies against `shell.instructions.md`, plan the refactor/rework workstream, implement the required changes, and confirm compliance.
 
 ---
 
-## Discovery (run before writing)
+## Discovery (run before writing) 🔍
 
 ### A. Enumerate shell script scope
 
@@ -40,7 +40,7 @@ Enumerate every shell script artefact in the repository, detect any discrepancie
 
 ---
 
-## Steps
+## Steps 👣
 
 > **Note:** On subsequent runs, check whether artefacts from earlier executions (for example `docs/prompt-reports/shell-inventory.md`, `docs/prompt-reports/shell-instructions-alignment-plan.md`) already exist and parse them so progress is cumulative rather than duplicated.
 
@@ -92,7 +92,7 @@ Enumerate every shell script artefact in the repository, detect any discrepancie
 
 ---
 
-## Output requirements
+## Output requirements 📋
 
 - Use concrete evidence links for every finding or change request.
 - Reference instruction identifiers (for example `[SH-HDR-001]`) when explaining discrepancies or fixes.
@@ -105,5 +105,5 @@ Context for prioritization: $ARGUMENTS
 
 ---
 
-> **Version**: 1.0.0
+> **Version**: 1.0.1
 > **Last Amended**: 2026-01-17

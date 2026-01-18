@@ -11,7 +11,7 @@ description: Enforce repository-wide compliance with reactjs.instructions.md
 - Reference identifiers (for example `[RJS-QR-001]`) as you must assess compliance against each of them across the codebase and remediate any deviations.
 - Read the [codebase overview instructions](../instructions/includes/codebase-overview-baseline.include.md) and adopt the approach for gathering supporting evidence.
 
-## User Input
+## User Input ⌨️
 
 ```text
 $ARGUMENTS
@@ -19,13 +19,13 @@ $ARGUMENTS
 
 You **MUST** consider the user input before proceeding (if not empty).
 
-## Goal
+## Goal 🎯
 
 Enumerate every React artefact in the repository, detect any discrepancies against `reactjs.instructions.md`, plan the refactor/rework workstream, implement the required changes, and confirm compliance.
 
 ---
 
-## Discovery (run before writing)
+## Discovery (run before writing) 🔍
 
 ### A. Enumerate React scope
 
@@ -41,7 +41,7 @@ Enumerate every React artefact in the repository, detect any discrepancies again
 
 ---
 
-## Steps
+## Steps 👣
 
 > **Note:** On subsequent runs, check whether artefacts from earlier executions (for example `docs/prompt-reports/reactjs-inventory.md`, `docs/prompt-reports/reactjs-instructions-alignment-plan.md`) already exist and parse them so progress is cumulative rather than duplicated.
 
@@ -92,7 +92,7 @@ Enumerate every React artefact in the repository, detect any discrepancies again
 
 ---
 
-## Output requirements
+## Output requirements 📋
 
 - Use concrete evidence links for every finding or change request.
 - Reference instruction identifiers (for example `[RJS-HK-002]`) when explaining discrepancies or fixes.
@@ -105,5 +105,5 @@ Context for prioritization: $ARGUMENTS
 
 ---
 
-> **Version**: 1.0.3
+> **Version**: 1.0.4
 > **Last Amended**: 2026-01-17

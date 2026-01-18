@@ -13,7 +13,7 @@ description: Generate pull request review using codebase overview context
   - [TypeScript](../instructions/typescript.instructions.md)
   - [Terraform](../instructions/terraform.instructions.md)
 
-## Goal
+## Goal 🎯
 
 Produce a thorough, evidence-based peer review of the current branch changes compared to `main`.
 
@@ -26,7 +26,7 @@ Where evidence cannot be found, record **Unknown from code – {suggested action
 
 ---
 
-## Discovery (run before writing)
+## Discovery (run before writing) 🔍
 
 ### A. Load design overview context (read before reviewing code)
 
@@ -106,7 +106,7 @@ If the diff cannot be produced, record **Unknown from code – run git diff agai
 
 ---
 
-## Steps (review and report)
+## Steps (review and report) 👣
 
 ### 1) Summarise what changed (diff-driven)
 
@@ -249,7 +249,7 @@ Use this snippet for each significant finding:
 
 ---
 
-## Output requirements
+## Output requirements 📋
 
 - Be precise and constructive.
 - Prefer specific, small actionable recommendations.
@@ -259,5 +259,5 @@ Use this snippet for each significant finding:
 
 ---
 
-> **Version**: 1.3.7
+> **Version**: 1.3.8
 > **Last Amended**: 2026-01-17

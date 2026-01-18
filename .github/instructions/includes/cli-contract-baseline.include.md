@@ -6,7 +6,7 @@ Use this shared baseline for the **canonical CLI contract** (exit codes and stre
 
 ---
 
-## 1. Exit codes (non-negotiable)
+## 1. Exit codes (non-negotiable) 🚦
 
 - [CLI-EXIT-001] `0` — successful completion.
 - [CLI-EXIT-002] `1` — general operational failure (unexpected error, dependency failure) when no more specific code exists.
@@ -16,7 +16,7 @@ Use this shared baseline for the **canonical CLI contract** (exit codes and stre
 - [CLI-EXIT-006] Tests covering CLI boundaries must assert the relevant exit codes.
 - [CLI-EXIT-007] Wrappers translating upstream tools or libraries must normalise their exit codes to this contract. If the wrapped system emits rich errors (for example JSON error payloads) surface the actionable snippet in diagnostics and map the numeric code to `0/1/2` (or a documented reserved value).
 
-## 2. Stdout vs stderr (stream semantics)
+## 2. Stdout vs stderr (stream semantics) 📤
 
 - [CLI-STR-001] `stdout` carries the primary result payloads (machine-readable JSON, tables, paths, generated artefacts). It **must** be safe to pipe into other commands without post-processing to strip diagnostics.
 - [CLI-STR-002] `stderr` carries diagnostics (progress, warnings, errors, verbose/debug output). Diagnostics must remain human-readable and should include actionable next steps when reporting failures.
@@ -26,7 +26,7 @@ Use this shared baseline for the **canonical CLI contract** (exit codes and stre
 - [CLI-STR-006] Cloud runtimes (Lambda, Cloud Run, Functions) often wire `stdout/stderr` into log aggregators; keep payloads compact and avoid ANSI control codes unless the platform supports them.
 - [CLI-STR-007] Flush and close streams explicitly before exiting short-lived serverless handlers so platforms do not drop trailing bytes.
 
-## 3. Documentation and testing expectations
+## 3. Documentation and testing expectations 📋
 
 - [CLI-DOC-001] Every published CLI must document the supported exit codes and diagnostic behaviours (README/help text + tests).
 - [CLI-DOC-002] Integration tests must cover at least one success case (`0`) and each reserved non-zero code to prevent future drift.
@@ -34,14 +34,14 @@ Use this shared baseline for the **canonical CLI contract** (exit codes and stre
 - [CLI-DOC-004] Help output (`--help`, `-h`) must describe the primary flags, mutually exclusive options, default value sources (env vars, config files), and provide a short usage example that demonstrates piping/JSON output when relevant.
 - [CLI-DOC-005] Include smoke tests for wrapper CLIs proving that upstream failures still yield deterministic codes/diagnostics.
 
-## 4. Developer ergonomics
+## 4. Developer ergonomics 🧑‍💻
 
 - [CLI-ERG-001] Provide `--help`, `--version`, and `--verbose` (or `--quiet`) switches consistently so that scripts can introspect capabilities and humans can self-serve.
 - [CLI-ERG-002] Prefer explicit flags over positional arguments once more than two inputs are required; accept configuration via environment variables only when documented, and echo which sources were used in verbose diagnostics.
 - [CLI-ERG-003] Offer `--dry-run` when the command mutates resources so that automation can validate intent without side effects.
 - [CLI-ERG-004] Keep interactive prompts opt-in (`--interactive` or detection of TTY) and always provide a non-interactive equivalent flag for CI/CD use.
 
-## 5. Wrappers and shared libraries
+## 5. Wrappers and shared libraries 📦
 
 - [CLI-WRP-001] Keep CLI entrypoints as thin adapters: parse/validate input, hand off to shared library functions, and forward exit codes. No business logic or domain processing belongs in the CLI handler itself.
 - [CLI-WRP-002] When discrepancies arise between CLI behaviour and the underlying library (forked validation, duplicated transformations, etc.), schedule and execute a refactor to relocate the logic back into the shared code before adding new features.
@@ -58,5 +58,5 @@ Use this shared baseline for the **canonical CLI contract** (exit codes and stre
 
 ---
 
-> **Version**: 1.2.1
+> **Version**: 1.2.2
 > **Last Amended**: 2026-01-17

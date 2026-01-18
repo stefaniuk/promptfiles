@@ -6,20 +6,20 @@ Use this shared baseline for Playwright test guidance that is language-agnostic.
 
 ---
 
-## 1. Locator and assertion principles
+## 1. Locator and assertion principles 🎯
 
 - [PW-BASE-LOC-001] Prioritise user-facing, accessible locators; avoid brittle selectors when semantic options exist.
 - [PW-BASE-AST-001] Prefer auto-retrying, web-first assertions for UI checks.
 - [PW-BASE-AST-002] Avoid visibility assertions unless the visibility transition itself is the test objective.
 
-## 2. Stability and data hygiene
+## 2. Stability and data hygiene 🧹
 
 - [PW-BASE-STB-001] Isolate tests: no shared mutable state or ordering dependencies.
 - [PW-BASE-STB-002] Seed test data explicitly; do not rely on existing database state.
 - [PW-BASE-STB-003] Use retries only as a last resort and fix flaky tests promptly.
 - [PW-BASE-STB-004] Use custom timeouts only for genuine latency, not to mask slowness.
 
-## 3. Anti-patterns (language-agnostic)
+## 3. Anti-patterns (language-agnostic) ⚠️
 
 - [PW-BASE-ANT-001] Tests without assertions.
 - [PW-BASE-ANT-002] Shared mutable state between tests.
@@ -29,5 +29,5 @@ Use this shared baseline for Playwright test guidance that is language-agnostic.
 
 ---
 
-> **Version**: 1.0.0
+> **Version**: 1.0.1
 > **Last Amended**: 2026-01-17

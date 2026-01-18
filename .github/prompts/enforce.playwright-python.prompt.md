@@ -12,7 +12,7 @@ description: Enforce repository-wide compliance with playwright-python.instructi
 - Reference identifiers (for example `[PW-PY-QR-001]`) as you must assess compliance against each of them across the codebase and remediate any deviations.
 - Read the [codebase overview instructions](../instructions/includes/codebase-overview-baseline.include.md) and adopt the approach for gathering supporting evidence.
 
-## User Input
+## User Input ⌨️
 
 ```text
 $ARGUMENTS
@@ -20,13 +20,13 @@ $ARGUMENTS
 
 You **MUST** consider the user input before proceeding (if not empty).
 
-## Goal
+## Goal 🎯
 
 Enumerate every Playwright Python test artefact in the repository, detect any discrepancies against `playwright-python.instructions.md`, plan the refactor/rework workstream, implement the required changes, and confirm compliance.
 
 ---
 
-## Discovery (run before writing)
+## Discovery (run before writing) 🔍
 
 ### A. Enumerate Playwright Python scope
 
@@ -42,7 +42,7 @@ Enumerate every Playwright Python test artefact in the repository, detect any di
 
 ---
 
-## Steps
+## Steps 👣
 
 > **Note:** On subsequent runs, check whether artefacts from earlier executions (for example `docs/prompt-reports/playwright-python-inventory.md`, `docs/prompt-reports/playwright-python-instructions-alignment-plan.md`) already exist and parse them so progress is cumulative rather than duplicated.
 
@@ -92,7 +92,7 @@ Enumerate every Playwright Python test artefact in the repository, detect any di
 
 ---
 
-## Output requirements
+## Output requirements 📋
 
 - Use concrete evidence links for every finding or change request.
 - Reference instruction identifiers (for example `[PW-PY-LOC-001]`) when explaining discrepancies or fixes.
@@ -105,5 +105,5 @@ Context for prioritization: $ARGUMENTS
 
 ---
 
-> **Version**: 1.0.3
+> **Version**: 1.0.4
 > **Last Amended**: 2026-01-17

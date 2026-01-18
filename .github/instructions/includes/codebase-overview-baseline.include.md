@@ -4,19 +4,19 @@ Use this shared baseline for producing and maintaining codebase overview documen
 
 **Identifier scheme.** Every normative rule carries a unique tag in the form `[CBO-<prefix>-NNN]`, where the prefix maps to the containing section (for example `SCP` for Scope, `HRD` for Hard Rules, `EVD` for Evidence, `EXC` for Exclusions, `WRT` for Writing, `DSC` for Discovery, `PRM` for Prompts, `ITR` for Iteration, `NAV` for Navigation). Use these identifiers when referencing, planning, or validating requirements.
 
-## Scope
+## Scope 🎯
 
 - [CBO-SCP-001] Produce and maintain Markdown documents under `docs/codebase-overview/`.
 - [CBO-SCP-002] Treat the repository as the only authoritative source.
 
-## Hard rules
+## Hard rules 🚫
 
 - [CBO-HRD-001] Do not guess: if evidence is missing, write **Unknown from code – {suggested action}**.
 - [CBO-HRD-002] Do not invent components, services, flows, or dependencies.
 - [CBO-HRD-003] Do not rely on documentation claims unless confirmed by code or config.
 - [CBO-HRD-004] Do not quote or summarise code you have not opened in the workspace.
 
-## Evidence rules
+## Evidence rules 🔍
 
 - [CBO-EVD-001] Every major statement must include an **Evidence** bullet.
 - [CBO-EVD-002] Evidence must reference a concrete artefact: file path + symbol and/or config key.
@@ -24,13 +24,13 @@ Use this shared baseline for producing and maintaining codebase overview documen
 - [CBO-EVD-004] Prefer "composition roots" as evidence (router registration, DI wiring, consumer registration, scheduler wiring).
 - [CBO-EVD-005] If you cannot find an artefact, record **Unknown from code – {what to search/confirm next}**.
 
-## Exclusions
+## Exclusions 🚷
 
 - [CBO-EXC-001] Exclude generated/vendor directories from analysis unless directly referenced by build tooling.
 - [CBO-EXC-002] Do not treat `dist/`, `build/`, `coverage/`, `.venv/`, `node_modules/`, `vendor/` as architectural sources.
 - [CBO-EXC-003] Avoid reading large files end-to-end; locate relevant sections via workspace search first.
 
-## Writing style
+## Writing style ✍️
 
 - [CBO-WRT-001] Use headings and short paragraphs.
 - [CBO-WRT-002] Prefer bullet lists over long prose.
@@ -44,7 +44,7 @@ Use this shared baseline for producing and maintaining codebase overview documen
 > **Last Amended**: YYYY-MM-DD
 ```
 
-## Working method
+## Working method 🔄
 
 ### Start of any pass (discovery sweep)
 
@@ -68,7 +68,7 @@ Use this shared baseline for producing and maintaining codebase overview documen
 - [CBO-ITR-002] Replace vague statements with evidenced specifics on each iteration.
 - [CBO-ITR-003] Convert "Unknown from code" items into evidenced statements when you find proof.
 
-## Indexing and navigation
+## Indexing and navigation 🗂️
 
 - [CBO-NAV-001] Treat `docs/codebase-overview/README.md` as the canonical landing page.
 - [CBO-NAV-002] Link every `component-*.md`, `runtime-flow-*.md` and `domain-*` document from the README.
@@ -76,5 +76,5 @@ Use this shared baseline for producing and maintaining codebase overview documen
 
 ---
 
-> **Version**: 1.3.1
+> **Version**: 1.3.2
 > **Last Amended**: 2026-01-17

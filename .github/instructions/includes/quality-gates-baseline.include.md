@@ -6,17 +6,17 @@ Use this shared baseline for quality gate execution expectations. Domain-specifi
 
 ---
 
-## 1. Running rules
+## 1. Running rules 🏃
 
 - [QG-BASE-RUN-001] Use repository-provided targets or scripts; avoid ad-hoc commands unless the spec requires it.
 - [QG-BASE-RUN-002] If canonical targets do not exist, discover and run the project-approved equivalents.
 
-## 2. Defect handling
+## 2. Defect handling 🐛
 
 - [QG-BASE-DEF-001] Iterate until all checks complete with **no errors or warnings**.
 - [QG-BASE-DEF-002] Treat warnings as defects unless explicitly waived in an ADR (with rationale and expiry).
 
 ---
 
-> **Version**: 1.0.0
+> **Version**: 1.0.1
 > **Last Amended**: 2026-01-17

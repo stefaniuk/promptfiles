@@ -5,7 +5,7 @@ description: Produce AWS infrastructure diagram from Terraform (evidence-first, 
 
 **Mandatory preparation:** read [codebase overview](../instructions/includes/codebase-overview-baseline.include.md) instructions in full and follow strictly its rules before executing any step below.
 
-## Goal
+## Goal 🎯
 
 Create (or update) the [AWS infrastructure page](../../docs/codebase-overview/aws-infrastructure.md) and [AWS infrastructure diagram](../../docs/codebase-overview/aws-infrastructure.drawio), then export the diagram to PNG once complete.
 
@@ -21,7 +21,7 @@ Constraints:
 
 ---
 
-## Discovery (run before writing)
+## Discovery (run before writing) 🔍
 
 ### A. Terraform/IaC reconnaissance
 
@@ -52,7 +52,7 @@ For each Terraform root/module:
 
 ---
 
-## Steps
+## Steps 👣
 
 ### 1) Build the infrastructure inventory
 
@@ -162,5 +162,5 @@ Example evidence snippet:
 
 ---
 
-> **Version**: 1.1.2
+> **Version**: 1.1.3
 > **Last Amended**: 2026-01-17

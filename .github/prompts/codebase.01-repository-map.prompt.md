@@ -5,7 +5,7 @@ description: Build a repository map to document architecture, technology stack, 
 
 **Mandatory preparation:** read [codebase overview](../instructions/includes/codebase-overview-baseline.include.md) instructions in full and follow strictly its rules before executing any step below.
 
-## Goal
+## Goal 🎯
 
 Create (or update): [repository map](../../docs/codebase-overview/repository-map.md)
 
@@ -13,7 +13,7 @@ Also ensure it is linked from: [codebase overview](../../docs/codebase-overview/
 
 ---
 
-## Configuration (optional, evidence-first)
+## Configuration (optional, evidence-first) ⚙️
 
 If not set, auto-detect from code/config. Do **not** guess.
 
@@ -23,7 +23,7 @@ If not set, auto-detect from code/config. Do **not** guess.
 
 ---
 
-## Discovery (run before writing)
+## Discovery (run before writing) 🔍
 
 ### A. Identify "non-source" directories and their purpose
 
@@ -64,7 +64,7 @@ If not set, auto-detect from code/config. Do **not** guess.
 
 ---
 
-## Steps
+## Steps 👣
 
 ### 1) Map the repository structure (focused and bounded)
 
@@ -188,5 +188,5 @@ Use the following snippet inside `repository-map.md`:
 
 ---
 
-> **Version**: 1.4.2
+> **Version**: 1.4.3
 > **Last Amended**: 2026-01-17

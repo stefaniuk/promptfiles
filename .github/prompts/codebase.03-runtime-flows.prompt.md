@@ -5,7 +5,7 @@ description: Document key runtime flows with diagrams (trigger → orchestration
 
 **Mandatory preparation:** read [codebase overview](../instructions/includes/codebase-overview-baseline.include.md) instructions in full and follow strictly its rules before executing any step below.
 
-## Goal
+## Goal 🎯
 
 Create (or update): runtime flows `../../docs/codebase-overview/runtime-flow-*.md`
 
@@ -13,7 +13,7 @@ Also ensure they are linked from: [codebase overview](../../docs/codebase-overvi
 
 ---
 
-## Discovery (run before writing)
+## Discovery (run before writing) 🔍
 
 ### A. Refresh what is already known
 
@@ -47,7 +47,7 @@ Search for and open the files that define or register:
 
 ---
 
-## Steps
+## Steps 👣
 
 ### 1) Select critical flows (explicit criteria)
 
@@ -279,5 +279,5 @@ flowchart LR
 
 ---
 
-> **Version**: 1.3.2
+> **Version**: 1.3.3
 > **Last Amended**: 2026-01-17

@@ -5,7 +5,7 @@ description: Review the codebase against the constitution and specification; det
 
 # Specification & Constitution Code Compliance Review
 
-## Role
+## Role 🎭
 
 You are acting as a **Specification Compliance Reviewer** for a repository that defines and implements **[INCLUDE REPOSITORY-SPECIFIC DETAILS COLLECTIVELY FROM ALL SPECS HERE]**.
 
@@ -17,7 +17,7 @@ Your responsibility is to ensure that:
 
 ---
 
-## Inputs (In Scope)
+## Inputs (In Scope) 📥
 
 You have access to:
 
@@ -31,7 +31,7 @@ You have access to:
 
 ---
 
-## Operating Principles (Must Follow)
+## Operating Principles (Must Follow) ⚖️
 
 - Treat the **specification as authoritative** for product behaviour.
 - Treat the **constitution as higher authority** than all other artefacts.
@@ -42,7 +42,7 @@ You have access to:
 - After making any code change, you must run `make lint` and `make test`, and keep iterating until both complete successfully with no errors or warnings. Do this automatically, without requiring an additional prompt.
 - Use British English throughout.
 
-## Spec-kit Workflow Integration
+## Spec-kit Workflow Integration 🔗
 
 - Trigger this review once the documentation review in [review.speckit-documentation.prompt.md](./review.speckit-documentation.prompt.md) has passed, the planning prompts ([speckit.plan.prompt.md](./speckit.plan.prompt.md) and [speckit.tasks.prompt.md](./speckit.tasks.prompt.md)) have produced an approved backlog, and the implementation prompt ([speckit.implement.prompt.md](./speckit.implement.prompt.md)) has been executed.
 - Treat this review as the post-implementation gate: all findings here must be resolved (or formally tracked) before the checklist and release prompts ([speckit.checklist.prompt.md](./speckit.checklist.prompt.md)) and the test automation quality review ([review.speckit-test.prompt.md](./review.speckit-test.prompt.md)) can run.
@@ -50,7 +50,7 @@ You have access to:
 
 ---
 
-## Objectives
+## Objectives 🎯
 
 ### 1. Constitution Compliance 🏛️
 
@@ -76,7 +76,7 @@ Detect and report any of the following:
 
 ---
 
-## Method (Mandatory)
+## Method (Mandatory) 🔍
 
 Before reporting findings, gather full context by:
 
@@ -96,7 +96,7 @@ Before reporting findings, gather full context by:
 
 ---
 
-## Recommendations (Mandatory)
+## Recommendations (Mandatory) 💡
 
 You must produce **actionable recommendations** to resolve every issue you identify.
 
@@ -109,7 +109,7 @@ Recommendations must be:
 
 ---
 
-## Required Output Structure (Use Only This Structure)
+## Required Output Structure (Use Only This Structure) 📋
 
 ### 1. Summary 🧭
 
@@ -223,7 +223,7 @@ Example decision options (use as applicable, not necessarily all):
 
 ---
 
-## Definition of Done
+## Definition of Done 🏁
 
 This review is complete only when:
 
@@ -235,5 +235,5 @@ This review is complete only when:
 
 ---
 
-> **Version**: 1.2.4
+> **Version**: 1.2.5
 > **Last Amended**: 2026-01-17

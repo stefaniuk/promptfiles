@@ -6,12 +6,12 @@ Use this shared baseline for AI-assisted changes across instruction sets. Indivi
 
 ---
 
-## 1. Scope and intent
+## 1. Scope and intent 🎯
 
 - [AI-BASE-SCP-001] Do not invent requirements or expand scope beyond what is specified.
 - [AI-BASE-SCP-002] Keep changes minimal and aligned with existing conventions and architecture.
 
-## 2. Quality and governance
+## 2. Quality and governance 🛡️
 
 - [AI-BASE-QLT-001] Ensure behaviour matches the specification and is deterministic and testable.
 - [AI-BASE-QLT-002] Run the required quality gates for the domain and iterate until clean.
@@ -19,5 +19,5 @@ Use this shared baseline for AI-assisted changes across instruction sets. Indivi
 
 ---
 
-> **Version**: 1.0.0
+> **Version**: 1.0.1
 > **Last Amended**: 2026-01-17

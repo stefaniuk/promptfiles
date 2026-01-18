@@ -6,27 +6,27 @@ Use this shared baseline for local-first developer experience expectations. Doma
 
 ---
 
-## 1. Workflow and safety
+## 1. Workflow and safety 🔐
 
 - [LCL-BASE-WF-001] Provide a single-command workflow for core tasks (deps, format, lint, typecheck/validate, test, run).
 - [LCL-BASE-WF-002] If `make` is not used, provide an equivalent task runner with the same intent and predictable names.
 - [LCL-BASE-WF-003] Keep local defaults safe: no real cloud credentials or destructive operations by default.
 
-## 2. Pre-commit and fast feedback
+## 2. Pre-commit and fast feedback ⚡
 
 - [LCL-BASE-PRC-001] Pre-commit hooks (or equivalent) must mirror CI checks and stay fast; heavy checks belong in CI.
 
-## 3. OCI / Dev Container parity
+## 3. OCI / Dev Container parity 🐳
 
 - [LCL-BASE-OCI-001] OCI/Dev Container support is optional but must be maintained if provided.
 - [LCL-BASE-OCI-002] Never bake secrets into images.
 - [LCL-BASE-OCI-003] The same core commands must work inside and outside the container.
 
-## 4. Environment checks
+## 4. Environment checks 🩺
 
 - [LCL-BASE-ENV-001] Where supported, provide a single "doctor" or environment-check command that surfaces actionable fixes.
 
 ---
 
-> **Version**: 1.0.0
+> **Version**: 1.0.1
 > **Last Amended**: 2026-01-17

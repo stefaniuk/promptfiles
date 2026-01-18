@@ -7,7 +7,7 @@ description: Generate conventional commit message and description from the curre
 - Ensure the repository has the `main` branch locally (fetch it only if missing).
 - Read language/tooling instructions that apply to the files changed in the diff (for example [python.instructions.md](../instructions/python.instructions.md), [typescript.instructions.md](../instructions/typescript.instructions.md), [makefile.instructions.md](../instructions/makefile.instructions.md), etc.) so that commit messaging reflects the actual scope and intent.
 
-## Goal
+## Goal 🎯
 
 Produce three copy-ready outputs that always reflect the current work, whether the changes live on a dedicated branch or only in the working tree on `main`/detached `HEAD`:
 
@@ -19,7 +19,7 @@ All artefacts must be fully backed by the diff between `main` and the current `H
 
 ---
 
-## Discovery (run before writing)
+## Discovery (run before writing) 🔍
 
 ### A. Establish the diff against `main`
 
@@ -55,7 +55,7 @@ done
 
 ---
 
-## Steps
+## Steps 👣
 
 ### 1) Extract key evidence
 
@@ -116,7 +116,7 @@ Return content exactly in this shape for easy copy/paste:
 - ...
 ```
 
-## Output requirements
+## Output requirements 📋
 
 - Ground every statement in the diff; if evidence is missing, record **Unknown from code – {suggested action}**.
 - Ensure the branch suggestion covers both cases: re-affirm or improve the current feature branch name, or propose a new branch when working directly on `main`/detached `HEAD`.
@@ -127,5 +127,5 @@ Return content exactly in this shape for easy copy/paste:
 
 ---
 
-> **Version**: 1.2.2
+> **Version**: 1.2.3
 > **Last Amended**: 2026-01-17

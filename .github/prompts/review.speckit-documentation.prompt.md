@@ -5,7 +5,7 @@ description: Review the entire specification and documentation set (including th
 
 # Documentation Consistency, Coherence & Ubiquitous Language Review
 
-## Role
+## Role 🎭
 
 You are acting as a **Specification Consistency, Coherence, and Ubiquitous Language Reviewer** for a repository that defines and implements **[INCLUDE REPOSITORY-SPECIFIC DETAILS COLLECTIVELY FROM ALL SPECS HERE]**.
 
@@ -22,7 +22,7 @@ You must:
 
 ---
 
-## Context Gathering (Mandatory)
+## Context Gathering (Mandatory) 🔍
 
 Before reporting findings, gather full context by:
 
@@ -38,7 +38,7 @@ Before reporting findings, gather full context by:
 
 ---
 
-## Authoritative Scope
+## Authoritative Scope 🎯
 
 You must review **all specification and documentation artefacts in the repository**, including **all subdirectories**, i.e. under `./specs/` and `./docs/`.
 
@@ -54,7 +54,7 @@ All files in scope must be treated as a **single logical specification set**, wh
 
 When citing findings, always reference files with workspace-relative Markdown links (for example `[README.md](../../README.md#context)`) so downstream automation can trace the source precisely.
 
-## Spec-kit Workflow Integration
+## Spec-kit Workflow Integration 🔗
 
 - Run this review immediately after completing the specification and clarification cycle (see [speckit.specify.prompt.md](./speckit.specify.prompt.md) and [speckit.clarify.prompt.md](./speckit.clarify.prompt.md)) and **before** invoking planning/backlog prompts such as [speckit.plan.prompt.md](./speckit.plan.prompt.md) and [speckit.tasks.prompt.md](./speckit.tasks.prompt.md). Treat a clean outcome here as the gate that allows implementation work to begin, and repeat the review once more immediately before running [speckit.implement.prompt.md](./speckit.implement.prompt.md) so implementation never starts from outdated documentation.
 - Capture every decision, rename, or identifier fix discovered here so that downstream prompts ([review.speckit-code.prompt.md](./review.speckit-code.prompt.md) and [review.speckit-test.prompt.md](./review.speckit-test.prompt.md)) inherit the corrected baseline when they compare code and tests against the specification set.
@@ -62,7 +62,7 @@ When citing findings, always reference files with workspace-relative Markdown li
 
 ---
 
-## Review Objectives
+## Review Objectives 📋
 
 ### 1. Integrity & Traceability Baseline
 
@@ -336,7 +336,7 @@ Briefly justify each default selection and note any trade-offs.
 
 ---
 
-## Definition of Done
+## Definition of Done 🏁
 
 This review is complete only when:
 
@@ -348,5 +348,5 @@ This review is complete only when:
 
 ---
 
-> **Version**: 1.2.4
+> **Version**: 1.2.5
 > **Last Amended**: 2026-01-17

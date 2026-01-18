@@ -5,7 +5,7 @@ description: Domain analysis (DDD) to document bounded contexts, language, event
 
 **Mandatory preparation:** read [codebase overview](../instructions/includes/codebase-overview-baseline.include.md) instructions in full and follow strictly its rules before executing any step below.
 
-## Goal
+## Goal 🎯
 
 Create (or update) these domain analysis documents (evidence-first):
 
@@ -19,7 +19,7 @@ Also ensure they are linked from: [codebase overview](../../docs/codebase-overvi
 
 ---
 
-## Discovery (run before writing)
+## Discovery (run before writing) 🔍
 
 ### A. Refresh architectural context
 
@@ -55,7 +55,7 @@ Search for and open code/config that commonly reveals domain boundaries and lang
 
 ---
 
-## Steps
+## Steps 👣
 
 ### 1) Identify bounded contexts (evidence-based)
 
@@ -216,5 +216,5 @@ flowchart LR
 
 ---
 
-> **Version**: 1.1.2
+> **Version**: 1.1.3
 > **Last Amended**: 2026-01-17

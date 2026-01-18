@@ -10,7 +10,7 @@ description: Enforce repository-wide compliance with makefile.instructions.md
 - Reference identifiers (for example `[MK-QR-001]`) as you must assess compliance against each of them across the codebase and remediate any deviations.
 - Read the [codebase overview instructions](../instructions/includes/codebase-overview-baseline.include.md) and adopt the approach for gathering supporting evidence.
 
-## User Input
+## User Input ⌨️
 
 ```text
 $ARGUMENTS
@@ -18,13 +18,13 @@ $ARGUMENTS
 
 You **MUST** consider the user input before proceeding (if not empty).
 
-## Goal
+## Goal 🎯
 
 Enumerate every Makefile (including included `*.mk` modules), detect discrepancies against `makefile.instructions.md`, plan the refactor/rework workstream, implement the required changes, and confirm compliance.
 
 ---
 
-## Discovery (run before writing)
+## Discovery (run before writing) 🔍
 
 ### A. Enumerate Makefile scope
 
@@ -40,7 +40,7 @@ Enumerate every Makefile (including included `*.mk` modules), detect discrepanci
 
 ---
 
-## Steps
+## Steps 👣
 
 > **Note:** On subsequent runs, detect whether artefacts from earlier executions (for example `docs/prompt-reports/makefile-inventory.md`, `docs/prompt-reports/makefile-instructions-alignment-plan.md`) already exist and parse them so progress is cumulative rather than duplicated.
 
@@ -90,7 +90,7 @@ Enumerate every Makefile (including included `*.mk` modules), detect discrepanci
 
 ---
 
-## Output requirements
+## Output requirements 📋
 
 - Use concrete evidence links for every finding or change request.
 - Reference instruction identifiers (for example `[MK-UX-001]`) when explaining discrepancies or fixes.
@@ -103,5 +103,5 @@ Context for prioritization: $ARGUMENTS
 
 ---
 
-> **Version**: 1.1.4
+> **Version**: 1.1.5
 > **Last Amended**: 2026-01-17

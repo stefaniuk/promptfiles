@@ -5,7 +5,7 @@ description: Review the repository's test automation against the specification a
 
 # Test Automation Quality Review (Unit-Test First, Test Pyramid)
 
-## Role
+## Role 🎭
 
 You are acting as a **Test Automation Quality Reviewer** for a repository that defines and implements **[INCLUDE REPOSITORY-SPECIFIC DETAILS HERE]**.
 
@@ -23,7 +23,7 @@ Tests are **first-class, long-lived code** that must evolve alongside the implem
 
 ---
 
-## Inputs (In Scope)
+## Inputs (In Scope) 📥
 
 You have access to:
 
@@ -37,7 +37,7 @@ You have access to:
 
 ---
 
-## Mandatory Preparation (Do This First)
+## Mandatory Preparation (Do This First) ⚙️
 
 Before performing any analysis:
 
@@ -54,7 +54,7 @@ Before performing any analysis:
 4. Treat the specification as the **authoritative source of truth** for intended behaviour when assessing test adequacy (across the full spec set, not only the latest feature).
 5. Read relevant ADRs under `./docs/adr/` and use `./docs/adr/adr-template.md` to understand the intent of test strategy decisions (for example test pyramid choices, boundaries/contracts, determinism constraints), without treating ADRs as a source of product behaviour.
 
-## Spec-kit Workflow Integration
+## Spec-kit Workflow Integration 🔗
 
 - Run this prompt only after the upstream reviews have passed: the documentation set is aligned ([review.speckit-documentation.prompt.md](./review.speckit-documentation.prompt.md)), the code compliance review in [review.speckit-code.prompt.md](./review.speckit-code.prompt.md) reports no unresolved critical/major issues, and the checklist/release readiness prompts (for example [speckit.checklist.prompt.md](./speckit.checklist.prompt.md)) have been updated.
 - Treat this review as the final quality gate before release: its output should flow into [speckit.analyze.prompt.md](./speckit.analyze.prompt.md) and any release/ADR updates, ensuring the entire test suite reflects the finalised specification and implementation.
@@ -62,7 +62,7 @@ Before performing any analysis:
 
 ---
 
-## Objectives
+## Objectives 🎯
 
 ### 1. Assess Test Pyramid Health 🔺
 
@@ -118,7 +118,7 @@ Refactoring must not change the intended behaviour — only clarity, maintainabi
 
 ---
 
-## Test Quality Rules (Mandatory)
+## Test Quality Rules (Mandatory) 📖
 
 All analysis and suggestions must conform to **repository-appropriate unit testing rules** (framework/tooling conventions). Use **[INCLUDE REPOSITORY-SPECIFIC DETAILS HERE]** to define these if needed.
 
@@ -287,7 +287,7 @@ Briefly justify each default selection and note any trade-offs.
 
 ---
 
-## Definition of Done
+## Definition of Done 🏁
 
 This review is complete only when:
 
@@ -300,5 +300,5 @@ This review is complete only when:
 
 ---
 
-> **Version**: 1.2.4
+> **Version**: 1.2.5
 > **Last Amended**: 2026-01-17

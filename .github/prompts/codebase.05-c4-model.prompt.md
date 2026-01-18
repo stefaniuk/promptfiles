@@ -5,7 +5,7 @@ description: Produce C4 model diagrams (Context, Container, Component) in Struct
 
 **Mandatory preparation:** read [codebase overview](../instructions/includes/codebase-overview-baseline.include.md) instructions in full and follow strictly its rules before executing any step below.
 
-## Goal
+## Goal 🎯
 
 Create (or update) Structurizr DSL files under `docs/codebase-overview/`:
 
@@ -17,7 +17,7 @@ Also ensure they are linked from: [codebase overview](../../docs/codebase-overvi
 
 ---
 
-## Discovery (run before writing)
+## Discovery (run before writing) 🔍
 
 ### A. Refresh what is already known (use existing docs as inputs)
 
@@ -52,7 +52,7 @@ Record any gaps as **Unknown from code – {suggested action}** and avoid guessi
 
 ---
 
-## Steps
+## Steps 👣
 
 ### 1) Establish naming and scope (consistency rules)
 
@@ -286,5 +286,5 @@ workspace "System - Components" "Component diagram for one container." {
 
 ---
 
-> **Version**: 1.1.2
+> **Version**: 1.1.3
 > **Last Amended**: 2026-01-17
