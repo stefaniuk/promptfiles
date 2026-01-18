@@ -3,11 +3,11 @@ name: repository-template
 description: Toolkit for creating a code repository from template, or/and updating it in parts from the content of the template that contains example of use of tools like make, pre-commit git hooks, Docker, Terraform etc.
 ---
 
-# Repository Template Skill
+# Repository Template Skill 🧩
 
 This skill enables adopting, configuring, or removing capabilities from the [NHS England Tools Repository Template](https://github.com/nhs-england-tools/repository-template). Each capability is modular and can be applied independently.
 
-## Source Reference
+## Source Reference 📚
 
 All implementation files are located in the `assets/` subdirectory, which is a git subtree of the upstream repository template. When copying files to a target repository, use the contents from:
 
@@ -37,7 +37,7 @@ Use the following checks after confirming the git URL:
 
 When in doubt, follow the [Updating from the template repository](./SKILL.md#updating-from-the-template-repository) workflow to pull fresh assets.
 
-## Quick Reference
+## Quick Reference 🧠
 
 | Capability                                                         | Purpose                      | Key Files                                                                       |
 | ------------------------------------------------------------------ | ---------------------------- | ------------------------------------------------------------------------------- |
@@ -65,7 +65,7 @@ When in doubt, follow the [Updating from the template repository](./SKILL.md#upd
 
 ---
 
-## Capabilities
+## Capabilities 🧰
 
 ### 1. Core Make System
 
@@ -1362,7 +1362,7 @@ SONAR_TOKEN=$SONAR_TOKEN \
 
 ---
 
-## Adoption Patterns
+## Adoption Patterns 🧭
 
 ### Full Template Adoption
 
@@ -1404,7 +1404,7 @@ To remove a capability:
 
 ---
 
-## File Reference
+## File Reference 📚
 
 All source files are located in the [`assets/`](assets/) directory. Copy them to your repository root (or the equivalent path).
 
@@ -1458,7 +1458,7 @@ All source files are located in the [`assets/`](assets/) directory. Copy them to
 
 ---
 
-## Updating from the template repository
+## Updating from the template repository 🔄
 
 To pull updates from the upstream run the following command:
 
@@ -1470,5 +1470,5 @@ Then selectively copy relevant files to your repository.
 
 ---
 
-> **Version**: 1.0.1
-> **Last Amended**: 2026-01-15
+> **Version**: 1.0.2
+> **Last Amended**: 2026-01-18
