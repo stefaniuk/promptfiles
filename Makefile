@@ -16,7 +16,7 @@ lint-markdown-format: # Check markdown formatting @Quality
 	check=all ./scripts/githooks/check-markdown-format.sh && echo "markdown format: ok"
 
 lint-markdown-links: # Check markdown links @Quality
-	output=$$(lychee --config lychee.toml -n -q "**/*.md" 2>&1) && echo "markdown links: ok" || { echo "$$output"; exit 1; }
+	check=all ./scripts/githooks/check-markdown-links.sh && echo "markdown links: ok"
 
 lint: # Run linter to check code style and errors @Quality
 	$(MAKE) lint-file-format
