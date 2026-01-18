@@ -1,3 +1,8 @@
 {
-  "Exclude": [".github/instructions/makefile.instructions.md", ".specify/"]
+  "Exclude": [
+    "^\\.github/agents/speckit\\..*\\.agent\\.md$",
+    "^\\.github/instructions/makefile\\.instructions\\.md$",
+    "^\\.specify/scripts/bash/.*\\.sh$",
+    "^\\.specify/templates/.*-template\\.md$"
+  ]
 }

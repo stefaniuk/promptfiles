@@ -89,4 +89,5 @@ ${VERBOSE}.SILENT: \
 	lint-file-format \
 	lint-markdown-format \
 	lint-markdown-links \
+	specify \
 	test \
