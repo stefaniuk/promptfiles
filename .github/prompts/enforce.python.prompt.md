@@ -7,6 +7,7 @@ description: Enforce repository-wide compliance with python.instructions.md
 
 - Read the [constitution](../../.specify/memory/constitution.md) for non-negotiable rules, if you have not done already.
 - Read the [Python instructions](../instructions/python.instructions.md).
+- Read the [pyproject.toml template](../instructions/templates/pyproject.toml) for the canonical project configuration structure.
 - Reference identifiers (for example `[PY-QR-001]`) as you must assess compliance against each of them across the codebase and remediate any deviations.
 - Read the [codebase overview instructions](../instructions/includes/codebase-overview-baseline.include.md) and adopt the approach for gathering supporting evidence.
 
@@ -53,9 +54,15 @@ Enumerate every Python artefact in the repository, detect any discrepancies agai
 
 1. For each artefact and file, scan for violations of the instruction tags (CLI contract, quality gates, observability, security, toolchain pinning, local-first targets, etc.).
 2. Assess each artefact and file against compliance of each reference identifier (for example `[PY-QR-001]`) from the `python.instructions.md` file.
-3. Verify toolchain defaults per [PY-LCL-009]–[PY-LCL-015] (Python version pinning, `uv` usage/lockfile, Ruff configuration, mypy in CI).
-4. Capture findings with precise evidence links, formatted as `- Evidence: [path/to/file](path/to/file#L10-L40) — violates [PY-CTR-008] because ...`.
-5. Record unknowns explicitly using **Unknown from code – {action}** (for example missing `uv` lockfile or undocumented CLI modes).
+3. Verify toolchain defaults per [PY-LCL-009]—[PY-LCL-015] (Python version pinning, `uv` usage/lockfile, Ruff configuration, mypy in CI).
+4. Verify `pyproject.toml` structure per [PY-LCL-035]—[PY-LCL-042]:
+   - `[project]` metadata is present and complete
+   - `[dependency-groups]` separates dev dependencies
+   - `[tool.uv.sources]` and `[tool.uv.workspace]` are configured for monorepo layouts
+   - `[tool.pytest.ini_options]`, `[tool.ruff]`, and `[tool.mypy]` are configured inline
+   - `hatchling` is the build backend
+5. Capture findings with precise evidence links, formatted as `- Evidence: [path/to/file](path/to/file#L10-L40) — violates [PY-CTR-008] because ...`.
+6. Record unknowns explicitly using **Unknown from code – {action}** (for example missing `uv` lockfile or undocumented CLI modes).
 
 ### 3) Plan refactoring and rework
 
@@ -103,5 +110,5 @@ Context for prioritization: $ARGUMENTS
 
 ---
 
-> **Version**: 1.1.5
-> **Last Amended**: 2026-01-17
+> **Version**: 1.1.6
+> **Last Amended**: 2026-01-18

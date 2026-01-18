@@ -1,0 +1,50 @@
+[project]
+name = "my-app"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.14"
+dependencies = ["core", "python-dotenv", "loguru"]
+
+[dependency-groups] # Tooling-only dependency groups used for local development and CI (not published to users)
+dev = [
+  "mypy",
+  "pytest-cov",
+  "pytest-randomly",
+  "pytest-xdist",
+  "pytest",
+  "ruff",
+]
+
+[tool.uv.sources] # Defines where dependencies come from, marks `core` as a local workspace package instead of PyPI
+core = { workspace = true }
+
+[tool.uv.workspace] # Declares this repository as a uv workspace and lists all member packages
+members = ["core", "cli", "api"]
+
+[tool.pytest.ini_options]
+pythonpath = ["core/src", "api/src", "cli/src"]
+testpaths = ["core/tests", "cli/tests", "api/tests", "tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-ra -q --cov=core --cov=api --cov=cli --cov-report=term-missing --cov-report=xml"
+console_output_style = "count"
+markers = ["slow: marks tests as slow (deselect with '-m \"not slow\"')"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+exclude = [".venv"]
+[tool.ruff.lint]
+select = ["ALL"] # https://docs.astral.sh/ruff/rules/
+ignore = []
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = []
+
+[tool.mypy]
+python_version = "3.14"
+strict = true
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

@@ -84,6 +84,7 @@ Provide repository-standard commands so an engineer can do the following quickly
   - [PY-LCL-011a] `uv sync` for deterministic installs across laptops and CI
   - [PY-LCL-011b] `uv run ...` for invoking tools and project commands
   - [PY-LCL-011c] If a repo must deviate from `uv`, record the exception (scope + expiry) in an ADR before merging
+  - [PY-LCL-011d] Use `pyproject.toml` as the single source of truth for project metadata, dependencies, and tool configuration; see the [pyproject.toml template](./templates/pyproject.toml) for the canonical structure
 - [PY-LCL-012] Keep the developer toolchain minimal and fast.
 
 Repository defaults (unless the repository explicitly documents an alternative):
@@ -91,6 +92,19 @@ Repository defaults (unless the repository explicitly documents an alternative):
 - [PY-LCL-013] Ruff is the mandatory linter/formatter; configure `ruff check` and `ruff format` as the defaults for `make format` and `make lint` / CI quality gates
 - [PY-LCL-014] Pytest for tests
 - [PY-LCL-015] mypy (or the repository-approved static type checker) is **mandatory** for static type analysis; run in CI as a blocking gate (see §6)
+
+### 2.2.1 pyproject.toml structure (must follow)
+
+Use `pyproject.toml` as the single configuration file for the project (PEP 621). Follow the [pyproject.toml template](./templates/pyproject.toml) for the canonical structure:
+
+- [PY-LCL-035] Define `[project]` metadata (name, version, description, `requires-python`, dependencies)
+- [PY-LCL-036] Use `[dependency-groups]` for dev/tooling-only dependencies (not shipped to users)
+- [PY-LCL-037] Configure `[tool.uv.sources]` for workspace-local packages (mark them as `{ workspace = true }`)
+- [PY-LCL-038] Declare `[tool.uv.workspace]` with `members` array when using a monorepo/multi-package layout
+- [PY-LCL-039] Configure `[tool.pytest.ini_options]` inline (pythonpath, testpaths, addopts with coverage)
+- [PY-LCL-040] Configure `[tool.ruff]` inline (line-length, target-version, `select = ["ALL"]` as a starting point)
+- [PY-LCL-041] Configure `[tool.mypy]` inline (python_version, `strict = true`)
+- [PY-LCL-042] Use `hatchling` as the build backend (`[build-system]`)
 
 ### 2.3 Pre-commit hooks (strongly recommended)
 
@@ -1110,5 +1124,5 @@ These patterns cause recurring issues in Python codebases. Avoid them unless an 
 
 ---
 
-> **Version**: 1.6.2
-> **Last Amended**: 2026-01-17
+> **Version**: 1.6.3
+> **Last Amended**: 2026-01-18
