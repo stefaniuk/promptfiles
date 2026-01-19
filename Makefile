@@ -73,8 +73,8 @@ clean:: # Remove project-specific generated files (main) @Operations
 	\) -prune -exec rm -rf {} +
 
 config:: # Configure development environment (main) @Configuration
-	make _install-dependencies
-	.github/skills/repository-template/scripts/git-clone-repository-template.sh
+	$(MAKE) _install-dependencies
+	$(MAKE) clone-rt
 
 # ==============================================================================
 
