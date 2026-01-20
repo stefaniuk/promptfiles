@@ -38,7 +38,7 @@ specify: # Re-initialise speck-kit files @Operations
 		--here \
 		--force
 
-apply: # Copy prompt files assets to a destination repository; mandatory: dest=[path] @Operations
+apply: # Copy prompt files assets to a destination repository; mandatory: dest=[path]; optional: wipe=[true|false], all|python|typescript|react|rust|terraform|tauri|playwright|django|fastapi=[true] @Operations
 	if [ -z "$(dest)" ]; then
 		echo "Error: dest argument is required. Usage: make apply dest=/path/to/destination"
 		exit 1

@@ -11,17 +11,35 @@ set -euo pipefail
 #   destination-directory   Target directory (absolute or relative path)
 #
 # Options:
+#   wipe=true               # Remove destination .github/{agents,instructions,prompts,skills} before copying, default is 'false'
 #   VERBOSE=true            # Show all the executed commands, default is 'false'
 #
-# Copies:
-#   - Agent files (.github/agents)
-#   - Instruction files (.github/instructions, includes and templates subdirectories)
-#   - Prompt files (.github/prompts)
-#   - Skills files (.github/skills, recursively)
+# Technology switches (default is 'false' for all, set to 'true' to include):
+#   all=true                # Include all technology-specific files
+#   python=true             # Include Python instruction and enforcement prompt
+#   typescript=true         # Include TypeScript instruction and enforcement prompt
+#   react=true              # Include React instruction and enforcement prompt
+#   rust=true               # Include Rust instruction and enforcement prompt
+#   terraform=true          # Include Terraform instruction and enforcement prompt
+#   tauri=true              # Include Tauri instruction and enforcement prompt (auto-enables rust, typescript, react)
+#   playwright=true         # Include Playwright instruction and prompt (requires python or typescript)
+#   django=true             # Include Django skill (auto-enables python)
+#   fastapi=true            # Include FastAPI skill (auto-enables python)
+#
+# Always copied (default/glue layer):
+#   - All spec-kit agents (.github/agents)
+#   - Shell, Docker, Makefile instructions and prompts
+#   - Codebase documentation prompts (codebase.*)
+#   - Spec-kit prompts (speckit.*, review.speckit-*)
+#   - Utility prompts (util.*)
+#   - Shared includes (baselines)
+#   - Default templates (Makefile, Dockerfile, compose.yaml, shell-script)
+#   - repository-template skill
 #   - copilot-instructions.md
 #   - constitution.md
 #   - adr-template.md
 #   - docs/.gitignore
+#   - project.code-workspace (if not already present)
 #
 # Exit codes:
 #   0 - All files copied successfully
@@ -29,8 +47,10 @@ set -euo pipefail
 #
 # Examples:
 #   $ ./scripts/apply.sh /path/to/my-project
-#   $ ./scripts/apply.sh ../my-project
-#   $ VERBOSE=true ./scripts/apply.sh ~/projects/my-app
+#   $ python=true ./scripts/apply.sh ../my-project
+#   $ all=true ./scripts/apply.sh ~/projects/my-app
+#   $ python=true playwright=true ./scripts/apply.sh ~/projects/my-app
+#   $ django=true ./scripts/apply.sh ~/projects/my-app  # auto-enables python
 
 # ==============================================================================
 
@@ -45,6 +65,105 @@ COPILOT_INSTRUCTIONS="${REPO_ROOT}/.github/copilot-instructions.md"
 CONSTITUTION="${REPO_ROOT}/.specify/memory/constitution.md"
 ADR_TEMPLATE="${REPO_ROOT}/docs/adr/adr-template.md"
 DOCS_GITIGNORE="${REPO_ROOT}/docs/.gitignore"
+WORKSPACE_FILE="${REPO_ROOT}/project.code-workspace"
+
+# Default instruction files (glue layer)
+DEFAULT_INSTRUCTIONS=("docker" "makefile" "shell")
+
+# Default prompt patterns (glue layer and spec-kit)
+DEFAULT_PROMPT_PATTERNS=("codebase.*" "enforce.docker" "enforce.makefile" "enforce.shell" "review.speckit-*" "speckit.*" "util.*")
+
+# Default templates (glue layer)
+DEFAULT_TEMPLATES=("Makefile.template" "Dockerfile.template" "compose.yaml.template" "shell-script.template.sh")
+
+# Default skills
+DEFAULT_SKILLS=("repository-template")
+
+# All technology switches (for iteration)
+ALL_TECHS=("python" "typescript" "react" "rust" "terraform" "tauri" "playwright" "django" "fastapi")
+
+# ==============================================================================
+
+# Get instruction file name for a technology.
+# For playwright, returns the appropriate variant based on python/typescript being enabled.
+# Arguments:
+#   $1=[technology name]
+function get-tech-instruction() {
+
+  case "$1" in
+    python) echo "python" ;;
+    typescript) echo "typescript" ;;
+    react) echo "reactjs" ;;
+    rust) echo "rust" ;;
+    terraform) echo "terraform" ;;
+    tauri) echo "tauri" ;;
+    playwright)
+      # Return both variants if applicable
+      local result=""
+      if is-arg-true "${python:-false}" || is-arg-true "${all:-false}"; then
+        result="playwright-python"
+      fi
+      if is-arg-true "${typescript:-false}" || is-arg-true "${all:-false}"; then
+        [[ -n "${result}" ]] && result="${result} "
+        result="${result}playwright-typescript"
+      fi
+      echo "${result}"
+      ;;
+    *) echo "" ;;
+  esac
+}
+
+# Get prompt file name for a technology.
+# For playwright, returns the appropriate variant based on python/typescript being enabled.
+# Arguments:
+#   $1=[technology name]
+function get-tech-prompt() {
+
+  case "$1" in
+    python) echo "enforce.python" ;;
+    typescript) echo "enforce.typescript" ;;
+    react) echo "enforce.reactjs" ;;
+    rust) echo "enforce.rust" ;;
+    terraform) echo "enforce.terraform" ;;
+    tauri) echo "enforce.tauri" ;;
+    playwright)
+      # Return both variants if applicable
+      local result=""
+      if is-arg-true "${python:-false}" || is-arg-true "${all:-false}"; then
+        result="enforce.playwright-python"
+      fi
+      if is-arg-true "${typescript:-false}" || is-arg-true "${all:-false}"; then
+        [[ -n "${result}" ]] && result="${result} "
+        result="${result}enforce.playwright-typescript"
+      fi
+      echo "${result}"
+      ;;
+    *) echo "" ;;
+  esac
+}
+
+# Get template file name for a technology.
+# Arguments:
+#   $1=[technology name]
+function get-tech-template() {
+
+  case "$1" in
+    python) echo "pyproject.toml" ;;
+    *) echo "" ;;
+  esac
+}
+
+# Get skill directory name for a technology.
+# Arguments:
+#   $1=[technology name]
+function get-tech-skill() {
+
+  case "$1" in
+    django) echo "django-project" ;;
+    fastapi) echo "fastapi-project" ;;
+    *) echo "" ;;
+  esac
+}
 
 # ==============================================================================
 
@@ -54,6 +173,25 @@ function main() {
   if [[ $# -ne 1 ]]; then
     print-usage
     exit 1
+  fi
+
+  # Auto-enable rust, typescript, and react if tauri is specified
+  if is-arg-true "${tauri:-false}"; then
+    rust=true
+    typescript=true
+    react=true
+  fi
+
+  # Auto-enable python if django or fastapi is specified
+  if is-arg-true "${django:-false}" || is-arg-true "${fastapi:-false}"; then
+    python=true
+  fi
+
+  # Validate playwright requires python or typescript (unless all=true)
+  if is-arg-true "${playwright:-false}" && ! is-arg-true "${all:-false}"; then
+    if ! is-arg-true "${python:-false}" && ! is-arg-true "${typescript:-false}"; then
+      print-error "playwright=true requires either python=true or typescript=true to be set"
+    fi
   fi
 
   local destination="$1"
@@ -78,7 +216,12 @@ function main() {
   fi
 
   echo "Applying prompt files to: ${destination}"
+  print-enabled-technologies
   echo
+
+  if is-arg-true "${wipe:-false}"; then
+    wipe-directories "${destination}"
+  fi
 
   copy-agents "${destination}"
   copy-instructions "${destination}"
@@ -88,6 +231,7 @@ function main() {
   copy-constitution "${destination}"
   copy-adr-template "${destination}"
   copy-docs-gitignore "${destination}"
+  copy-workspace-file "${destination}"
 
   echo
   echo "Done. Assets copied to ${destination}"
@@ -95,42 +239,69 @@ function main() {
 
 # ==============================================================================
 
-# Print usage information.
-function print-usage() {
+# Print which technologies are enabled.
+function print-enabled-technologies() {
 
-  cat <<EOF
-Usage: $(basename "$0") <destination-directory>
+  local techs=()
 
-Copy prompt files assets to a destination repository.
+  if is-arg-true "${all:-false}"; then
+    techs+=("all")
+  else
+    for tech in "${ALL_TECHS[@]}"; do
+      local var_value
+      eval "var_value=\${${tech}:-false}"
+      if is-arg-true "${var_value}"; then
+        techs+=("${tech}")
+      fi
+    done
+  fi
 
-Arguments:
-    destination-directory   Target directory (absolute or relative path)
-
-Examples:
-    $(basename "$0") /path/to/my-project
-    $(basename "$0") ../my-project
-    VERBOSE=true $(basename "$0") ~/projects/my-app
-EOF
+  if [[ ${#techs[@]} -eq 0 ]]; then
+    echo "Technologies: default only (use all=true or individual switches to include more)"
+  else
+    echo "Technologies: default + ${techs[*]}"
+  fi
 }
 
-# Print an error message to stderr and exit.
+# Check if a technology is enabled.
 # Arguments:
-#   $1=[error message to display]
-function print-error() {
+#   $1=[technology name]
+function is-tech-enabled() {
 
-  echo "Error: $1" >&2
-  exit 1
+  local tech="$1"
+
+  if is-arg-true "${all:-false}"; then
+    return 0
+  fi
+
+  # Use indirect variable reference with default value
+  local var_value
+  eval "var_value=\${${tech}:-false}"
+  if is-arg-true "${var_value}"; then
+    return 0
+  fi
+
+  return 1
 }
 
-# Print an informational message.
-# Arguments:
-#   $1=[message to display]
-function print-info() {
+# Wipe target directories before copying.
+# Arguments (provided as function parameters):
+#   $1=[destination directory path]
+function wipe-directories() {
 
-  echo "→ $1"
+  local dest="$1/.github"
+  local dirs=("agents" "instructions" "prompts" "skills")
+
+  for dir in "${dirs[@]}"; do
+    if [[ -d "${dest}/${dir}" ]]; then
+      print-info "Removing ${dest}/${dir}"
+      rm -rf "${dest}/${dir}"
+    fi
+  done
 }
 
 # Copy agent files to the destination.
+# All agents are spec-kit related and always copied.
 # Arguments (provided as function parameters):
 #   $1=[destination directory path]
 function copy-agents() {
@@ -143,6 +314,7 @@ function copy-agents() {
 }
 
 # Copy instruction files to the destination.
+# Copies default instructions always, technology-specific ones based on switches.
 # Arguments (provided as function parameters):
 #   $1=[destination directory path]
 function copy-instructions() {
@@ -152,23 +324,67 @@ function copy-instructions() {
 
   print-info "Copying instruction files to ${dest_instructions}"
 
-  # Copy top-level instruction files
-  find "${INSTRUCTIONS_DIR}" -maxdepth 1 -name "*.md" -type f -exec cp {} "${dest_instructions}/" \;
+  # Copy default instruction files
+  for instruction in "${DEFAULT_INSTRUCTIONS[@]}"; do
+    local file="${INSTRUCTIONS_DIR}/${instruction}.instructions.md"
+    if [[ -f "${file}" ]]; then
+      cp "${file}" "${dest_instructions}/"
+    fi
+  done
 
-  # Copy includes directory if it exists
+  # Copy technology-specific instruction files
+  for tech in "${ALL_TECHS[@]}"; do
+    if is-tech-enabled "${tech}"; then
+      local instructions
+      instructions=$(get-tech-instruction "${tech}")
+      if [[ -n "${instructions}" ]]; then
+        # Handle space-separated list (for playwright)
+        for instruction in ${instructions}; do
+          local file="${INSTRUCTIONS_DIR}/${instruction}.instructions.md"
+          if [[ -f "${file}" ]]; then
+            cp "${file}" "${dest_instructions}/"
+          fi
+        done
+      fi
+    fi
+  done
+
+  # Copy includes directory (always - shared baselines)
   if [[ -d "${INSTRUCTIONS_DIR}/includes" ]]; then
     mkdir -p "${dest_instructions}/includes"
     cp -R "${INSTRUCTIONS_DIR}/includes/." "${dest_instructions}/includes/"
   fi
 
-  # Copy templates directory if it exists
+  # Copy templates directory (selective)
   if [[ -d "${INSTRUCTIONS_DIR}/templates" ]]; then
     mkdir -p "${dest_instructions}/templates"
-    cp -R "${INSTRUCTIONS_DIR}/templates/." "${dest_instructions}/templates/"
+
+    # Copy default templates
+    for template in "${DEFAULT_TEMPLATES[@]}"; do
+      local file="${INSTRUCTIONS_DIR}/templates/${template}"
+      if [[ -f "${file}" ]]; then
+        cp "${file}" "${dest_instructions}/templates/"
+      fi
+    done
+
+    # Copy technology-specific templates
+    for tech in "${ALL_TECHS[@]}"; do
+      if is-tech-enabled "${tech}"; then
+        local template
+        template=$(get-tech-template "${tech}")
+        if [[ -n "${template}" ]]; then
+          local file="${INSTRUCTIONS_DIR}/templates/${template}"
+          if [[ -f "${file}" ]]; then
+            cp "${file}" "${dest_instructions}/templates/"
+          fi
+        fi
+      fi
+    done
   fi
 }
 
 # Copy prompt files to the destination.
+# Copies default prompts always, technology-specific ones based on switches.
 # Arguments (provided as function parameters):
 #   $1=[destination directory path]
 function copy-prompts() {
@@ -177,19 +393,63 @@ function copy-prompts() {
   mkdir -p "${dest_prompts}"
 
   print-info "Copying prompt files to ${dest_prompts}"
-  find "${PROMPTS_DIR}" -maxdepth 1 -name "*.prompt.md" -type f -exec cp {} "${dest_prompts}/" \;
+
+  # Copy default prompt files using patterns
+  for pattern in "${DEFAULT_PROMPT_PATTERNS[@]}"; do
+    # Use find with -name to match patterns
+    find "${PROMPTS_DIR}" -maxdepth 1 -name "${pattern}.prompt.md" -type f -exec cp {} "${dest_prompts}/" \; 2>/dev/null || true
+  done
+
+  # Copy technology-specific prompt files
+  for tech in "${ALL_TECHS[@]}"; do
+    if is-tech-enabled "${tech}"; then
+      local prompts
+      prompts=$(get-tech-prompt "${tech}")
+      if [[ -n "${prompts}" ]]; then
+        # Handle space-separated list (for playwright)
+        for prompt in ${prompts}; do
+          local file="${PROMPTS_DIR}/${prompt}.prompt.md"
+          if [[ -f "${file}" ]]; then
+            cp "${file}" "${dest_prompts}/"
+          fi
+        done
+      fi
+    fi
+  done
 }
 
-# Copy skills files to the destination (recursively including subdirectories).
+# Copy skills files to the destination.
+# Copies default skills always, technology-specific ones based on switches.
 # Arguments (provided as function parameters):
 #   $1=[destination directory path]
 function copy-skills() {
 
   local dest_skills="$1/.github/skills"
+  mkdir -p "${dest_skills}"
 
   print-info "Copying skills files to ${dest_skills}"
-  # Use cp -R to preserve directory structure for nested skill packs
-  cp -R "${SKILLS_DIR}" "$1/.github/"
+
+  # Copy default skills
+  for skill in "${DEFAULT_SKILLS[@]}"; do
+    local skill_dir="${SKILLS_DIR}/${skill}"
+    if [[ -d "${skill_dir}" ]]; then
+      cp -R "${skill_dir}" "${dest_skills}/"
+    fi
+  done
+
+  # Copy technology-specific skills
+  for tech in "${ALL_TECHS[@]}"; do
+    if is-tech-enabled "${tech}"; then
+      local skill
+      skill=$(get-tech-skill "${tech}")
+      if [[ -n "${skill}" ]]; then
+        local skill_dir="${SKILLS_DIR}/${skill}"
+        if [[ -d "${skill_dir}" ]]; then
+          cp -R "${skill_dir}" "${dest_skills}/"
+        fi
+      fi
+    fi
+  done
 }
 
 # Copy copilot-instructions.md to the destination.
@@ -238,6 +498,74 @@ function copy-docs-gitignore() {
 
   print-info "Copying docs/.gitignore to ${dest}"
   cp "${DOCS_GITIGNORE}" "${dest}/"
+}
+
+# Copy project.code-workspace to the destination if it does not already exist.
+# Arguments (provided as function parameters):
+#   $1=[destination directory path]
+function copy-workspace-file() {
+
+  local dest_file="$1/project.code-workspace"
+
+  if [[ -f "${dest_file}" ]]; then
+    print-info "Skipping project.code-workspace (already exists)"
+  else
+    print-info "Copying project.code-workspace to $1"
+    cp "${WORKSPACE_FILE}" "$1/"
+  fi
+}
+
+# Print usage information.
+function print-usage() {
+
+  cat <<EOF
+Usage: $(basename "$0") <destination-directory>
+
+Copy prompt files assets to a destination repository.
+
+Arguments:
+    destination-directory   Target directory (absolute or relative path)
+
+Technology switches (set to 'true' to include):
+    all=true                Include all technology-specific files
+    python=true             Python instruction and prompt
+    typescript=true         TypeScript instruction and prompt
+    react=true              React instruction and prompt
+    rust=true               Rust instruction and prompt
+    terraform=true          Terraform instruction and prompt
+    tauri=true              Tauri instruction and prompt (auto-enables rust, typescript, react)
+    playwright=true         Playwright instruction and prompt (requires python or typescript)
+    django=true             Django skill (auto-enables python)
+    fastapi=true            FastAPI skill (auto-enables python)
+
+Other options:
+    wipe=true               Remove destination directories before copying
+    VERBOSE=true            Show all executed commands
+
+Examples:
+    $(basename "$0") /path/to/my-project
+    python=true $(basename "$0") ../my-project
+    all=true wipe=true $(basename "$0") ~/projects/my-app
+    python=true playwright=true $(basename "$0") ~/projects/my-app
+    django=true $(basename "$0") ~/projects/my-app  # auto-enables python
+EOF
+}
+
+# Print an error message to stderr and exit.
+# Arguments:
+#   $1=[error message to display]
+function print-error() {
+
+  echo "Error: $1" >&2
+  exit 1
+}
+
+# Print an informational message.
+# Arguments:
+#   $1=[message to display]
+function print-info() {
+
+  echo "→ $1"
 }
 
 # ==============================================================================
