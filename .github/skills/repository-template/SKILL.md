@@ -37,6 +37,25 @@ Use the following checks after confirming the git URL:
 
 When in doubt, follow the [Updating from the template repository](./SKILL.md#updating-from-the-template-repository) workflow to pull fresh assets.
 
+### Critical Integration Rules 🚨
+
+When adopting **any** capability from this skill, AI assistants **must** follow these rules:
+
+1. **Core Make System is a prerequisite** — Most capabilities depend on make targets defined in `scripts/init.mk`. If `scripts/init.mk` does not exist in the target repository, adopt the [Core Make System](#1-core-make-system) first.
+2. **Preserve `init.mk` in full** — Never partially copy `scripts/init.mk`. It contains interdependent targets (`_install-dependencies`, `githooks-config`, `clean`, etc.) that other capabilities rely on. Always copy the complete file.
+3. **Ensure `include scripts/init.mk`** — The repository's `Makefile` must contain `include scripts/init.mk` near the top. Without this, make targets from `init.mk` are unavailable.
+4. **Wire up `config::` for dependencies** — When adopting capabilities that require asdf-managed tools (pre-commit, gitleaks, vale, terraform, etc.):
+   - Add the tool to `.tool-versions`
+   - Ensure the `Makefile` has a `config::` target that calls `$(MAKE) _install-dependencies`
+   - Example:
+
+     ```makefile
+     config:: # Configure development environment @Configuration
+         $(MAKE) _install-dependencies
+     ```
+
+5. **Verify after adoption** — Always run the verification commands listed in each capability section to confirm correct integration.
+
 ## Quick Reference 🧠
 
 | Capability                                                         | Purpose                      | Key Files                                                                       |
@@ -90,8 +109,27 @@ make list-variables    # Debug: show all make variables
 **To adopt**:
 
 1. Copy `assets/Makefile` and `assets/scripts/init.mk` to your repository
-2. Customise the `Makefile` with your project-specific targets
-3. Add `@Pipeline`, `@Operations`, `@Configuration`, `@Development`, `@Testing`, `@Quality`, or `@Others` annotations to target comments for categorisation
+2. Ensure `Makefile` contains `include scripts/init.mk` near the top (after any variable definitions)
+3. Customise the `Makefile` with your project-specific targets
+4. Add `@Pipeline`, `@Operations`, `@Configuration`, `@Development`, `@Testing`, `@Quality`, or `@Others` annotations to target comments for categorisation
+5. Add a `config::` target that calls `$(MAKE) _install-dependencies` to ensure asdf tools are installed:
+
+   ```makefile
+   config:: # Configure development environment @Configuration
+       $(MAKE) _install-dependencies
+   ```
+
+**Essential make targets from `init.mk`** (do not remove or modify):
+
+| Target                  | Purpose                                          |
+| ----------------------- | ------------------------------------------------ |
+| `help`                  | Self-documenting target list                     |
+| `config`                | Base configuration (extended via `config::`)     |
+| `clean`                 | Base cleanup (extended via `clean::`)            |
+| `_install-dependencies` | Install all tools from `.tool-versions` via asdf |
+| `_install-dependency`   | Install a single asdf tool                       |
+| `githooks-config`       | Install pre-commit hooks                         |
+| `githooks-run`          | Run all pre-commit hooks                         |
 
 **Verification** (run after adoption):
 
@@ -137,11 +175,19 @@ make githooks-run      # Run all hooks manually
 
 **To adopt**:
 
-1. Copy `scripts/config/pre-commit.yaml`
-2. Copy the corresponding `scripts/githooks/*.sh` scripts for enabled hooks
-3. Add `pre-commit` to `.tool-versions` (e.g., `pre-commit 4.5.1`)
-4. Run `asdf install` to install pre-commit
-5. Run `make githooks-config`
+1. **Prerequisite**: Ensure [Core Make System](#1-core-make-system) is already adopted
+2. Copy `scripts/config/pre-commit.yaml`
+3. Copy the corresponding `scripts/githooks/*.sh` scripts for enabled hooks
+4. Add `pre-commit` to `.tool-versions` (e.g., `pre-commit 4.5.1`)
+5. Ensure `Makefile` has `config::` target that calls `$(MAKE) _install-dependencies`:
+
+   ```makefile
+   config:: # Configure development environment @Configuration
+       $(MAKE) _install-dependencies
+   ```
+
+6. Run `make config` to install pre-commit via asdf
+7. Run `make githooks-config` to install the git hooks
 
 **Verification** (run after adoption):
 
