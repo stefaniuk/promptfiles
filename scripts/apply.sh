@@ -38,7 +38,8 @@ set -euo pipefail
 #   - copilot-instructions.md
 #   - constitution.md
 #   - adr-template.md
-#   - docs/.gitignore
+#   - docs/codebase-overview/ (with .gitignore)
+#   - docs/prompt-reports/ (with .gitignore)
 #   - project.code-workspace (if not already present)
 #
 # Exit codes:
@@ -64,7 +65,8 @@ SKILLS_DIR="${REPO_ROOT}/.github/skills"
 COPILOT_INSTRUCTIONS="${REPO_ROOT}/.github/copilot-instructions.md"
 CONSTITUTION="${REPO_ROOT}/.specify/memory/constitution.md"
 ADR_TEMPLATE="${REPO_ROOT}/docs/adr/adr-template.md"
-DOCS_GITIGNORE="${REPO_ROOT}/docs/.gitignore"
+DOCS_CODEBASE_OVERVIEW="${REPO_ROOT}/docs/codebase-overview"
+DOCS_PROMPT_REPORTS="${REPO_ROOT}/docs/prompt-reports"
 WORKSPACE_FILE="${REPO_ROOT}/project.code-workspace"
 
 # Default instruction files (glue layer)
@@ -230,7 +232,8 @@ function main() {
   copy-copilot-instructions "${destination}"
   copy-constitution "${destination}"
   copy-adr-template "${destination}"
-  copy-docs-gitignore "${destination}"
+  copy-docs-codebase-overview "${destination}"
+  copy-docs-prompt-reports "${destination}"
   copy-workspace-file "${destination}"
 
   echo
@@ -488,16 +491,28 @@ function copy-adr-template() {
   cp "${ADR_TEMPLATE}" "${dest}/"
 }
 
-# Copy docs/.gitignore to the destination.
+# Copy docs/codebase-overview directory to the destination.
 # Arguments (provided as function parameters):
 #   $1=[destination directory path]
-function copy-docs-gitignore() {
+function copy-docs-codebase-overview() {
 
-  local dest="$1/docs"
+  local dest="$1/docs/codebase-overview"
   mkdir -p "${dest}"
 
-  print-info "Copying docs/.gitignore to ${dest}"
-  cp "${DOCS_GITIGNORE}" "${dest}/"
+  print-info "Copying docs/codebase-overview to ${dest}"
+  cp -R "${DOCS_CODEBASE_OVERVIEW}/." "${dest}/"
+}
+
+# Copy docs/prompt-reports directory to the destination.
+# Arguments (provided as function parameters):
+#   $1=[destination directory path]
+function copy-docs-prompt-reports() {
+
+  local dest="$1/docs/prompt-reports"
+  mkdir -p "${dest}"
+
+  print-info "Copying docs/prompt-reports to ${dest}"
+  cp -R "${DOCS_PROMPT_REPORTS}/." "${dest}/"
 }
 
 # Copy project.code-workspace to the destination if it does not already exist.
