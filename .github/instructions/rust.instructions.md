@@ -225,8 +225,9 @@ For Rust services and CLIs that produce structured logs, follow the [Structured 
 
 ### 9.5 Diagnostics
 
-- [RS-OBS-011] Default to `info` level; enable `debug`/`trace` only via explicit configuration (`RUST_LOG` or application config).
+- [RS-OBS-011] Default to `info` level; enable `debug`/`trace` only via explicit configuration (`RUST_LOG` or application config). Use `trace` for function/method entry logging (per [§5.1 of the baseline](./includes/observability-logging-baseline.include.md#51-log-level-hierarchy)) and `debug` for coarser diagnostic messages.
 - [RS-OBS-012] Every exception must trigger exactly one `error!` log entry with `error_code` and correlation identifiers, even if the software can recover.
+- [RS-OBS-013] When `trace` level is enabled, use `#[instrument(level = "trace")]` on all public functions and async boundaries to emit function entry spans automatically.
 
 ---
 
@@ -285,5 +286,5 @@ Before shipping Rust code, verify:
 
 ---
 
-> **Version**: 1.3.2
-> **Last Amended**: 2026-01-17
+> **Version**: 1.4.0
+> **Last Amended**: 2026-01-20

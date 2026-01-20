@@ -566,9 +566,9 @@ Logs must be structured (prefer JSON), queryable, and consistent.
   - [PY-OBS-019d] errors (once, with structured context)
   - [PY-OBS-019e] When `DEBUG`/diagnostic logging is enabled, emit a single function/method entry log for every call path, capturing the operation name and a sanitised summary of arguments per the [Structured Logging Baseline §5](./includes/observability-logging-baseline.include.md#5-diagnostics--sampling); never include sensitive data.
 
-Log level policy:
+Log level policy (see also [§5.1 of the baseline](./includes/observability-logging-baseline.include.md#51-log-level-hierarchy)):
 
-- [PY-OBS-020] `DEBUG`: only for local/dev or explicitly enabled diagnostics (never required in normal production operation)
+- [PY-OBS-020] `DEBUG`: diagnostic level that **includes trace-like function/method entry logging** (Python's stdlib `logging` lacks a distinct `TRACE` level); only for local/dev or explicitly enabled diagnostics (never required in normal production operation)
 - [PY-OBS-021] `INFO`: normal request lifecycle and major domain events
 - [PY-OBS-022] `WARNING`: degraded behaviour, retries, unexpected but handled conditions
 - [PY-OBS-023] `ERROR`: failed operations, exceptions, dependency failures
@@ -1124,5 +1124,5 @@ These patterns cause recurring issues in Python codebases. Avoid them unless an 
 
 ---
 
-> **Version**: 1.6.3
-> **Last Amended**: 2026-01-18
+> **Version**: 1.7.0
+> **Last Amended**: 2026-01-20

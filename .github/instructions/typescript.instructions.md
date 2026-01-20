@@ -565,9 +565,9 @@ If the system depends on external services (cloud APIs, databases, third-party s
 
 ### 11.6 Debugging modes 🪲
 
-- [TS-ERR-017] Support controlled diagnostics:
+- [TS-ERR-017] Support controlled diagnostics (see also [§5.1 of the baseline](./includes/observability-logging-baseline.include.md#51-log-level-hierarchy) for level hierarchy):
   - [TS-ERR-017a] `--verbose` increases detail (CLIs)
-  - [TS-ERR-017b] `--debug` may include stack traces (still never secrets)
+  - [TS-ERR-017b] `--debug` may include stack traces and enables function/method entry logging (trace-like behaviour; still never secrets)
 - [TS-ERR-018] Diagnostics must not change behaviour, only observability.
 
 ---
@@ -1017,5 +1017,5 @@ This section defines a **framework-agnostic** baseline for building maintainable
 
 ---
 
-> **Version**: 1.5.2
-> **Last Amended**: 2026-01-17
+> **Version**: 1.6.0
+> **Last Amended**: 2026-01-20

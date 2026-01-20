@@ -52,8 +52,28 @@ For CLI invocations (especially long-running ones):
 
 ## 5. Diagnostics & sampling 🔬
 
-- [OBS-DIA-001] Default logging level for services is `info`; enable `debug` only when explicitly requested (flag/env var) and clearly documented.
-- [OBS-DIA-002] When verbose or debug logging is enabled, emit a single function/method entry log for **every** call path, capturing the operation name and a sanitised summary of arguments (masking or omitting anything covered by §3). This keeps diagnostic runs self-explanatory without leaking secrets.
+### 5.1 Log level hierarchy
+
+Standard severity levels in descending order of verbosity:
+
+| Level      | Purpose                                                                                       |
+| ---------- | --------------------------------------------------------------------------------------------- |
+| `trace`    | Finest-grained: function/method entry for every call path (when runtime supports it)          |
+| `debug`    | Diagnostic detail; **includes trace-like function entry logging** when `trace` is unavailable |
+| `info`     | Normal request lifecycle, domain events                                                       |
+| `warning`  | Degraded behaviour, retries, unexpected but handled conditions                                |
+| `error`    | Failed operations, exceptions, dependency failures                                            |
+| `critical` | Data loss, security incidents, corruption, or systemic failure                                |
+
+> When a runtime lacks a distinct `trace` level (for example Python's stdlib `logging`), `debug` assumes trace responsibilities. Runtimes with both (for example Rust's `tracing` crate) should use `trace` for function entry and reserve `debug` for coarser diagnostic messages.
+
+### 5.2 Default levels and enabling diagnostics
+
+- [OBS-DIA-001] Default logging level for services is `info`; enable `debug` (or `trace` where available) only when explicitly requested (flag/env var) and clearly documented.
+- [OBS-DIA-002] When `debug` or `trace` logging is enabled, emit a single function/method entry log for **every** call path, capturing the operation name and a sanitised summary of arguments (masking or omitting anything covered by §3). This keeps diagnostic runs self-explanatory without leaking secrets.
+
+### 5.3 Sampling and size management
+
 - [OBS-DIA-003] For noisy components, support sampling (for example only log 1/N successes but 100% of errors).
 - [OBS-DIA-004] When sampling, log the sampling rate so downstream systems can extrapolate.
 - [OBS-DIA-005] Keep log size bounded: truncate oversized payloads with a clear `truncated=true` flag.
@@ -67,5 +87,5 @@ For CLI invocations (especially long-running ones):
 
 ---
 
-> **Version**: 1.2.2
-> **Last Amended**: 2026-01-17
+> **Version**: 1.3.0
+> **Last Amended**: 2026-01-20
