@@ -241,7 +241,7 @@ def main() -> int:
 
     # Print results
     print_results(results, base_dir, args.sort_by)
-    print("\n")
+    print("")
 
     return 0
 
