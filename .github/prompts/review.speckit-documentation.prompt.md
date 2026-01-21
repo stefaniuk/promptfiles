@@ -119,11 +119,27 @@ Rules:
 - Any other document that needs the concept **must reference it via a local Markdown link**.
 - Inline redefinitions, paraphrasing, or copy-paste duplication are prohibited.
 
+Canonical location selection (choose the most intuitive home for readers):
+
+- **Domain terms and business concepts** belong in the feature's `spec.md` glossary or a dedicated `definitions.md`.
+- **Data entities and field semantics** belong in `data-model.md`.
+- **API resources and operations** belong in `contracts/` (OpenAPI, GraphQL schema, etc.).
+- **Architectural patterns and technology choices** belong in the relevant ADR under `docs/adr/`.
+- **Cross-cutting project conventions** belong in the constitution or `README.md`.
+
+Do not move a definition to a location that would surprise a reader searching for it. If multiple locations seem equally valid, prefer the document that introduces the concept first in the specification workflow (`spec.md` → `data-model.md` → `contracts/` → `plan.md`).
+
+Cross-referencing at the canonical site:
+
+- The canonical definition **should include a "See also" or "Referenced by" note** listing the documents that depend on it (for example "Referenced by: `plan.md#phase-2`, `tasks.md#T012`").
+- This bidirectional linking helps readers discover related context without duplicating the definition itself.
+
 If duplication exists:
 
-- Identify the canonical definition location
+- Identify the **most intuitive** canonical definition location (not just the first occurrence)
 - Identify all duplicated instances
 - Propose replacement with Markdown links
+- Add cross-references at the canonical site so readers can trace usage
 
 ---
 
