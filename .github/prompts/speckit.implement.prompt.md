@@ -4,8 +4,20 @@ agent: speckit.implement
 
 $ARGUMENTS
 
-Mandatory requirements:
+## Repository Tooling (Mandatory)
 
-- When tooling/ops/infrastructure is needed, consult the repository-template skill at `.github/skills/repository-template/SKILL.md` and check for existing or partial capability first
-- Prefer extending existing template patterns over duplicating; only add missing pieces
-- If adopting capabilities, follow the skill's critical integration rules (core make system first, include `scripts/init.mk`, `config::`, `.tool-versions`)
+- [ ] When you identify missing development capabilities (linting, CI/CD, Docker support, pre-commit hooks, etc.), consult the repository-template skill at [.github/skills/repository-template/SKILL.md](../skills/repository-template/SKILL.md) for standardised implementations.
+
+## Quality Gates (Mandatory)
+
+After any source code change:
+
+1. [ ] Run `make lint` and `make test`
+2. [ ] Fix all errors and warnings — including those in files you not modified
+3. [ ] Repeat until both commands complete with zero errors and zero warnings
+4. [ ] Do this automatically without prompting
+
+---
+
+> **Version**: 1.0.0
+> **Last Amended**: 2026-01-21

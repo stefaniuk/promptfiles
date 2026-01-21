@@ -9,15 +9,6 @@
 
 - [ ] Read and adhere to the [constitution](../.specify/memory/constitution.md) at all times
 
-## Quality Gates (Mandatory)
-
-After any source code change:
-
-1. [ ] Run `make lint` and `make test`
-2. [ ] Fix all errors and warnings — including those in files you not modified
-3. [ ] Repeat until both commands complete with zero errors and zero warnings
-4. [ ] Do this automatically without prompting
-
 ## Documentation (Mandatory)
 
 When making architectural or significant technical decisions, document them as Architecture Decision Records (ADRs):
@@ -39,11 +30,32 @@ When making architectural or significant technical decisions, document them as A
 
 This requirement is mandatory, especially during the spec-driven development cycle: `spec` → `plan` → `tasks` → `implement`.
 
-## Repository Tooling (Recommended)
+## Toolchain Version (Mandatory)
 
-When you identify missing development capabilities (linting, CI/CD, Docker support, pre-commit hooks, etc.), consult the repository-template skill at [.github/skills/repository-template/SKILL.md](skills/repository-template/SKILL.md) for standardised implementations.
+- [ ] Use the latest stable language, runtime, and framework versions at the time of change
+- [ ] Pin versions in the repository (for example `.tool-versions`, `.python-version`, `.node-version`, `pyproject.toml` `requires-python`, `package.json` `engines`)
+- [ ] Avoid floating `latest` tags; if blocked, document the reason and chosen version in an ADR
+
+## Test-Driven Development (Mandatory)
+
+- [ ] Define tasks using a strict TDD approach
+- [ ] For each specified functionality, sequence tasks as Red (write failing test first), Green (implement to pass), then Refactor (improve code without changing behavior)
+- [ ] Ensure tests are always listed before implementation tasks
+
+## Repository Tooling (Mandatory)
+
+- [ ] When you identify missing development capabilities (linting, CI/CD, Docker support, pre-commit hooks, etc.), consult the repository-template skill at [.github/skills/repository-template/SKILL.md](./skills/repository-template/SKILL.md) for standardised implementations.
+
+## Quality Gates (Mandatory)
+
+After any source code change:
+
+1. [ ] Run `make lint` and `make test`
+2. [ ] Fix all errors and warnings — including those in files you not modified
+3. [ ] Repeat until both commands complete with zero errors and zero warnings
+4. [ ] Do this automatically without prompting
 
 ---
 
-> **Version**: 1.4.0
-> **Last Amended**: 2026-01-20
+> **Version**: 1.5.0
+> **Last Amended**: 2026-01-21
