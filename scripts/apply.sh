@@ -442,7 +442,7 @@ function copy-skills() {
   for skill in "${DEFAULT_SKILLS[@]}"; do
     local skill_dir="${SKILLS_DIR}/${skill}"
     if [[ -d "${skill_dir}" ]]; then
-      cp -R "${skill_dir}" "${dest_skills}/"
+      copy-directory-excluding-git "${skill_dir}" "${dest_skills}/${skill}"
     fi
   done
 
@@ -454,7 +454,7 @@ function copy-skills() {
       if [[ -n "${skill}" ]]; then
         local skill_dir="${SKILLS_DIR}/${skill}"
         if [[ -d "${skill_dir}" ]]; then
-          cp -R "${skill_dir}" "${dest_skills}/"
+          copy-directory-excluding-git "${skill_dir}" "${dest_skills}/${skill}"
         fi
       fi
     fi
@@ -558,6 +558,26 @@ function copy-workspace-file() {
     print-info "Copying project.code-workspace to $1"
     cp "${WORKSPACE_FILE}" "$1/"
   fi
+}
+
+# Copy a directory without bringing across any nested .git metadata.
+# Arguments (provided as function parameters):
+#   $1=[source directory path]
+#   $2=[destination directory path]
+function copy-directory-excluding-git() {
+
+  local source_dir="$1"
+  local target_dir="$2"
+
+  mkdir -p "${target_dir}"
+
+  if command -v rsync > /dev/null 2>&1; then
+    rsync -a --exclude='.git' --exclude='.git/' "${source_dir}/" "${target_dir}/"
+  else
+    tar -C "${source_dir}" --exclude='.git' -cf - . | tar -C "${target_dir}" -xf -
+  fi
+
+  return 0
 }
 
 # Print usage information.
