@@ -32,9 +32,7 @@ This requirement is mandatory, especially during the spec-driven development cyc
 
 ## Toolchain Version (Mandatory)
 
-- [ ] Use the latest stable language, runtime, and framework versions at the time of change
-- [ ] Pin versions in the repository (for example `.tool-versions`, `.python-version`, `.node-version`, `pyproject.toml` `requires-python`, `package.json` `engines`)
-- [ ] Avoid floating `latest` tags; if blocked, document the reason and chosen version in an ADR
+- [ ] Use the latest stable language, runtime, and framework versions at the time of change, search the internet for the latest versions
 
 ## Test-Driven Development (Mandatory)
 

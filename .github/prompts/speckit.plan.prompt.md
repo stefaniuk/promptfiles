@@ -2,7 +2,7 @@
 agent: speckit.plan
 ---
 
-$ARGUMENTS
+You must adhere to the following mandatory planning requirements when creating a development plan.
 
 ## Documentation (Mandatory)
 
@@ -27,9 +27,19 @@ This requirement is mandatory, especially during the spec-driven development cyc
 
 ## Toolchain Version (Mandatory)
 
-- [ ] Use the latest stable language, runtime, and framework versions at the time of change
-- [ ] Pin versions in the repository (for example `.tool-versions`, `.python-version`, `.node-version`, `pyproject.toml` `requires-python`, `package.json` `engines`)
-- [ ] Avoid floating `latest` tags; if blocked, document the reason and chosen version in an ADR
+- [ ] Use the latest stable language, runtime, and framework versions at the time of change, search the internet for the latest versions
+
+## Plan (Mandatory)
+
+- [ ] Plan each phase and user story to include a Show & Tell section with all instructions needed to demonstrate the completed work to stakeholders (e.g. terminal commands, browser navigation, API calls)
+- [ ] Plan to always bring the below capabilities as the minimum using the repository-template skill at [.github/skills/repository-template/SKILL.md](../skills/repository-template/SKILL.md), and ensure they are up to date:
+  - [ ] Core Make System
+  - [ ] Pre-commit Hooks
+  - [ ] Secret Scanning
+  - [ ] File Format Checking
+  - [ ] Markdown Linting
+  - [ ] Docker Support
+  - [ ] Tool Version Management
 
 ---
 

@@ -2,7 +2,7 @@
 agent: speckit.implement
 ---
 
-$ARGUMENTS
+You must adhere to the following mandatory implementation requirements when writing code for features.
 
 ## Repository Tooling (Mandatory)
 
