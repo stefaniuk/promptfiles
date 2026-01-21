@@ -29,14 +29,10 @@ test: # Run all tests @Testing
 clone-rt: # Clone the repository template into .github/skills/repository-template @Operations
 	.github/skills/repository-template/scripts/git-clone-repository-template.sh
 
-specify: # Re-initialise speck-kit files @Operations
-	specify init \
-		--ai copilot \
-		--script sh \
-		--ignore-agent-tools \
-		--no-git \
-		--here \
-		--force
+patch-speckit: # Fetch upstream spec-kit and apply local extensions @Operations
+	./scripts/patch-speckit.sh
+
+specify: patch-speckit # Alias for patch-speckit (backwards compatibility) @Operations
 
 apply: # Copy prompt files assets to a destination repository; mandatory: dest=[path]; optional: wipe=[true|false], all|python|typescript|react|rust|terraform|tauri|playwright|django|fastapi=[true] @Operations
 	if [ -z "$(dest)" ]; then
@@ -89,5 +85,6 @@ ${VERBOSE}.SILENT: \
 	lint-file-format \
 	lint-markdown-format \
 	lint-markdown-links \
+	patch-speckit \
 	specify \
 	test \

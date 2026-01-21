@@ -91,6 +91,8 @@ flowchart TD
   constitution["/speckit.constitution"] --> specify["/speckit.specify"]
 
   specify --> needClarification{Need clarification?}
+  specify -.- specifyNote["💡 Example: Transform the product
+  requirements document  #file:PRD.md into a formal specification"]
   needClarification -- Yes --> clarify["/speckit.clarify"]
   clarify --> specify
   needClarification -- No --> plan["/speckit.plan"]
@@ -118,7 +120,7 @@ flowchart TD
   class specify,plan,tasks,implement action;
   class needClarification,domainCoverage,consistency question;
   class clarify,checklist,analyze review;
-  class checklistNote note;
+  class specifyNote,checklistNote note;
 ```
 
 ### 📤 Sync Prompt Files
