@@ -49,3 +49,8 @@ Before marking `tasks.md` as complete, verify:
 - [ ] Test tasks are listed before their corresponding implementation tasks
 - [ ] Each phase and user story ends with a task that runs `make lint` and `make test`
 - [ ] Each phase and user story includes a `### Show & Tell` subsection with executable steps
+
+---
+
+> **Version**: 1.5.1
+> **Last Amended**: 2026-01-21

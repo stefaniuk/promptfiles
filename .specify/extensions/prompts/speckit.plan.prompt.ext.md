@@ -36,3 +36,8 @@ Before marking `plan.md` as complete, verify:
   - [ ] Tool Version Management
 - [ ] Each phase and user story includes a `### Show & Tell` subsection
 - [ ] Show & Tell subsections are placed at the end of each phase or user story
+
+---
+
+> **Version**: 1.5.1
+> **Last Amended**: 2026-01-21

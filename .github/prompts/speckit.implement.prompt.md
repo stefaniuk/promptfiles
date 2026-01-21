@@ -33,3 +33,8 @@ Before marking implementation as complete, verify:
 - [ ] All `### Show & Tell` steps executed successfully for each phase
 - [ ] Repository-template capabilities are present and up to date (see [.github/skills/repository-template/SKILL.md](/.github/skills/repository-template/SKILL.md))
 - [ ] `make lint` and `make test` complete with zero errors and zero warnings
+
+---
+
+> **Version**: 1.5.1
+> **Last Amended**: 2026-01-21

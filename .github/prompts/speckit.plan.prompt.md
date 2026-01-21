@@ -29,7 +29,7 @@ Before marking `plan.md` as complete, verify:
 
 - [ ] Plan addresses all requirements from `spec.md`
 - [ ] All architectural decisions have corresponding ADRs
-- [ ] Toolchain versions are specified
+- [ ] Toolchain versions are specified, verified online during planning, and confirmed as the latest stable releases
 - [ ] Repository-template capabilities are planned using the skill at [.github/skills/repository-template/SKILL.md](/.github/skills/repository-template/SKILL.md), including at minimum:
   - [ ] Core Make System
   - [ ] Pre-commit Hooks
@@ -40,3 +40,8 @@ Before marking `plan.md` as complete, verify:
   - [ ] Tool Version Management
 - [ ] Each phase and user story includes a `### Show & Tell` subsection
 - [ ] Show & Tell subsections are placed at the end of each phase or user story
+
+---
+
+> **Version**: 1.5.1
+> **Last Amended**: 2026-01-21
