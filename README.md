@@ -88,32 +88,37 @@ The spec-kit lifecycle: **discover** the right prompt → **ground** it in a spe
 
 ```mermaid
 flowchart TD
-  constitution[//speckit.constitution/] --> specify[//speckit.specify/]
+  constitution["/speckit.constitution"] --> specify["/speckit.specify"]
 
   specify --> needClarification{Need clarification?}
-  needClarification -- Yes --> clarify[//speckit.clarify/]
+  needClarification -- Yes --> clarify["/speckit.clarify"]
   clarify --> specify
-  needClarification -- No --> plan[//speckit.plan/]
+  needClarification -- No --> plan["/speckit.plan"]
 
   plan --> domainCoverage{Check domain coverage?}
-  domainCoverage -- Yes --> checklist[//speckit.checklist/]
+  domainCoverage -- Yes --> checklist["/speckit.checklist"]
   checklist --> plan
-  domainCoverage -- No --> tasks[//speckit.tasks/]
+  checklist -.- checklistNote["💡 Example: Create a checklist for assembling,
+  building and testing the deployment artefacts
+  of all the components being implemented"]
+  domainCoverage -- No --> tasks["/speckit.tasks"]
 
   tasks --> consistency{Need consistency check?}
-  consistency -- Yes --> analyze[//speckit.analyze/]
+  consistency -- Yes --> analyze["/speckit.analyze"]
   analyze --> tasks
-  consistency -- No --> implement[//speckit.implement phase X/]
+  consistency -- No --> implement["/speckit.implement phase X"]
 
   classDef source fill:#dbeafe,stroke:#1d4ed8,color:#0f172a,stroke-width:1px;
   classDef action fill:#d1fae5,stroke:#34d399,color:#064e3b,stroke-width:1px;
   classDef question fill:#fef3c7,stroke:#ea580c,color:#78350f,stroke-width:1px;
   classDef review fill:#fce7f3,stroke:#db2777,color:#831843,stroke-width:1px;
+  classDef note fill:#f5f5f4,stroke:#a8a29e,color:#57534e,stroke-width:1px,stroke-dasharray:3;
 
   class constitution source;
   class specify,plan,tasks,implement action;
   class needClarification,domainCoverage,consistency question;
   class clarify,checklist,analyze review;
+  class checklistNote note;
 ```
 
 ### 📤 Sync Prompt Files
