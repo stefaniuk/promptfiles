@@ -91,8 +91,7 @@ flowchart TD
   constitution["/speckit.constitution"] --> specify["/speckit.specify"]
 
   specify --> needClarification{Need clarification?}
-  specify -.- specifyNote["💡 Example: Transform the product
-  requirements document  #file:PRD.md into a formal specification"]
+  specify -.- specifyNote["💡 Example: Transform the product requirements document #file:PRD.md into a formal specification"]
   needClarification -- Yes --> clarify["/speckit.clarify"]
   clarify --> specify
   needClarification -- No --> plan["/speckit.plan"]
@@ -100,9 +99,7 @@ flowchart TD
   plan --> domainCoverage{Check domain coverage?}
   domainCoverage -- Yes --> checklist["/speckit.checklist"]
   checklist --> plan
-  checklist -.- checklistNote["💡 Example: Create a checklist for assembling,
-  building and testing the deployment artefacts
-  of all the components being implemented"]
+  checklist -.- checklistNote["💡 Example: Create a checklist for assembling, building and testing the deployment artefacts of all the components being implemented"]
   domainCoverage -- No --> tasks["/speckit.tasks"]
 
   tasks --> consistency{Need consistency check?}
