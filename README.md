@@ -95,19 +95,20 @@ flowchart TD
   needClarification -- Yes --> clarify["/speckit.clarify"]
   clarify --> specify
   needClarification -- No --> plan["/speckit.plan"]
-  plan -.- planNote["💡 Example (run+1): After planning completes, run the command again to verify all items on the Plan Completion Checklist are satisfied"]
+  plan -.- planNote["💡 Example (run +1): Run again to verify all items on the Plan Completion Checklist are satisfied"]
 
   plan --> domainCoverage{Check domain coverage?}
   domainCoverage -- Yes --> checklist["/speckit.checklist"]
   checklist --> plan
   checklist -.- checklistNote["💡 Example: Create a checklist for building, assembling and testing the deployment artefacts of all the components being implemented"]
   domainCoverage -- No --> tasks["/speckit.tasks"]
-  tasks -.- tasksNote["💡 Example (run+1): After breaking down the plan into tasks, run the command again to verify all items on the Tasks Completion Checklist are satisfied"]
+  tasks -.- tasksNote["💡 Example (run +1): Run again to verify all items on the Tasks Completion Checklist items are satisfied"]
 
   tasks --> consistency{Need consistency check?}
   consistency -- Yes --> analyze["/speckit.analyze"]
   analyze --> tasks
   consistency -- No --> reviewDocs["/review.speckit-documentation"]
+  reviewDocs -.- reviewDocsNote["💡 Example (run+1): Validate #file:deployment.md checklist, confirm each item is documented, apply sensible defaults where missing or request clarification"]
   reviewDocs --> implement["/speckit.implement"]
   implement -.- implementNote["💡 Example (run N-times): Phase X"]
   implement --> reviewCode["/review.speckit-code"]
@@ -125,7 +126,7 @@ flowchart TD
   class needClarification,domainCoverage,consistency question;
   class clarify,checklist,analyze review;
   class reviewDocs,reviewCode,reviewTest docReview;
-  class specifyNote,checklistNote,planNote,tasksNote,implementNote note;
+  class specifyNote,checklistNote,planNote,tasksNote,implementNote,reviewDocsNote note;
 ```
 
 ### 📤 Sync Prompt Files
