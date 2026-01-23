@@ -57,10 +57,7 @@ count-tokens: # Count LLM tokens for key instruction packs; optional: args=[file
 		)
 
 clean:: # Remove project-specific generated files (main) @Operations
-	rm -rf \
-		.github/skills/repository-template/assets \
-		docs/codebase-overview \
-		docs/prompt-reports
+	rm -rf .github/skills/repository-template/assets
 	find . \( \
 		-name ".coverage" -o \
 		-name ".env" -o \

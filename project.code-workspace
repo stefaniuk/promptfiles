@@ -37,8 +37,8 @@
       "path": "./docs/codebase-overview",
     },
     {
-      "name": "Docs: Prompt Reports",
-      "path": "./docs/prompt-reports",
+      "name": "Docs: Prompts",
+      "path": "./docs/prompts",
     },
     {
       "name": "Docs: Other",
