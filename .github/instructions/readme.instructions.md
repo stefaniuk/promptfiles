@@ -89,8 +89,8 @@ They are **non-negotiable** unless an explicit ADR grants a scoped, time-bound e
 
 ### 6.2 Why this project exists
 
-- [RD-SEC-004] Populate the section using the exact bullet labels: **Purpose**, **Benefit to the reader**, **Problem it solves**, **How it solves it (high level)**.
-- [RD-SEC-005] Keep the section between four and eight lines, with each line grounded in repository evidence.
+- [RD-SEC-004] Populate the section using the exact subsections: **Purpose**, **Benefit to the user**, **Problem it solves**, **How it solves it (high level)**.
+- [RD-SEC-005] Use prose as the writing style in this section. Each of its subsections can have a sizable paragraph with good narrative being grounded in repository evidence.
 
 ### 6.3 Quick start
 

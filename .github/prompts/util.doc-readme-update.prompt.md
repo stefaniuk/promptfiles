@@ -58,7 +58,7 @@ The final `README.md` must contain sections in this exact order:
 
 1. `# <Project Name>` `[RD-STR-002]`
 2. One-line summary immediately below the title `[RD-STR-003]`, `[RD-SEC-002]`
-3. `## Why this project exists` `[RD-STR-004]` — include bullets: **Purpose**, **Benefit to the reader**, **Problem it solves**, **How it solves it (high level)** `[RD-SEC-004]`
+3. `## Why this project exists` `[RD-STR-004]` — include the following subsections: **Purpose**, **Benefit to the user**, **Problem it solves**, **How it solves it (high level)** `[RD-SEC-004]`
 4. `## Quick start` `[RD-STR-005]` — prerequisites, install/setup, first run, expected output `[RD-SEC-007]`–`[RD-SEC-012]`
 5. `## What it does` `[RD-STR-006]` — 3–8 features, 2–6 non-goals, platforms if evidenced `[RD-SEC-013]`–`[RD-SEC-015]`
 6. `## How it solves the problem` `[RD-STR-007]` — short flow, key terms `[RD-SEC-016]`–`[RD-SEC-018]`
