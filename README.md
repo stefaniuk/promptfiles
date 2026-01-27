@@ -1,8 +1,8 @@
-# Prompt Files
+# GitHub Copilot Prompt Files
 
 A curated, specification-first library of prompts, instruction packs, skills, and Copilot agents that keeps AI helpers aligned with the spec-kit operating model.
 
-[![Spec-Kit](https://img.shields.io/badge/spec--kit-powered-blue?style=for-the-badge)](https://github.com/stefaniuk/promptfiles)
+[![Spec-Kit](https://img.shields.io/badge/spec--kit-powered-blue?style=for-the-badge)](https://github.com/stefaniuk/promptfiles-copilot)
 [![Licence](https://img.shields.io/badge/licence-MIT-green?style=for-the-badge)](LICENCE.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=for-the-badge)](./.github/contributing.md)
 
@@ -36,7 +36,7 @@ Prompts, agents, and skills are written directly against the spec-kit constituti
 
 ```bash
 # Clone the repository
-git clone https://github.com/stefaniuk/promptfiles.git
+git clone https://github.com/stefaniuk/promptfiles-copilot.git
 cd promptfiles
 
 # Configure the development environment
@@ -238,7 +238,7 @@ We welcome contributions! See [.github/contributing.md](.github/contributing.md)
 ### Development setup
 
 ```bash
-git clone https://github.com/stefaniuk/promptfiles.git
+git clone https://github.com/stefaniuk/promptfiles-copilot.git
 cd promptfiles
 make config
 ```

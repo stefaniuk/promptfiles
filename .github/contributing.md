@@ -58,7 +58,7 @@ Thank you for your interest in contributing to this prompt library! This guide w
 
 ```bash
 # Clone the repository
-git clone https://github.com/stefaniuk/promptfiles.git
+git clone https://github.com/stefaniuk/promptfiles-copilot.git
 cd promptfiles
 
 # Verify quality gates work
