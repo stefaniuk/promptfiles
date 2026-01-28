@@ -11,13 +11,27 @@ Audit every Python file in this repository against the logging standards defined
 ### Step 1: Discover Python files
 
 1. Run `git ls-files '*.py'` to enumerate all tracked Python files.
-2. For each file, note whether it imports a logging library (e.g., `logging`, `structlog`, `loguru`) or contains `logger` / `log` references.
+2. For each file, search for **any** diagnostic output pattern:
+   - Logging imports: `logging`, `structlog`, `loguru`, or project logger
+   - Direct stderr: `sys.stderr.write`, `sys.stderr.flush`
+   - Print to stderr: `print(..., file=sys.stderr)`
+   - Print for diagnostics: `print(` used for status/error output
+   - Logger references: `logger`, `log`, `_log`
+3. Flag files with diagnostic output that do **not** import the central logger.
 
 ### Step 2: Assess logging practices
 
 For every file that uses logging (or should but does not), evaluate compliance against the categories below. Report each finding and remediate inline where feasible.
 
 ## Implementation requirements 🛠️
+
+### Anti-patterns (flag and fix immediately) 🚫
+
+- **Bypassing central logger**: `sys.stderr.write()`, `print(file=sys.stderr)`, or raw `print()` for diagnostic output — route through central logger instead.
+- **Direct logging import**: `import logging` / `logging.getLogger()` instead of project factory — use the central logger factory.
+- **Inline helper functions**: local `_log_*()` wrappers that write directly to stderr rather than delegating to the central service.
+- **Silent failures**: bare `except:` or `except Exception:` without logging.
+- **Mixed output channels**: some modules using central logger while others bypass it.
 
 ### Principles
 
@@ -104,5 +118,5 @@ Flag any misuse (e.g., logging an error condition at INFO).
 
 ---
 
-> **Version**: 1.0.1
+> **Version**: 1.1.0
 > **Last Amended**: 2026-01-28
