@@ -22,7 +22,8 @@ When making architectural or significant technical decisions, document them as A
 
 **ADR requirements:**
 
-- [ ] Use the template at [docs/adr/adr-template.md](../docs/adr/adr-template.md)
+- [ ] Only consult the ADR template when creating or updating an ADR; do not read it otherwise
+- [ ] Use the template at [docs/adr/adr-template.md](../docs/adr/adr-template.md) when an ADR is required
 - [ ] Follow the existing ADR format for consistency
 - [ ] Always present 3 or more options with trade-offs
 - [ ] Include the conversational context that led to the decision
@@ -55,5 +56,5 @@ After any source code change:
 
 ---
 
-> **Version**: 1.5.0
-> **Last Amended**: 2026-01-21
+> **Version**: 1.5.1
+> **Last Amended**: 2026-01-28
