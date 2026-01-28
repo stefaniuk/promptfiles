@@ -33,13 +33,13 @@ For every file that uses logging (or should but does not), evaluate compliance a
 - **Silent failures**: bare `except:` or `except Exception:` without logging.
 - **Mixed output channels**: some modules using central logger while others bypass it.
 
-### Principles
+### Principles 🧭
 
 - **Signal over noise**: logs must capture intent, boundaries, decisions, and failures—not routine execution. Flag verbose or redundant log statements.
 - **Structured format**: prefer key=value pairs or JSON; avoid unstructured prose that is hard to parse.
 - **Consistency**: log fields, levels, and phrasing should be uniform across all classes and modules. Flag deviations.
 
-### Project-level logger configuration
+### Project-level logger configuration 🏗️
 
 - **Single configuration point**: one central factory or module must define logger setup; all other modules import from it.
 - **Environment-driven settings**: log level, sinks, and format must be configurable via environment variables or a config file, not hard-coded.
@@ -49,14 +49,15 @@ For every file that uses logging (or should but does not), evaluate compliance a
 - **No accidental duplication**: require explicit configuration to enable multiple sinks; guard against double logging.
 - **Redaction before output**: sensitive fields must be scrubbed before any sink receives the log entry.
 
-### Class-level logging
+### Class-level logging 🧩
 
+- **Bound logger pattern (mandatory)**: use the factory function `get_logger(component="ClassName")` which returns a `BoundLogger` pre-bound to the component name. Call log methods directly on the bound logger (`self._logger.debug(...)`) rather than defining per-class wrapper methods (`_log_debug`, `_log_info`, etc.). This eliminates boilerplate and ensures a single point of change.
 - **One logger per class/module**: instantiate a logger with the class or module name so context is always present.
 - **Constructor logging**: log significant configuration or injected dependencies once at INFO when the object is created.
 - **Lifecycle events**: log state transitions (started, stopped, reloaded) at INFO or WARN as appropriate.
 - **Dependency failures**: include identifiers, error details, and retry information when logging external dependency issues.
 
-### Method-level logging
+### Method-level logging 🧪
 
 - **Entry and exit traces**: every non-trivial method should log entry and exit at DEBUG or TRACE—unless it is a hot path.
 - **Safe input logging**: log inputs only after sanitisation; never log secrets, tokens, or PII.
@@ -65,7 +66,7 @@ For every file that uses logging (or should but does not), evaluate compliance a
 - **Timing information**: log duration for slow or critical operations (or emit metrics instead).
 - **Avoid noise**: do not add "started/finished" logs to trivial or idempotent methods.
 
-### Log levels
+### Log levels 🎚️
 
 | Level | Purpose                                   |
 | ----- | ----------------------------------------- |
@@ -77,13 +78,13 @@ For every file that uses logging (or should but does not), evaluate compliance a
 
 Flag any misuse (e.g., logging an error condition at INFO).
 
-### Content
+### Content 🧾
 
 - **Contextual identifiers**: include correlation/request ID, user/session ID (where safe), and operation name.
 - **No secrets**: never log passwords, tokens, API keys, or full request/response bodies.
 - **Redaction and truncation**: mask sensitive fields and truncate large payloads to a reasonable length.
 
-### Console visualisation
+### Console visualisation 🖥️
 
 - **Colour as enhancement**: use colour to reinforce meaning, but always pair with text labels, symbols, or icons for accessibility.
 - **Contrast and colour-blindness**: ensure sufficient contrast; avoid red/green-only distinctions.
@@ -94,7 +95,7 @@ Flag any misuse (e.g., logging an error condition at INFO).
 - **Level tags and icons**: use short, consistent tags (INFO, WARN, ERROR) with an optional single icon per level.
 - **Bounded output**: truncate or wrap large fields; never allow unbounded blobs to break layout.
 
-### Performance
+### Performance ⚡
 
 - **Guard expensive construction**: wrap costly string formatting or object serialisation in a level check (e.g., `if logger.isEnabledFor(DEBUG)`).
 - **Avoid tight-loop logging**: do not log inside hot loops unless sampled or rate-limited.
@@ -118,5 +119,5 @@ Flag any misuse (e.g., logging an error condition at INFO).
 
 ---
 
-> **Version**: 1.1.0
+> **Version**: 1.1.1
 > **Last Amended**: 2026-01-28
