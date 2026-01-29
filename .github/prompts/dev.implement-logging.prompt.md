@@ -6,7 +6,7 @@ description: Evaluate and enforce specific logging discipline across the codebas
 
 ## Goal 🎯
 
-Audit every Python file in this repository against the logging standards defined below. For each file, report compliance or non-compliance per category, citing concrete evidence (function names, line numbers, code snippets). Where gaps exist, implement fixes immediately using the sensible defaults described in this prompt.
+Review every Python file against the logging standards below. Report compliance with evidence and fix gaps using the defaults in this prompt and the baseline.
 
 ## Steps 👣
 
@@ -24,6 +24,12 @@ Audit every Python file in this repository against the logging standards defined
 ### Step 2: Assess logging practices
 
 For every file that uses logging (or should but does not), evaluate compliance against the categories below. Report each finding and remediate inline where feasible.
+
+### Step 3: Assess observability baseline compliance
+
+Use it for context and evaluate each runtime that emits structured logs against the Observability Baseline:
+
+- [.github/instructions/includes/observability-baseline.include.md](../instructions/includes/observability-baseline.include.md)
 
 ## Implementation requirements 🛠️
 

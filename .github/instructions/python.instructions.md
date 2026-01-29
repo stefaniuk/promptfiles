@@ -547,7 +547,7 @@ For CLIs:
 - [PY-OBS-012] Structured logging (JSON) should be available when useful:
   - [PY-OBS-012a] `--log-format json` (or equivalent)
   - [PY-OBS-012b] `--log-level` (INFO/WARNING/ERROR/DEBUG)
-- [PY-OBS-013] When emitting structured output, include the CLI invocation fields defined in the [Structured Logging Baseline](./includes/observability-logging-baseline.include.md#2-required-fields-clis) and never log secrets, tokens, credentials, or raw personal data.
+- [PY-OBS-013] When emitting structured output, include the CLI invocation fields defined in the [Structured Logging Baseline](./includes/observability-baseline.include.md#2-required-fields-clis) and never log secrets, tokens, credentials, or raw personal data.
 - [PY-OBS-014] Prefer event-style logs with stable names:
   - [PY-OBS-014a] `command.start`, `command.end`, `step.start`, `step.end`, `dependency.call`, `dependency.error`
 
@@ -555,18 +555,18 @@ For APIs (mandatory structured logging):
 
 Logs must be structured (prefer JSON), queryable, and consistent.
 
-- [PY-OBS-015] Service/API logs must include the required fields defined in the [Structured Logging Baseline](./includes/observability-logging-baseline.include.md#1-required-fields-services-apis); do not fork or trim that list locally.
+- [PY-OBS-015] Service/API logs must include the required fields defined in the [Structured Logging Baseline](./includes/observability-baseline.include.md#1-required-fields-services-apis); do not fork or trim that list locally.
 - [PY-OBS-016] HTTP metadata (method, path template, status code) and timing/outcome fields from the baseline are mandatory for every request log entry.
-- [PY-OBS-017] Apply the baseline secrecy rules ([section 3](./includes/observability-logging-baseline.include.md#3-sensitive-data--secrecy-rules)): never log secrets, credentials, or raw personal data; mask or truncate payloads when logging is explicitly required.
-- [PY-OBS-018] Use the baseline event taxonomy ([section 4](./includes/observability-logging-baseline.include.md#4-event-naming--taxonomy)) so request/dependency events stay searchable across repos.
+- [PY-OBS-017] Apply the baseline secrecy rules ([section 3](./includes/observability-baseline.include.md#3-sensitive-data--secrecy-rules)): never log secrets, credentials, or raw personal data; mask or truncate payloads when logging is explicitly required.
+- [PY-OBS-018] Use the baseline event taxonomy ([section 4](./includes/observability-baseline.include.md#4-event-naming--taxonomy)) so request/dependency events stay searchable across repos.
 - [PY-OBS-019] Prefer high-signal logs only:
   - [PY-OBS-019a] start/end of request (one each)
   - [PY-OBS-019b] key domain decision points (not every line)
   - [PY-OBS-019c] boundary calls (DB, AWS, HTTP)
   - [PY-OBS-019d] errors (once, with structured context)
-  - [PY-OBS-019e] When `DEBUG`/diagnostic logging is enabled, emit a single function/method entry log for every call path, capturing the operation name and a sanitised summary of arguments per the [Structured Logging Baseline §5](./includes/observability-logging-baseline.include.md#5-diagnostics--sampling); never include sensitive data.
+  - [PY-OBS-019e] When `DEBUG`/diagnostic logging is enabled, emit a single function/method entry log for every call path, capturing the operation name and a sanitised summary of arguments per the [Structured Logging Baseline §5](./includes/observability-baseline.include.md#5-diagnostics--sampling); never include sensitive data.
 
-Log level policy (see also [§5.1 of the baseline](./includes/observability-logging-baseline.include.md#51-log-level-hierarchy)):
+Log level policy (see also [§5.1 of the baseline](./includes/observability-baseline.include.md#51-log-level-hierarchy)):
 
 - [PY-OBS-020] `DEBUG`: diagnostic level that **includes trace-like function/method entry logging** (Python's stdlib `logging` lacks a distinct `TRACE` level); only for local/dev or explicitly enabled diagnostics (never required in normal production operation)
 - [PY-OBS-021] `INFO`: normal request lifecycle and major domain events

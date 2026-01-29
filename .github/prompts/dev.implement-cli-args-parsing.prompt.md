@@ -6,7 +6,7 @@ description: Evaluate and enforce specific CLI argument parsing discipline acros
 
 ## Goal 🎯
 
-Audit every CLI entrypoint and argument parser in this repository against the CLI Contract Baseline and the argument parsing standards defined below. For each entrypoint, report compliance or non-compliance per category, citing concrete evidence (function names, line numbers, code snippets). Where gaps exist, implement fixes immediately using the sensible defaults described in this prompt and the baseline.
+Review every CLI entrypoint and argument parser against the CLI standards below. Report compliance with evidence and fix gaps using the defaults in this prompt and the baseline.
 
 ## Steps 👣
 
@@ -25,21 +25,11 @@ Audit every CLI entrypoint and argument parser in this repository against the CL
 2. Flag manual parsing (`sys.argv`, `os.Args`, `process.argv`) or ad-hoc split logic that bypasses a parser.
 3. Record where validation and default handling occur.
 
-### Step 3: Assess compliance
+### Step 3: Assess CLI contract baseline compliance
 
-Evaluate each CLI against the CLI Contract Baseline at:
+Use it for context and evaluate each CLI against the CLI Contract Baseline:
 
-- `.github/instructions/includes/cli-contract-baseline.include.md`
-
-Report compliance for:
-
-- Exit codes
-- Stdout vs stderr
-- Documentation and testing expectations
-- Developer ergonomics
-- Wrappers and shared libraries
-- Cloud and serverless workloads (where relevant)
-- Argument parsing and flags
+- [.github/instructions/includes/cli-contract-baseline.include.md](../instructions/includes/cli-contract-baseline.include.md)
 
 ### Step 4: Remediate
 

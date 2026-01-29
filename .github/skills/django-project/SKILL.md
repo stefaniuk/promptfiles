@@ -14,7 +14,7 @@ Mandatory reads (must be loaded before using this skill):
 - [Python instructions](../../instructions/python.instructions.md) — use its identifiers when describing compliance.
 - [Local-first dev baseline](../../instructions/includes/local-first-dev-baseline.include.md)
 - [Quality gates baseline](../../instructions/includes/quality-gates-baseline.include.md)
-- [Observability logging baseline](../../instructions/includes/observability-logging-baseline.include.md)
+- [Observability logging baseline](../../instructions/includes/observability-baseline.include.md)
 - [AI-assisted change baseline](../../instructions/includes/ai-assisted-change-baseline.include.md)
 
 ## Inputs to confirm ✅

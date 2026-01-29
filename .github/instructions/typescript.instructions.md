@@ -565,7 +565,7 @@ If the system depends on external services (cloud APIs, databases, third-party s
 
 ### 11.6 Debugging modes 🪲
 
-- [TS-ERR-017] Support controlled diagnostics (see also [§5.1 of the baseline](./includes/observability-logging-baseline.include.md#51-log-level-hierarchy) for level hierarchy):
+- [TS-ERR-017] Support controlled diagnostics (see also [§5.1 of the baseline](./includes/observability-baseline.include.md#51-log-level-hierarchy) for level hierarchy):
   - [TS-ERR-017a] `--verbose` increases detail (CLIs)
   - [TS-ERR-017b] `--debug` may include stack traces and enables function/method entry logging (trace-like behaviour; still never secrets)
 - [TS-ERR-018] Diagnostics must not change behaviour, only observability.
@@ -592,11 +592,11 @@ Observability is non-negotiable.
 
 ### 12.2 Logging
 
-- [TS-OBS-004] Prefer structured logs (JSON) and follow the [Structured Logging Baseline](./includes/observability-logging-baseline.include.md) for canonical field definitions.
-- [TS-OBS-005] Service/API logs must include the required metadata from [section 1](./includes/observability-logging-baseline.include.md#1-required-fields-services-apis); do not remove or rename those fields locally.
-- [TS-OBS-006] CLI/worker logs that emit structured output must include the CLI invocation fields from [section 2](./includes/observability-logging-baseline.include.md#2-required-fields-clis).
-- [TS-OBS-007] Apply the secrecy and event taxonomy rules from [sections 3–4](./includes/observability-logging-baseline.include.md#3-sensitive-data--secrecy-rules); never log secrets or personal data, and keep event names (`request.*`, `dependency.*`, etc.) stable for automation.
-  - [TS-OBS-007a] When verbose or debug logging is enabled, emit a single function/method entry log for every call path with the operation name and a sanitised summary of arguments per [section 5](./includes/observability-logging-baseline.include.md#5-diagnostics--sampling); never include sensitive payloads.
+- [TS-OBS-004] Prefer structured logs (JSON) and follow the [Structured Logging Baseline](./includes/observability-baseline.include.md) for canonical field definitions.
+- [TS-OBS-005] Service/API logs must include the required metadata from [section 1](./includes/observability-baseline.include.md#1-required-fields-services-apis); do not remove or rename those fields locally.
+- [TS-OBS-006] CLI/worker logs that emit structured output must include the CLI invocation fields from [section 2](./includes/observability-baseline.include.md#2-required-fields-clis).
+- [TS-OBS-007] Apply the secrecy and event taxonomy rules from [sections 3–4](./includes/observability-baseline.include.md#3-sensitive-data--secrecy-rules); never log secrets or personal data, and keep event names (`request.*`, `dependency.*`, etc.) stable for automation.
+  - [TS-OBS-007a] When verbose or debug logging is enabled, emit a single function/method entry log for every call path with the operation name and a sanitised summary of arguments per [section 5](./includes/observability-baseline.include.md#5-diagnostics--sampling); never include sensitive payloads.
 
 ### 12.3 Metrics
 

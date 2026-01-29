@@ -199,7 +199,7 @@ For Rust CLIs, follow the [CLI Contract](./includes/cli-contract-baseline.includ
 
 ## 9. Observability 🔭
 
-For Rust services and CLIs that produce structured logs, follow the [Structured Logging Baseline](./includes/observability-logging-baseline.include.md).
+For Rust services and CLIs that produce structured logs, follow the [Structured Logging Baseline](./includes/observability-baseline.include.md).
 
 ### 9.1 Tooling
 
@@ -209,23 +209,23 @@ For Rust services and CLIs that produce structured logs, follow the [Structured 
 
 ### 9.2 Required fields
 
-- [RS-OBS-004] Service/API logs must include the required fields from [§1 of the baseline](./includes/observability-logging-baseline.include.md#1-required-fields-services-apis-async-workers): `service`, `version`, `environment`, `request_id`, `operation`, `duration_ms`, and `error_code` (on failure).
-- [RS-OBS-005] CLI logs must include the required fields from [§2 of the baseline](./includes/observability-logging-baseline.include.md#2-required-fields-clis): `command`, `args` (sanitised), `exit_code`, `duration_ms`.
+- [RS-OBS-004] Service/API logs must include the required fields from [§1 of the baseline](./includes/observability-baseline.include.md#1-required-fields-services-apis-async-workers): `service`, `version`, `environment`, `request_id`, `operation`, `duration_ms`, and `error_code` (on failure).
+- [RS-OBS-005] CLI logs must include the required fields from [§2 of the baseline](./includes/observability-baseline.include.md#2-required-fields-clis): `command`, `args` (sanitised), `exit_code`, `duration_ms`.
 
 ### 9.3 Secrecy and safety
 
-- [RS-OBS-006] Apply the secrecy rules from [§3 of the baseline](./includes/observability-logging-baseline.include.md#3-sensitive-data--secrecy-rules): never log secrets, tokens, or raw personal data.
+- [RS-OBS-006] Apply the secrecy rules from [§3 of the baseline](./includes/observability-baseline.include.md#3-sensitive-data--secrecy-rules): never log secrets, tokens, or raw personal data.
 - [RS-OBS-007] Use `tracing`'s `skip` or `skip_all` in `#[instrument]` to exclude sensitive fields from spans.
 - [RS-OBS-008] When logging payloads, truncate large bodies and mark with `truncated=true`.
 
 ### 9.4 Event taxonomy
 
-- [RS-OBS-009] Use the event taxonomy from [§4 of the baseline](./includes/observability-logging-baseline.include.md#4-event-naming--taxonomy): stable names like `request.start`, `request.end`, `dependency.call`, `dependency.error`.
+- [RS-OBS-009] Use the event taxonomy from [§4 of the baseline](./includes/observability-baseline.include.md#4-event-naming--taxonomy): stable names like `request.start`, `request.end`, `dependency.call`, `dependency.error`.
 - [RS-OBS-010] Emit both start and end spans/events around expensive boundaries (HTTP calls, DB queries, filesystem IO).
 
 ### 9.5 Diagnostics
 
-- [RS-OBS-011] Default to `info` level; enable `debug`/`trace` only via explicit configuration (`RUST_LOG` or application config). Use `trace` for function/method entry logging (per [§5.1 of the baseline](./includes/observability-logging-baseline.include.md#51-log-level-hierarchy)) and `debug` for coarser diagnostic messages.
+- [RS-OBS-011] Default to `info` level; enable `debug`/`trace` only via explicit configuration (`RUST_LOG` or application config). Use `trace` for function/method entry logging (per [§5.1 of the baseline](./includes/observability-baseline.include.md#51-log-level-hierarchy)) and `debug` for coarser diagnostic messages.
 - [RS-OBS-012] Every exception must trigger exactly one `error!` log entry with `error_code` and correlation identifiers, even if the software can recover.
 - [RS-OBS-013] When `trace` level is enabled, use `#[instrument(level = "trace")]` on all public functions and async boundaries to emit function entry spans automatically.
 
@@ -281,7 +281,7 @@ Before shipping Rust code, verify:
 - [RS-CHK-008] No `unwrap()` in library code; justified only in binaries
 - [RS-CHK-009] No anti-patterns from §12 are present
 - [RS-CHK-010] Code passes `cargo fmt`, `cargo clippy`, `cargo test`, `cargo doc`
-- [RS-CHK-011] Structured logs follow the [Observability Logging Baseline](./includes/observability-logging-baseline.include.md)
+- [RS-CHK-011] Structured logs follow the [Observability Logging Baseline](./includes/observability-baseline.include.md)
 - [RS-CHK-012] CLI binaries follow the [CLI Contract](./includes/cli-contract-baseline.include.md) for exit codes and streams
 
 ---

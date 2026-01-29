@@ -516,7 +516,7 @@ Logging must be intentional, queryable, and safe.
 **Operational rules:**
 
 - [TF-OBS-020] Prefer structured logs (JSON) for application logs; avoid free-text-only logs.
-  - [TF-OBS-020a] Application logs emitted by Lambda functions, ECS containers, and similar compute must follow the [Structured Logging Baseline](./includes/observability-logging-baseline.include.md) field requirements — this is an infrastructure concern because log retention, parsing, and alerting depend on consistent schemas.
+  - [TF-OBS-020a] Application logs emitted by Lambda functions, ECS containers, and similar compute must follow the [Structured Logging Baseline](./includes/observability-baseline.include.md) field requirements — this is an infrastructure concern because log retention, parsing, and alerting depend on consistent schemas.
 - [TF-OBS-021] Ensure logs include correlation identifiers consistently (request id / trace id / account id / region).
 - [TF-OBS-022] Use CloudWatch Logs Insights-friendly fields and stable event names.
 
