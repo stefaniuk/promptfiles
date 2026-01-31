@@ -1,6 +1,6 @@
 ---
 name: repository-template
-description: Toolkit for creating a code repository from template, or/and updating it in parts from the content of the template that contains example of use of tools like make, pre-commit git hooks, Docker, Terraform etc.
+description: Toolkit for creating a code repository from template, or/and updating it in parts from the content of the template that contains example of use of tools like make, pre-commit git hooks, Docker, and quality checks.
 ---
 
 # Repository Template Skill 🧩
@@ -41,10 +41,10 @@ When in doubt, follow the [Updating from the template repository](./SKILL.md#upd
 
 When adopting **any** capability from this skill, AI assistants **must** follow these rules:
 
-1. **Core Make System is a prerequisite** — Most capabilities depend on make targets defined in `scripts/init.mk`. If `scripts/init.mk` does not exist in the target repository, adopt the [Core Make System](#1-core-make-system) first.
+1. **Core Make System is a prerequisite** — Most capabilities depend on make targets defined in `scripts/init.mk`. If `scripts/init.mk` does not exist in the target repository, adopt the [Core Make System](#1-core-make-system-gnu-make) first.
 2. **Preserve `init.mk` in full** — Never partially copy `scripts/init.mk`. It contains interdependent targets (`_install-dependencies`, `githooks-config`, `clean`, etc.) that other capabilities rely on. Always copy the complete file.
 3. **Ensure `include scripts/init.mk`** — The repository's `Makefile` must contain `include scripts/init.mk` near the top. Without this, make targets from `init.mk` are unavailable.
-4. **Wire up `config::` for dependencies** — When adopting capabilities that require asdf-managed tools (pre-commit, gitleaks, vale, terraform, etc.):
+4. **Wire up `config::` for dependencies** — When adopting capabilities that require asdf-managed tools (pre-commit, gitleaks, etc.):
    - Add the tool to `.tool-versions`
    - Ensure the `Makefile` has a `config::` target that calls `$(MAKE) _install-dependencies`
    - Example:
@@ -56,39 +56,98 @@ When adopting **any** capability from this skill, AI assistants **must** follow 
 
 5. **Verify after adoption** — Always run the verification commands listed in each capability section to confirm correct integration.
 
+## Scope and non-goals 🎯
+
+**Scope**:
+
+- Provide modular, copyable capabilities for repository setup, quality checks, tooling, and documentation
+- Standardise local and CI workflows through Make targets and shared scripts
+- Offer repeatable, deterministic setup via pinned tool versions
+
+**Non-goals**:
+
+- Full application scaffolding (use the feature-specific skills for that)
+- Windows-native or PowerShell-first workflows
+- Opinionated runtime or framework choices beyond the capabilities listed below
+
+## Compatibility 🧩
+
+- **Supported**: macOS and Linux
+- **Supported via WSL**: Windows (WSL2 with a Linux distribution)
+- **Not supported**: Windows-native shells and PowerShell workflows
+- **Core tooling expectations**: GNU Make 3.82+ and a POSIX-compatible shell
+- **Optional tooling**: asdf for version pinning, Docker/Podman for container-related capabilities
+
+## Troubleshooting 🛠️
+
+- **Make target not found**: Ensure `scripts/init.mk` exists and `include scripts/init.mk` is present near the top of `Makefile`.
+- **asdf command missing**: Install asdf or remove asdf-specific steps from the capability you are adopting.
+- **Pre-commit hooks do not run**: Run `make githooks-config` and confirm `.git/hooks/pre-commit` exists.
+- **Docker checks fail**: Confirm Docker/Podman is installed and running, then rerun `make docker-lint`.
+
+## Upgrade guidance 🔄
+
+When updating a repository that already uses this template:
+
+1. Pull fresh assets using `./.github/skills/repository-template/scripts/git-clone-repository-template.sh`
+2. Compare changed files and copy only the capabilities you use
+3. Re-run `make config` and any verification steps for the updated capabilities
+4. Review CI workflows and `.tool-versions` for version pin changes
+5. You can ask GitHub Copilot to use this skill to perform the upgrade for you
+
+## Security considerations 🔐
+
+- Do not commit secrets; rely on secret scanning and ignore lists for known false positives
+- Keep CI credentials scoped to the minimum required permissions
+- Treat `.tool-versions` and configuration files as security-sensitive inputs
+- Review new third-party tools before adoption and pin versions where possible
+
+## FAQ ❓
+
+**Does this support Windows?**
+No. Use WSL2 with a Linux distribution if you are on Windows.
+
+**Can I adopt a single capability?**
+Yes. Each capability is modular; copy only the files it references.
+
+**Do I need asdf?**
+Only for capabilities that rely on version pinning; it is optional otherwise.
+
+**Where do the source files live?**
+They are in the `assets/` subtree under this skill.
+
 ## Quick Reference 🧠
 
-| Capability                                                         | Purpose                      | Key Files                                                                       |
-| ------------------------------------------------------------------ | ---------------------------- | ------------------------------------------------------------------------------- |
-| [Core Make System](#1-core-make-system)                            | Standardised task runner     | `Makefile`, `scripts/init.mk`                                                   |
-| [Pre-commit Hooks](#2-pre-commit-hooks)                            | Git hooks framework          | `scripts/config/pre-commit.yaml`, `scripts/githooks/`                           |
-| [Secret Scanning](#3-secret-scanning-gitleaks)                     | Prevent credential leaks     | `scripts/githooks/scan-secrets.sh`, `scripts/config/gitleaks.toml`              |
-| [File Format Checking](#4-file-format-checking-editorconfig)       | Consistent file formatting   | `.editorconfig`, `scripts/githooks/check-file-format.sh`                        |
-| [Markdown Linting](#5-markdown-linting)                            | Documentation quality        | `scripts/githooks/check-markdown-format.sh`, `scripts/config/markdownlint.yaml` |
-| [English Prose Checking](#6-english-prose-checking-vale)           | Writing quality              | `scripts/githooks/check-english-usage.sh`, `scripts/config/vale/`               |
-| [Docker Support](#7-docker-support)                                | Container build/run/lint     | `scripts/docker/`, `scripts/config/hadolint.yaml`                               |
-| [Terraform Support](#8-terraform-support)                          | IaC linting and formatting   | `scripts/terraform/`, `infrastructure/`                                         |
-| [Shell Script Linting](#9-shell-script-linting-shellcheck)         | Bash quality checks          | `scripts/shellscript-linter.sh`                                                 |
-| [Test Framework](#10-test-framework)                               | Standardised test targets    | `scripts/tests/test.mk`                                                         |
-| [GitHub Actions CI/CD](#11-github-actions-cicd)                    | Pipeline workflows           | `.github/workflows/`, `.github/actions/`                                        |
-| [Local GitHub Actions Runner](#12-local-github-actions-runner-act) | Run workflows locally        | `scripts/init.mk` (runner-act target)                                           |
-| [Dependency Scanning](#13-dependency-scanning-grype--syft)         | Vulnerability scanning       | `scripts/config/grype.yaml`, `scripts/reports/create-sbom-report.sh`            |
-| [Lines of Code Reporting](#14-lines-of-code-reporting)             | Codebase metrics             | `scripts/reports/create-lines-of-code-report.sh`                                |
-| [VS Code Integration](#15-vs-code-integration)                     | Editor configuration         | `.vscode/`, `project.code-workspace`                                            |
-| [Dev Container](#16-dev-container)                                 | Containerised development    | `.devcontainer/devcontainer.json`                                               |
-| [Tool Version Management](#17-tool-version-management-asdf)        | Reproducible toolchain       | `.tool-versions`                                                                |
-| [GitHub Repository Templates](#18-github-repository-templates)     | Issue/PR/security templates  | `.github/ISSUE_TEMPLATE/`, `.github/PULL_REQUEST_TEMPLATE.md`                   |
-| [Dependabot](#19-dependabot)                                       | Automated dependency updates | `.github/dependabot.yaml`                                                       |
-| [Documentation Structure](#20-documentation-structure)             | ADRs and guides              | `docs/adr/`, `docs/user-guides/`, `docs/developer-guides/`                      |
-| [Static Analysis](#21-static-analysis-sonarcloud)                  | Code quality inspection      | `scripts/reports/perform-static-analysis.sh`                                    |
+| Capability                                                      | Purpose                      | Key Files                                                                      |
+| --------------------------------------------------------------- | ---------------------------- | ------------------------------------------------------------------------------ |
+| [Core Make System](#1-core-make-system-gnu-make)                | Standardised task runner     | `Makefile`, `scripts/init.mk`                                                  |
+| [Pre-commit Hooks](#2-pre-commit-hooks)                         | Git hooks framework          | `scripts/config/pre-commit.yaml`, `scripts/quality/`                           |
+| [Secret Scanning](#3-secret-scanning-gitleaks)                  | Prevent credential leaks     | `scripts/quality/scan-secrets.sh`, `scripts/config/gitleaks.toml`              |
+| [File Format Checking](#4-file-format-checking-editorconfig)    | Consistent file formatting   | `.editorconfig`, `scripts/quality/check-file-format.sh`                        |
+| [Markdown Linting](#5-markdown-linting-markdownlint-cli)        | Documentation quality        | `scripts/quality/check-markdown-format.sh`, `scripts/config/markdownlint.yaml` |
+| [Markdown Link Checking](#6-markdown-link-checking-lychee)      | Validate Markdown links      | `scripts/quality/check-markdown-links.sh`, `scripts/config/lychee.toml`        |
+| [Shell Script Linting](#7-shell-script-linting-shellcheck)      | Bash quality checks          | `scripts/quality/check-shell-lint.sh`                                          |
+| [Docker Support](#8-docker-support-dockerpodman)                | Container build/run/lint     | `scripts/docker/`, `scripts/config/hadolint.yaml`                              |
+| [GitHub Actions CI/CD](#9-github-actions-cicd)                  | Pipeline workflows           | `.github/workflows/`, `.github/actions/`                                       |
+| [Dependabot](#10-dependabot)                                    | Automated dependency updates | `.github/dependabot.yaml`                                                      |
+| [VS Code Integration](#11-vs-code-integration)                  | Editor configuration         | `.vscode/`, `project.code-workspace`                                           |
+| [Tool Version Management](#12-tool-version-management-asdf)     | Reproducible toolchain       | `.tool-versions`                                                               |
+| [GitHub Repository Templates](#13-github-repository-templates)  | Issue/PR/security templates  | `.github/ISSUE_TEMPLATE/`, `.github/pull_request_template.md`                  |
+| [Documentation Structure](#14-documentation-structure-markdown) | ADRs and guides              | `docs/adr/`, `docs/guides/`                                                    |
 
 ---
 
 ## Capabilities 🧰
 
-### 1. Core Make System
+### 1. Core Make System (GNU Make)
 
 **Purpose**: Provides a standardised task runner with self-documenting help, common targets, and extensibility.
+
+**Benefits**: A single, well-documented entry point lowers cognitive load and aligns local and CI workflows. It improves reproducibility and makes automation safer because commands are deterministic and discoverable.
+
+**Problem it solves**: Teams often grow ad-hoc scripts and tribal knowledge for routine tasks, which leads to inconsistent results and slow onboarding.
+
+**How it solves it**: The core Makefile and init module provide stable targets, shared defaults, and explicit configuration hooks, so every engineer and pipeline uses the same contract.
 
 **Dependencies**: GNU Make 3.82+
 
@@ -152,11 +211,27 @@ make help
 
 **Purpose**: Framework for running quality checks before commits using the `pre-commit` tool.
 
-**Dependencies**: Python, pre-commit (`pip install pre-commit`)
+**Benefits**: Early feedback reduces rework and keeps the main branch clean. It also shortens CI cycles by catching simple issues before a push.
+
+**Problem it solves**: Quality checks run late or inconsistently, so defects slip into review and break pipelines.
+
+**How it solves it**: Pre-commit runs the same repo-defined checks locally through Make targets and shared scripts, ensuring the local and CI gates are aligned.
+
+**Dependencies**: Python, pre-commit (`pip install pre-commit`), make
 
 **Source files** (in `assets/`):
 
 - [`scripts/config/pre-commit.yaml`](assets/scripts/config/pre-commit.yaml) — Hook definitions
+- [`scripts/quality/scan-secrets.sh`](assets/scripts/quality/scan-secrets.sh) — Secret scan hook wrapper
+- [`scripts/quality/check-file-format.sh`](assets/scripts/quality/check-file-format.sh) — File format hook wrapper
+- [`scripts/quality/check-markdown-format.sh`](assets/scripts/quality/check-markdown-format.sh) — Markdown format hook wrapper
+- [`scripts/quality/check-markdown-links.sh`](assets/scripts/quality/check-markdown-links.sh) — Markdown link hook wrapper
+- [`scripts/config/gitleaks.toml`](assets/scripts/config/gitleaks.toml) — Gitleaks configuration
+- [`scripts/config/.gitleaksignore`](assets/scripts/config/.gitleaksignore) — Gitleaks ignore list
+- [`scripts/config/editorconfig-checker.json`](assets/scripts/config/editorconfig-checker.json) — EditorConfig checker configuration
+- [`scripts/config/markdownlint.yaml`](assets/scripts/config/markdownlint.yaml) — Markdownlint configuration
+- [`scripts/config/.markdownlintignore`](assets/scripts/config/.markdownlintignore) — Markdownlint ignore list
+- [`scripts/config/lychee.toml`](assets/scripts/config/lychee.toml) — Lychee configuration
 
 **Configuration**:
 
@@ -170,14 +245,13 @@ make githooks-run      # Run all hooks manually
 - `scan-secrets` — Gitleaks secret scanning
 - `check-file-format` — EditorConfig compliance
 - `check-markdown-format` — Markdown linting
-- `check-english-usage` — Vale prose linting
-- `lint-terraform` — Terraform formatting
+- `check-markdown-links` — Markdown link checking
 
 **To adopt**:
 
-1. **Prerequisite**: Ensure [Core Make System](#1-core-make-system) is already adopted
+1. **Prerequisite**: Ensure [Core Make System](#1-core-make-system-gnu-make) is already adopted
 2. Copy `scripts/config/pre-commit.yaml`
-3. Copy the corresponding `scripts/githooks/*.sh` scripts for enabled hooks
+3. Copy `scripts/quality/` and `scripts/config/` (the hooks call make targets backed by these scripts and configs)
 4. Add `pre-commit` to `.tool-versions` (e.g., `pre-commit 4.5.1`)
 5. Ensure `Makefile` has `config::` target that calls `$(MAKE) _install-dependencies`:
 
@@ -208,7 +282,7 @@ pre-commit run --config scripts/config/pre-commit.yaml --all-files
 **To remove**:
 
 1. Run `pre-commit uninstall`
-2. Delete `scripts/config/pre-commit.yaml` and `scripts/githooks/`
+2. Delete `scripts/config/pre-commit.yaml` and remove any hook references to it
 
 ---
 
@@ -216,37 +290,49 @@ pre-commit run --config scripts/config/pre-commit.yaml --all-files
 
 **Purpose**: Prevent hardcoded secrets from being committed to the repository.
 
+**Benefits**: It reduces the risk of credential exposure and downstream incidents, and supports compliance expectations for secret hygiene.
+
+**Problem it solves**: Manual review cannot reliably spot secrets, and a single leak can force rotation and downtime.
+
+**How it solves it**: Gitleaks scans staged changes and history with a tuned rule set and allowlist, producing deterministic results that can be enforced in hooks and CI.
+
 **Dependencies**: Gitleaks (native or Docker)
 
 **Source files** (in `assets/`):
 
-- [`scripts/githooks/scan-secrets.sh`](assets/scripts/githooks/scan-secrets.sh) — Scanner wrapper
+- [`scripts/quality/scan-secrets.sh`](assets/scripts/quality/scan-secrets.sh) — Scanner wrapper
 - [`scripts/config/gitleaks.toml`](assets/scripts/config/gitleaks.toml) — Gitleaks configuration
-- [`.gitleaksignore`](assets/.gitleaksignore) — Ignore file for false positives
-
-**Check modes**:
-
-```bash
-check=staged-changes ./scripts/githooks/scan-secrets.sh   # Pre-commit (default)
-check=branch-changes ./scripts/githooks/scan-secrets.sh   # Commits on current branch not in main (CI)
-check=last-commit ./scripts/githooks/scan-secrets.sh      # Last commit only
-check=whole-history ./scripts/githooks/scan-secrets.sh    # Full repository history
-```
+- [`scripts/config/.gitleaksignore`](assets/scripts/config/.gitleaksignore) — Ignore file for false positives
 
 **Configuration** (`scripts/config/gitleaks.toml`):
 
 - Extends default Gitleaks rules
 - Custom IPv4 detection with private network allowlist
-- Excludes lock files (`.terraform.lock.hcl`, `poetry.lock`, `yarn.lock`)
+- Excludes lock files (`poetry.lock`, `yarn.lock`)
+
+**Check modes**:
+
+```bash
+check=staged-changes ./scripts/quality/scan-secrets.sh   # Pre-commit (default)
+check=last-commit ./scripts/quality/scan-secrets.sh      # Last commit only
+check=whole-history ./scripts/quality/scan-secrets.sh    # Full repository history
+```
+
+**Usage**:
+
+```bash
+make scan-secrets check=whole-history
+check=staged-changes ./scripts/quality/scan-secrets.sh
+```
 
 **To adopt**:
 
-1. Copy `scripts/githooks/scan-secrets.sh`, `scripts/config/gitleaks.toml`, and `.gitleaksignore`
+1. Copy `scripts/quality/scan-secrets.sh`, `scripts/config/gitleaks.toml`, and `scripts/config/.gitleaksignore`
 2. Add `gitleaks` to `.tool-versions` (e.g., `gitleaks 8.30.0`) for native execution
 3. Optionally add Docker image entry to `.tool-versions` for Docker fallback:
 
    ```text
-   # docker/ghcr.io/gitleaks/gitleaks v8.18.0@sha256:... # SEE: https://github.com/gitleaks/gitleaks/pkgs/container/gitleaks
+   # docker/ghcr.io/gitleaks/gitleaks v8.30.0@sha256:691af3c7c5a48b16f187ce3446d5f194838f91238f27270ed36eef6359a574d9 # SEE: https://github.com/gitleaks/gitleaks/pkgs/container/gitleaks
    ```
 
 4. Run `asdf install` to install gitleaks (if using native)
@@ -259,10 +345,10 @@ check=whole-history ./scripts/githooks/scan-secrets.sh    # Full repository hist
 gitleaks version
 
 # Run secret scan on staged changes (default mode)
-./scripts/githooks/scan-secrets.sh
+./scripts/quality/scan-secrets.sh
 
 # Or scan the whole repository history
-check=whole-history ./scripts/githooks/scan-secrets.sh
+check=whole-history ./scripts/quality/scan-secrets.sh
 
 # Alternative: run gitleaks directly
 gitleaks detect --config scripts/config/gitleaks.toml --source . --verbose --redact
@@ -279,14 +365,21 @@ gitleaks detect --config scripts/config/gitleaks.toml --source . --verbose --red
 
 **Purpose**: Ensure consistent file formatting (indentation, line endings, charset) across the codebase.
 
+**Benefits**: Consistent formatting improves readability, reduces merge noise, and keeps diffs focused on behaviour.
+
+**Problem it solves**: Inconsistent whitespace and line endings cause churn and make code review harder.
+
+**How it solves it**: EditorConfig defines the contract and the checker enforces it over the chosen file scope, so formatting stays stable across editors and platforms.
+
 **Dependencies**: editorconfig-checker (native or Docker)
 
 **Source files** (in `assets/`):
 
 - [`.editorconfig`](assets/.editorconfig) — Format rules
-- [`scripts/githooks/check-file-format.sh`](assets/scripts/githooks/check-file-format.sh) — Checker wrapper
+- [`scripts/quality/check-file-format.sh`](assets/scripts/quality/check-file-format.sh) — Checker wrapper
+- [`scripts/config/editorconfig-checker.json`](assets/scripts/config/editorconfig-checker.json) — Checker configuration
 
-**Default rules** (`.editorconfig`):
+**Configuration** (`.editorconfig`):
 
 ```ini
 [*]
@@ -307,18 +400,26 @@ indent_style = tab
 **Check modes**:
 
 ```bash
-check=all ./scripts/githooks/check-file-format.sh                # All files
-check=staged-changes ./scripts/githooks/check-file-format.sh     # Staged only
-check=branch ./scripts/githooks/check-file-format.sh             # Changes since branching
+check=all ./scripts/quality/check-file-format.sh                # All files
+check=staged-changes ./scripts/quality/check-file-format.sh     # Staged only
+check=working-tree-changes ./scripts/quality/check-file-format.sh # Working tree only
+check=branch ./scripts/quality/check-file-format.sh             # Changes since branching
+```
+
+**Usage**:
+
+```bash
+make check-file-format check=all
+check=branch ./scripts/quality/check-file-format.sh
 ```
 
 **To adopt**:
 
-1. Copy `.editorconfig` and `scripts/githooks/check-file-format.sh`
+1. Copy `.editorconfig`, `scripts/quality/check-file-format.sh`, and `scripts/config/editorconfig-checker.json`
 2. Add Docker image entry to `.tool-versions` for editorconfig-checker:
 
    ```text
-   # docker/mstruebing/editorconfig-checker 2.7.1@sha256:... # SEE: https://hub.docker.com/r/mstruebing/editorconfig-checker/tags
+   # docker/mstruebing/editorconfig-checker v3.6@sha256:af556694c3eb0a16b598efbe84c1171d40dfb779fdac6f01b89baedde065556f # SEE: https://hub.docker.com/r/mstruebing/editorconfig-checker/tags
    ```
 
 3. Install VS Code extension `editorconfig.editorconfig`
@@ -330,10 +431,10 @@ check=branch ./scripts/githooks/check-file-format.sh             # Changes since
 editorconfig-checker --version || ec --version
 
 # Run format check on all files
-check=all ./scripts/githooks/check-file-format.sh
+check=all ./scripts/quality/check-file-format.sh
 
 # Alternative: run checker directly
-editorconfig-checker -config .editorconfig
+editorconfig-checker -config scripts/config/editorconfig-checker.json
 
 # Expected: Exit code 0 if all files comply
 # Success indicator: No output (silent success) or "No issues found"
@@ -343,35 +444,62 @@ editorconfig-checker -config .editorconfig
 
 ---
 
-### 5. Markdown Linting
+### 5. Markdown Linting (markdownlint-cli)
 
 **Purpose**: Enforce consistent Markdown formatting and best practices.
+
+**Benefits**: It keeps documentation consistent and easy to render across tooling, improving trust in the docs.
+
+**Problem it solves**: Markdown style drift leads to broken layouts, noisy diffs, and unclear guidance.
+
+**How it solves it**: markdownlint applies a shared ruleset and ignore list, giving a repeatable check in local workflows and CI.
 
 **Dependencies**: markdownlint-cli (native or Docker)
 
 **Source files** (in `assets/`):
 
-- [`scripts/githooks/check-markdown-format.sh`](assets/scripts/githooks/check-markdown-format.sh) — Linter wrapper
+- [`scripts/quality/check-markdown-format.sh`](assets/scripts/quality/check-markdown-format.sh) — Linter wrapper
 - [`scripts/config/markdownlint.yaml`](assets/scripts/config/markdownlint.yaml) — Rule configuration
+- [`scripts/config/.markdownlintignore`](assets/scripts/config/.markdownlintignore) — Ignore patterns
 
 **Configuration** (`scripts/config/markdownlint.yaml`):
 
 ```yaml
-MD010: # Allow hard tabs in code blocks for make/console
-  ignore_code_languages: [make, console]
+MD010: # Allow hard tabs in makefile code blocks
+  ignore_code_languages: [makefile]
 MD013: false # Disable line length
 MD024: # Allow duplicate headings in siblings
   siblings_only: true
+MD029:
+  style: ordered
 MD033: false # Allow inline HTML
+MD036: false # Allow emphasis instead of headings
+MD041: false # Allow files without an H1
+```
+
+**Check modes**:
+
+```bash
+check=all ./scripts/quality/check-markdown-format.sh                 # All markdown files
+check=staged-changes ./scripts/quality/check-markdown-format.sh      # Staged only
+check=working-tree-changes ./scripts/quality/check-markdown-format.sh # Working tree only
+check=branch ./scripts/quality/check-markdown-format.sh              # Changes since branching
+```
+
+**Usage**:
+
+```bash
+make check-markdown-format check=all
+check=branch ./scripts/quality/check-markdown-format.sh
 ```
 
 **To adopt**:
 
-1. Copy `scripts/githooks/check-markdown-format.sh` and `scripts/config/markdownlint.yaml`
+1. Copy `scripts/quality/check-markdown-format.sh`, `scripts/config/markdownlint.yaml`, and `scripts/config/.markdownlintignore`
 2. Add Docker image entry to `.tool-versions` for markdownlint-cli:
 
    ```text
-   # docker/ghcr.io/igorshubovych/markdownlint-cli v0.37.0@sha256:... # SEE: https://github.com/igorshubovych/markdownlint-cli/pkgs/container/markdownlint-cli
+   # docker/ghcr.io/igorshubovych/markdownlint-cli v0.47.0@sha256:9f06c8c9a75aa08b87b235b66d618f7df351f09f08faf703177f670e38ee6511 # SEE: https://github.com/igorshubovych/markdownlint-cli/pkgs/container/markdownlint-cli
    ```
 
 3. Install VS Code extension `davidanson.vscode-markdownlint`
@@ -383,10 +511,10 @@ MD033: false # Allow inline HTML
 markdownlint --version
 
 # Run on all markdown files
-check=all ./scripts/githooks/check-markdown-format.sh
+check=all ./scripts/quality/check-markdown-format.sh
 
 # Alternative: run markdownlint directly
-markdownlint --config scripts/config/markdownlint.yaml "**/*.md"
+markdownlint --config scripts/config/markdownlint.yaml --ignore-path scripts/config/.markdownlintignore "**/*.md"
 
 # Expected: Exit code 0 if all files pass
 # Success indicator: No output (silent success)
@@ -396,67 +524,144 @@ markdownlint --config scripts/config/markdownlint.yaml "**/*.md"
 
 ---
 
-### 6. English Prose Checking (Vale)
+### 6. Markdown Link Checking (Lychee)
 
-**Purpose**: Check documentation for writing quality, style, and consistency.
+**Purpose**: Validate Markdown links for broken or unreachable references.
 
-**Dependencies**: Vale (native or Docker)
+**Benefits**: Reliable links keep docs usable and reduce support overhead, especially for onboarding and audits.
+
+**Problem it solves**: Link rot and typos silently break guidance, which wastes time and undermines confidence.
+
+**How it solves it**: Lychee scans Markdown files using a defined configuration and scope, so broken links are detected early and consistently.
+
+**Dependencies**: Lychee (native or Docker)
 
 **Source files** (in `assets/`):
 
-- [`scripts/githooks/check-english-usage.sh`](assets/scripts/githooks/check-english-usage.sh) — Vale wrapper
-- [`scripts/config/vale/vale.ini`](assets/scripts/config/vale/vale.ini) — Vale configuration
-- [`scripts/config/vale/styles/`](assets/scripts/config/vale/styles/) — Custom style rules
+- [`scripts/quality/check-markdown-links.sh`](assets/scripts/quality/check-markdown-links.sh) — Link checker wrapper
+- [`scripts/config/lychee.toml`](assets/scripts/config/lychee.toml) — Lychee configuration
 
-**Configuration** (`scripts/config/vale/vale.ini`):
+**Configuration** (`scripts/config/lychee.toml`):
 
-```ini
-StylesPath = styles
-MinAlertLevel = suggestion
-Vocab = words
-[*.md]
-BasedOnStyles = Vale
+- Uses a tuned set of defaults for reliability and reduced noise
+- Centralises link exclusions and timeouts for consistent results
+
+**Check modes**:
+
+```bash
+check=all ./scripts/quality/check-markdown-links.sh                 # All markdown files
+check=staged-changes ./scripts/quality/check-markdown-links.sh      # Staged only
+check=working-tree-changes ./scripts/quality/check-markdown-links.sh # Working tree only
+check=branch ./scripts/quality/check-markdown-links.sh              # Changes since branching
+```
+
+**Usage**:
+
+```bash
+make check-markdown-links check=all
+check=branch ./scripts/quality/check-markdown-links.sh
 ```
 
 **To adopt**:
 
-1. Copy `scripts/githooks/check-english-usage.sh` and `scripts/config/vale/`
-2. Add `vale` to `.tool-versions` (e.g., `vale 3.6.0`) for native execution
-3. Optionally add Docker image entry to `.tool-versions` for Docker fallback:
+1. Copy `scripts/quality/check-markdown-links.sh` and `scripts/config/lychee.toml`
+2. Optionally pin the Docker image in `.tool-versions` using the standard format:
 
    ```text
-   # docker/jdkato/vale v3.6.0@sha256:... # SEE: https://hub.docker.com/r/jdkato/vale/tags
+   # docker/lycheeverse/lychee <tag>@<digest> # SEE: https://github.com/lycheeverse/lychee
    ```
-
-4. Run `asdf install` to install vale (if using native)
-5. Customise vocabulary in `scripts/config/vale/styles/words/`
 
 **Verification** (run after adoption):
 
 ```bash
-# Check vale is available
-vale --version
+# Check lychee is available
+lychee --version
 
-# Sync vale styles (first time)
-vale sync --config scripts/config/vale/vale.ini
+# Run on all markdown files
+check=all ./scripts/quality/check-markdown-links.sh
 
-# Run on markdown files
-check=all ./scripts/githooks/check-english-usage.sh
+# Alternative: run lychee directly
+lychee --config scripts/config/lychee.toml --no-progress --quiet "**/*.md"
 
-# Alternative: run vale directly on a file
-vale --config scripts/config/vale/vale.ini README.md
-
-# Expected: Exit code 0 if no issues, non-zero if suggestions/warnings
-# Success indicator: Shows check results per file
+# Expected: Exit code 0 if all links are valid
+# Success indicator: No output (silent success)
 ```
 
 **To remove**: Delete the files
 
 ---
 
-### 7. Docker Support
+### 7. Shell Script Linting (ShellCheck)
+
+**Purpose**: Static analysis for shell scripts to catch common bugs and enforce best practices.
+
+**Benefits**: Static analysis catches common shell pitfalls and improves script reliability, which is critical for automation and CI.
+
+**Problem it solves**: Shell scripts fail in subtle ways due to quoting, globbing, and error handling quirks.
+
+**How it solves it**: ShellCheck runs via a wrapper that standardises execution and tooling, producing consistent findings for developers and pipelines.
+
+**Dependencies**: ShellCheck (native or Docker)
+
+**Source files** (in `assets/`):
+
+- [`scripts/quality/check-shell-lint.sh`](assets/scripts/quality/check-shell-lint.sh) — ShellCheck wrapper
+
+**Configuration**:
+
+- Uses ShellCheck default rules with no repo-specific overrides
+- Runs natively when available, with a Docker fallback for parity
+
+**Check modes**:
+
+- All scripts: `make check-shell-lint` (scans every `*.sh` in the repo)
+- Single script: `file=path/to/script.sh ./scripts/quality/check-shell-lint.sh`
+
+**Usage**:
+
+```bash
+file=path/to/script.sh ./scripts/quality/check-shell-lint.sh
+make check-shell-lint       # Lint all .sh files in the repo
+```
+
+**Verification** (run after adoption):
+
+```bash
+# Check shellcheck is available
+shellcheck --version
+
+# Run on a specific script
+file=scripts/quality/check-shell-lint.sh ./scripts/quality/check-shell-lint.sh
+
+# Alternative: run shellcheck directly
+make check-shell-lint
+
+# Expected: Exit code 0 if no issues, non-zero with error details if issues found
+# Success indicator: No output (silent success) or warnings/errors listed
+```
+
+**To adopt**:
+
+1. Copy `scripts/quality/check-shell-lint.sh`
+2. Add Docker image entry to `.tool-versions` for shellcheck:
+
+   ```text
+   # docker/koalaman/shellcheck v0.11.0@sha256:61862eba1fcf09a484ebcc6feea46f1782532571a34ed51fedf90dd25f925a8d # SEE: https://hub.docker.com/r/koalaman/shellcheck/tags
+   ```
+
+**To remove**: Delete the file
+
+---
+
+### 8. Docker Support (Docker/Podman)
 
 **Purpose**: Build, lint, run, and manage Docker images with standardised metadata.
+
+**Benefits**: Standardised build and lint steps improve image security, reproducibility, and operational consistency.
+
+**Problem it solves**: Ad-hoc Dockerfiles and build commands lead to drift, insecure defaults, and slow debugging.
+
+**How it solves it**: Shared make targets and libraries encode best practices, apply metadata, and enforce hadolint checks with version-pinned tooling.
 
 **Dependencies**: Docker, hadolint (for linting)
 
@@ -468,6 +673,7 @@ vale --config scripts/config/vale/vale.ini README.md
 - [`scripts/docker/Dockerfile.metadata`](assets/scripts/docker/Dockerfile.metadata) — OCI label template
 - [`scripts/config/hadolint.yaml`](assets/scripts/config/hadolint.yaml) — Hadolint configuration
 - [`scripts/docker/dgoss.sh`](assets/scripts/docker/dgoss.sh) — Container testing with dgoss
+- [`scripts/docker/tests/`](assets/scripts/docker/tests/) — Docker test fixtures
 
 **Make targets**:
 
@@ -484,17 +690,17 @@ make docker-run        # Run container
 - OCI-compliant image labels (title, version, git info, build date)
 - Trusted registry allowlist in hadolint config
 - Test suite support with dgoss
-- **Docker image version pinning via `.tool-versions`** — see [Tool Version Management (asdf)](#17-tool-version-management-asdf) for the extended format
+- **Docker image version pinning via `.tool-versions`** — see [Tool Version Management (asdf)](#12-tool-version-management-asdf) for the extended format
 
 **Docker image versioning**:
 
 Docker image versions can be pinned in `.tool-versions` using an extended comment format. The `docker-get-image-version-and-pull` function in `docker.lib.sh` parses these entries, pulls images by digest for reproducibility, and tags them locally for caching.
 
 ```text
-# docker/ghcr.io/gitleaks/gitleaks v8.18.0@sha256:fd2b5cab... # SEE: https://...
+# docker/ghcr.io/gitleaks/gitleaks v8.30.0@sha256:691af3c7c5a48b16f187ce3446d5f194838f91238f27270ed36eef6359a574d9 # SEE: https://github.com/gitleaks/gitleaks/pkgs/container/gitleaks
 ```
 
-See [section 17](#17-tool-version-management-asdf) for full format documentation.
+See [section 12](#12-tool-version-management-asdf) for full format documentation.
 
 **To adopt**:
 
@@ -503,7 +709,7 @@ See [section 17](#17-tool-version-management-asdf) for full format documentation
 3. Add Docker image entry to `.tool-versions` for hadolint:
 
    ```text
-   # docker/hadolint/hadolint 2.12.0-alpine@sha256:... # SEE: https://hub.docker.com/r/hadolint/hadolint/tags
+   # docker/hadolint/hadolint 2.14.0-alpine@sha256:7aba693c1442eb31c0b015c129697cb3b6cb7da589d85c7562f9deb435a6657c # SEE: https://hub.docker.com/r/hadolint/hadolint/tags
    ```
 
 4. Create your Dockerfile in `infrastructure/images/`
@@ -519,10 +725,10 @@ docker --version
 hadolint --version || docker run --rm hadolint/hadolint hadolint --version
 
 # Lint a Dockerfile
-./scripts/docker/dockerfile-linter.sh infrastructure/images/*/Dockerfile
+file=path/to/Dockerfile ./scripts/docker/dockerfile-linter.sh
 
 # Alternative: run hadolint directly
-hadolint --config scripts/config/hadolint.yaml infrastructure/images/*/Dockerfile
+hadolint --config scripts/config/hadolint.yaml path/to/Dockerfile
 
 # Verify docker make targets exist
 make help | grep -E "docker-build|docker-lint|docker-push"
@@ -535,179 +741,17 @@ make help | grep -E "docker-build|docker-lint|docker-push"
 
 ---
 
-### 8. Terraform Support
-
-**Purpose**: Infrastructure as Code linting, formatting, and management.
-
-**Dependencies**: Terraform
-
-**Source files** (in `assets/`):
-
-- [`scripts/terraform/`](assets/scripts/terraform/) — Make targets (optional include in init.mk)
-- [`scripts/githooks/check-terraform-format.sh`](assets/scripts/githooks/check-terraform-format.sh) — Format checker
-- [`infrastructure/`](assets/infrastructure/) — Directory structure for Terraform code
-
-**Directory structure**:
-
-```text
-infrastructure/
-├── environments/
-│   └── dev/           # Environment-specific configs
-├── images/            # Docker image definitions
-└── modules/           # Reusable Terraform modules
-```
-
-**Make targets**:
-
-```bash
-make terraform-fmt     # Format Terraform files
-make terraform-init    # Initialise Terraform
-make terraform-plan    # Plan changes
-make terraform-apply   # Apply changes
-```
-
-**To adopt**:
-
-1. Copy `scripts/githooks/check-terraform-format.sh`
-2. Create `infrastructure/` directory structure
-3. Add `terraform` to `.tool-versions` (e.g., `terraform 1.7.0`)
-4. Optionally add Docker image entry to `.tool-versions` for Docker fallback:
-
-   ```text
-   # docker/hashicorp/terraform 1.12.2@sha256:... # SEE: https://hub.docker.com/r/hashicorp/terraform/tags
-   ```
-
-5. Run `asdf install` to install terraform
-
-**Verification** (run after adoption):
-
-```bash
-# Check terraform is available
-terraform version
-
-# Check format on terraform files (if any exist)
-check=all ./scripts/githooks/check-terraform-format.sh
-
-# Alternative: run terraform fmt check directly
-terraform fmt -check -recursive infrastructure/
-
-# Verify infrastructure directory structure exists
-test -d infrastructure/environments && echo "Structure OK" || echo "Missing structure"
-
-# Expected: Exit code 0 if all .tf files are formatted
-# Success indicator: No output from fmt -check (files are formatted)
-```
-
-**To remove**: Delete `infrastructure/`, `scripts/terraform/`, and the pre-commit hook
-
----
-
-### 9. Shell Script Linting (ShellCheck)
-
-**Purpose**: Static analysis for shell scripts to catch common bugs and enforce best practices.
-
-**Dependencies**: ShellCheck (native or Docker)
-
-**Source files** (in `assets/`):
-
-- [`scripts/shellscript-linter.sh`](assets/scripts/shellscript-linter.sh) — ShellCheck wrapper
-
-**Usage**:
-
-```bash
-file=path/to/script.sh ./scripts/shellscript-linter.sh
-make shellscript-lint-all   # Lint all .sh files
-```
-
-**Verification** (run after adoption):
-
-```bash
-# Check shellcheck is available
-shellcheck --version
-
-# Run on a specific script
-file=scripts/shellscript-linter.sh ./scripts/shellscript-linter.sh
-
-# Alternative: run shellcheck directly
-shellcheck scripts/*.sh
-
-# Expected: Exit code 0 if no issues, non-zero with error details if issues found
-# Success indicator: No output (silent success) or warnings/errors listed
-```
-
-**To adopt**:
-
-1. Copy `scripts/shellscript-linter.sh`
-2. Add Docker image entry to `.tool-versions` for shellcheck:
-
-   ```text
-   # docker/koalaman/shellcheck latest@sha256:... # SEE: https://hub.docker.com/r/koalaman/shellcheck/tags
-   ```
-
-**To remove**: Delete the file
-
----
-
-### 10. Test Framework
-
-**Purpose**: Standardised make targets for all test types aligned with NHS Software Engineering Quality Framework.
-
-**Dependencies**: Test runners for your language/framework
-
-**Source files** (in `assets/`):
-
-- [`scripts/tests/test.mk`](assets/scripts/tests/test.mk) — Test target definitions
-
-**Available targets**:
-
-```bash
-make test              # Run all tests
-make test-unit         # Unit tests
-make test-lint         # Code linting
-make test-coverage     # Coverage analysis
-make test-integration  # Integration tests
-make test-contract     # Contract tests
-make test-security     # Security tests
-make test-accessibility # Accessibility tests
-make test-ui           # UI tests
-make test-load         # Load tests (capacity, soak, response-time)
-```
-
-**Implementation**: Create corresponding scripts in `scripts/tests/`:
-
-- `scripts/tests/unit.sh`
-- `scripts/tests/lint.sh`
-- `scripts/tests/integration.sh`
-- etc.
-
-**To adopt**:
-
-1. Copy `scripts/tests/test.mk`
-2. Create test scripts for your project
-
-**Verification** (run after adoption):
-
-```bash
-# Verify test targets exist in make
-make help | grep -E "test|test-unit|test-lint|test-coverage"
-
-# Run tests (will fail if test scripts not yet created)
-make test
-
-# Check test.mk is included
-grep -l "test.mk" scripts/init.mk Makefile
-
-# Expected: make help shows test targets
-# Success indicator: Test targets visible, `make test` runs without "no rule" error
-```
-
-**To remove**: Delete `scripts/tests/` and remove include from `scripts/init.mk`
-
----
-
-### 11. GitHub Actions CI/CD
+### 9. GitHub Actions CI/CD
 
 **Purpose**: Multi-stage CI/CD pipeline with reusable workflows and composite actions.
+
+**Benefits**: A predictable pipeline enforces quality gates and makes delivery repeatable, improving reliability and auditability.
+
+**Problem it solves**: Manual or inconsistent CI steps cause flaky results and slow down releases.
+
+**How it solves it**: Reusable workflows and composite actions provide a single source of truth for stages and checks, reducing duplication and drift.
+
+**Dependencies**: GitHub repository with Actions enabled
 
 **Source files** (in `assets/`):
 
@@ -722,21 +766,17 @@ grep -l "test.mk" scripts/init.mk Makefile
 
 **Pipeline stages**:
 
-1. **Commit stage** (~2 min): Secret scan, file format, Markdown, English, Terraform lint, LOC report
-2. **Test stage** (~5 min): Unit, lint, coverage, contract, security, accessibility
-3. **Build stage** (~3 min): Docker build, publish artefacts
-4. **Acceptance stage** (~10 min): Integration, performance tests
+1. **Commit stage** (~2 min): Secret scan, file format, Markdown format, Markdown links
+2. **Test stage** (~5 min): Unit tests (`make test` placeholder)
+3. **Build stage** (~3 min): Artefact build placeholders
+4. **Acceptance stage** (~10 min): Environment setup and test placeholders
 
 **Composite actions** (`.github/actions/`):
 
 - `scan-secrets/`
 - `check-file-format/`
 - `check-markdown-format/`
-- `check-english-usage/`
-- `lint-terraform/`
-- `create-lines-of-code-report/`
-- `perform-static-analysis/`
-- `scan-dependencies/`
+- `check-markdown-links/`
 
 **To adopt**:
 
@@ -768,460 +808,17 @@ grep -r "uses:.*\.github/actions/" .github/workflows/
 
 ---
 
-### 12. Local GitHub Actions Runner (act)
-
-**Purpose**: Run GitHub Actions workflows locally for faster feedback and debugging before pushing to CI.
-
-**Dependencies**: act (GitHub Actions local runner), Docker
-
-**Source files** (in `assets/`):
-
-- [`scripts/init.mk`](assets/scripts/init.mk) — Contains the `runner-act` make target
-- [`scripts/docker/docker.lib.sh`](assets/scripts/docker/docker.lib.sh) — Provides `docker-get-image-version-and-pull` for runner image
-
-**Make target**:
-
-```bash
-make runner-act workflow=<workflow-file> job=<job-name>
-```
-
-**Parameters**:
-
-| Parameter  | Required | Description                                                  |
-| ---------- | -------- | ------------------------------------------------------------ |
-| `workflow` | Yes      | Workflow filename without path (e.g., `cicd-1-pull-request`) |
-| `job`      | Yes      | Job name to execute from the workflow                        |
-| `VERBOSE`  | No       | Set to `true` for verbose act output                         |
-
-**Example usage**:
-
-```bash
-# Run the commit stage from the PR workflow
-make runner-act workflow=cicd-1-pull-request job=commit-stage
-
-# Run with verbose output
-VERBOSE=true make runner-act workflow=stage-1-commit job=scan-secrets
-```
-
-**Features**:
-
-- Uses a pinned GitHub runner image from `.tool-versions` (see [Tool Version Management](#17-tool-version-management-asdf))
-- Runs with `--privileged` for Docker-in-Docker support
-- Binds local directory for file access
-- Reuses containers for faster subsequent runs
-- Supports `linux/amd64` architecture
-
-**Runner image**:
-
-The runner image is pinned in `.tool-versions` using the extended Docker format:
-
-```text
-# docker/ghcr.io/nhs-england-tools/github-runner-image 20230909-321fd1e-rt@sha256:... # SEE: https://...
-```
-
-**To adopt**:
-
-1. Ensure `scripts/init.mk` is included in your Makefile
-2. Ensure `scripts/docker/docker.lib.sh` is present
-3. Add the runner image to `.tool-versions` (optional, falls back to latest)
-4. Install act: `brew install act` (macOS) or see [act installation](https://github.com/nektos/act#installation)
-
-**Verification** (run after adoption):
-
-```bash
-# Check act is installed
-act --version
-
-# Check Docker is running
-docker info > /dev/null && echo "Docker OK"
-
-# Verify runner-act target exists
-make help | grep runner-act
-
-# List available workflows
-ls .github/workflows/*.yaml
-
-# Dry-run a workflow (list jobs without executing)
-act --list --workflows .github/workflows/cicd-1-pull-request.yaml
-
-# Run a specific job
-make runner-act workflow=cicd-1-pull-request job=commit-stage
-
-# Expected: Job executes locally with GitHub Actions output
-# Success indicator: Job completes with exit code 0
-```
-
-**To remove**: The `runner-act` target is part of `scripts/init.mk`. To disable, remove the target from init.mk or don't use it.
-
----
-
-### 13. Dependency Scanning (Grype & Syft)
-
-**Purpose**: Vulnerability scanning and SBOM (Software Bill of Materials) generation for container images and repositories.
-
-**Dependencies**: Grype, Syft (via Docker or native)
-
-**Source files** (in `assets/`):
-
-- [`scripts/config/grype.yaml`](assets/scripts/config/grype.yaml) — Grype vulnerability scanner configuration
-- [`scripts/config/syft.yaml`](assets/scripts/config/syft.yaml) — Syft SBOM generator configuration
-- [`scripts/reports/create-sbom-report.sh`](assets/scripts/reports/create-sbom-report.sh) — SBOM generation wrapper
-- [`scripts/reports/scan-vulnerabilities.sh`](assets/scripts/reports/scan-vulnerabilities.sh) — Vulnerability scanning wrapper
-
-**Features**:
-
-- Automatic CPE generation when packages lack them
-- Vulnerability ignore rules by CVE, package, or type
-- SBOM cataloging with configurable scope
-- Wrapper scripts for CI/CD integration with JSON report enrichment
-
-**Verification** (run after adoption):
-
-```bash
-# Check grype is available
-grype version
-
-# Check syft is available
-syft version
-
-# Generate SBOM report for the repository
-./scripts/reports/create-sbom-report.sh
-
-# Scan for vulnerabilities (depends on SBOM report)
-./scripts/reports/scan-vulnerabilities.sh
-
-# Scan a Docker image (requires built image)
-grype --config scripts/config/grype.yaml <image-name>
-
-# Generate SBOM for an image
-syft --config scripts/config/syft.yaml <image-name>
-
-# Verify config files are valid YAML
-yq eval '.' scripts/config/grype.yaml > /dev/null && echo "grype.yaml valid"
-yq eval '.' scripts/config/syft.yaml > /dev/null && echo "syft.yaml valid"
-
-# Expected: Tools run without config errors
-# Success indicator: Vulnerability report or SBOM generated
-```
-
-**To adopt**:
-
-1. Copy `scripts/config/grype.yaml` and `scripts/config/syft.yaml`
-2. Copy `scripts/reports/create-sbom-report.sh` and `scripts/reports/scan-vulnerabilities.sh`
-3. Add Docker image entries to `.tool-versions` for grype and syft:
-
-   ```text
-   # docker/ghcr.io/anchore/grype v0.92.2@sha256:... # SEE: https://github.com/anchore/grype/pkgs/container/grype
-   # docker/ghcr.io/anchore/syft v0.92.0@sha256:... # SEE: https://github.com/anchore/syft/pkgs/container/syft
-   ```
-
-4. Integrate with your Docker build pipeline or CI/CD workflows
-
-**To remove**: Delete the configuration files and scripts
-
----
-
-### 14. Lines of Code Reporting
-
-**Purpose**: Generate codebase metrics reports with git and pipeline metadata.
-
-**Dependencies**: gocloc (native or Docker)
-
-**Source files** (in `assets/`):
-
-- [`scripts/reports/create-lines-of-code-report.sh`](assets/scripts/reports/create-lines-of-code-report.sh)
-
-**Output**: `lines-of-code-report.json` with:
-
-- Language breakdown (files, blank, comment, code lines)
-- Repository metadata (URL, branch, commit, tags)
-- Pipeline metadata (run ID, number, attempt)
-
-**Usage**:
-
-```bash
-./scripts/reports/create-lines-of-code-report.sh
-```
-
-**Verification** (run after adoption):
-
-```bash
-# Check gocloc is available
-gocloc --version || docker run --rm aldanial/cloc --version
-
-# Run the report generator
-./scripts/reports/create-lines-of-code-report.sh
-
-# Check report was created
-test -f lines-of-code-report.json && echo "Report created" || echo "Report missing"
-
-# Validate JSON output
-jq '.' lines-of-code-report.json > /dev/null && echo "Valid JSON"
-
-# Expected: JSON file created with language statistics
-# Success indicator: File exists, valid JSON, contains "languages" key
-```
-
-**To adopt**:
-
-1. Copy the script
-2. Add Docker image entry to `.tool-versions` for gocloc:
-
-   ```text
-   # docker/ghcr.io/make-ops-tools/gocloc latest@sha256:... # SEE: https://github.com/make-ops-tools/gocloc/pkgs/container/gocloc
-   ```
-
-**To remove**: Delete the script
-
----
-
-### 15. VS Code Integration
-
-**Purpose**: Standardised editor configuration and recommended extensions.
-
-**Source files** (in `assets/`):
-
-- [`.vscode/extensions.json`](assets/.vscode/extensions.json) — Recommended extensions
-- [`.vscode/settings.json`](assets/.vscode/settings.json) — Workspace settings
-- [`project.code-workspace`](assets/project.code-workspace) — Multi-root workspace file
-
-**Key extensions**:
-
-- `editorconfig.editorconfig` — EditorConfig support
-- `davidanson.vscode-markdownlint` — Markdown linting
-- `ms-azuretools.vscode-docker` — Docker support
-- `github.vscode-github-actions` — GitHub Actions
-- `eamodio.gitlens` — Git enhancements
-- `hediet.vscode-drawio` — Diagram editing
-
-**Verification** (run after adoption):
-
-```bash
-# Check VS Code config files exist
-test -f .vscode/settings.json && echo "settings.json OK"
-test -f .vscode/extensions.json && echo "extensions.json OK"
-test -f project.code-workspace && echo "workspace file OK"
-
-# Validate JSON syntax
-jq '.' .vscode/settings.json > /dev/null && echo "settings.json valid"
-jq '.' .vscode/extensions.json > /dev/null && echo "extensions.json valid"
-jq '.' project.code-workspace > /dev/null && echo "workspace file valid"
-
-# List recommended extensions
-jq -r '.recommendations[]' .vscode/extensions.json
-
-# Expected: All files exist and contain valid JSON
-# Success indicator: Extension list displayed
-```
-
-**To adopt**: Copy `.vscode/` directory and `project.code-workspace`
-
-**To remove**: Delete the files
-
----
-
-### 16. Dev Container
-
-**Purpose**: Containerised, reproducible development environment.
-
-**Dependencies**: Docker, VS Code with Remote Containers extension
-
-**Source files** (in `assets/`):
-
-- [`.devcontainer/devcontainer.json`](assets/.devcontainer/devcontainer.json)
-
-**Features**:
-
-- Ubuntu base with Docker-in-Docker
-- Go, Python, asdf pre-installed
-- Zsh with Oh My Zsh and plugins
-- GPG support for commit signing
-- Automatic `make config` on creation
-
-**Verification** (run after adoption):
-
-```bash
-# Check devcontainer.json exists
-test -f .devcontainer/devcontainer.json && echo "devcontainer.json OK"
-
-# Validate JSON syntax
-jq '.' .devcontainer/devcontainer.json > /dev/null && echo "Valid JSON"
-
-# Check key properties exist
-jq -e '.name' .devcontainer/devcontainer.json > /dev/null && echo "Has name"
-jq -e '.image // .build' .devcontainer/devcontainer.json > /dev/null && echo "Has image or build"
-
-# Expected: File exists with valid JSON and required properties
-# Success indicator: All checks pass
-# Note: Full verification requires opening in VS Code with Remote Containers
-```
-
-**To adopt**:
-
-1. Copy `.devcontainer/`
-2. Open in VS Code and select "Reopen in Container"
-
-**To remove**: Delete `.devcontainer/`
-
----
-
-### 17. Tool Version Management (asdf)
-
-**Purpose**: Pin and manage tool versions consistently across the team, including Docker images.
-
-**Dependencies**: asdf version manager
-
-**Source files** (in `assets/`):
-
-- [`.tool-versions`](assets/.tool-versions) — Tool version pins (standard and Docker)
-
-**Standard tool entries**:
-
-```text
-gitleaks 8.30.0
-pre-commit 4.5.1
-terraform 1.7.0
-vale 3.6.0
-```
-
-**Extended format for Docker images**:
-
-The `.tool-versions` file is extended beyond standard asdf usage to pin Docker image versions. These entries are formatted as comments (so asdf ignores them) and parsed by the `docker-get-image-version-and-pull` function in `scripts/docker/docker.lib.sh`.
-
-```text
-# docker/<registry>/<image> <tag>@<digest> # SEE: <url>
-```
-
-**Example Docker entries**:
-
-```text
-# docker/ghcr.io/gitleaks/gitleaks v8.18.0@sha256:fd2b5cab... # SEE: https://github.com/gitleaks/gitleaks/pkgs/container/gitleaks
-# docker/hadolint/hadolint 2.12.0-alpine@sha256:7dba9a9f... # SEE: https://hub.docker.com/r/hadolint/hadolint/tags
-# docker/hashicorp/terraform 1.12.2@sha256:b3d13c90... # SEE: https://hub.docker.com/r/hashicorp/terraform/tags
-```
-
-**Format breakdown**:
-
-| Component            | Description                                               | Example                     |
-| -------------------- | --------------------------------------------------------- | --------------------------- |
-| `# docker/`          | Prefix marker (comment for asdf, parsed by docker.lib.sh) | `# docker/`                 |
-| `<registry>/<image>` | Full image name                                           | `ghcr.io/gitleaks/gitleaks` |
-| `<tag>`              | Version tag                                               | `v8.18.0`                   |
-| `@<digest>`          | Content-addressable SHA256 digest                         | `@sha256:fd2b5cab...`       |
-| `# SEE: <url>`       | Reference URL (optional, for maintainability)             | `# SEE: https://...`        |
-
-**Why use digests?**
-
-- **Reproducibility**: Digests are immutable; tags can be overwritten
-- **Security**: Prevents supply-chain attacks via tag substitution
-- **Caching**: The `docker-get-image-version-and-pull` function pulls by digest and tags locally to avoid repeated downloads
-
-**Usage**:
-
-```bash
-make config                             # Installs all asdf tools from .tool-versions
-make _install-dependency name=terraform # Install specific asdf tool
-
-# Docker images are pulled on-demand by scripts using docker-get-image-version-and-pull
-```
-
-**To adopt**:
-
-1. Copy `.tool-versions`
-2. Adjust versions for your project
-3. Run `make config`
-4. For Docker images, add entries following the format above
-
-**Verification** (run after adoption):
-
-```bash
-# Check asdf is available
-asdf --version
-
-# Check .tool-versions exists and has content
-test -f .tool-versions && cat .tool-versions
-
-# Verify asdf tools are installed at specified versions
-asdf current
-
-# Install all asdf tools (if not already installed)
-asdf install
-
-# Check a specific tool matches pinned version
-asdf current terraform
-
-# Check Docker entries exist
-grep "^# docker/" .tool-versions
-
-# Expected: All tools listed in .tool-versions are installed
-# Success indicator: `asdf current` shows all tools with matching versions
-# Docker images are pulled automatically when scripts invoke docker-get-image-version-and-pull
-```
-
-**To remove**: Delete `.tool-versions`
-
----
-
-### 18. GitHub Repository Templates
-
-**Purpose**: Standardised templates for issues, pull requests, and security policies to ensure consistent contributor experience.
-
-**Source files** (in `assets/`):
-
-- [`.github/ISSUE_TEMPLATE/`](assets/.github/ISSUE_TEMPLATE/) — Issue form templates
-- [`.github/PULL_REQUEST_TEMPLATE.md`](assets/.github/PULL_REQUEST_TEMPLATE.md) — PR description template
-- [`.github/SECURITY.md`](assets/.github/SECURITY.md) — Security vulnerability reporting policy
-
-**Issue templates**:
-
-- `1_support_request.yaml` — Support and help requests
-- `2_feature_request.yaml` — New feature proposals
-- `3_bug_report.yaml` — Bug reports with reproduction steps
-
-**PR template contents**:
-
-- Description section
-- Context/problem statement
-- Type of changes checklist (refactoring, feature, breaking change, bug fix)
-- Contributor checklist (code style, tests, documentation, pair programming)
-
-**Security policy**:
-
-- NHS England security contact information
-- Vulnerability reporting procedures via email
-- NCSC (National Cyber Security Centre) reporting option
-
-**To adopt**:
-
-1. Copy `.github/ISSUE_TEMPLATE/` directory
-2. Copy `.github/PULL_REQUEST_TEMPLATE.md`
-3. Copy `.github/SECURITY.md` and customise contact details
-
-**Verification** (run after adoption):
-
-```bash
-# Check templates exist
-ls -la .github/ISSUE_TEMPLATE/
-test -f .github/PULL_REQUEST_TEMPLATE.md && echo "PR template OK"
-test -f .github/SECURITY.md && echo "Security policy OK"
-
-# Validate YAML syntax for issue templates
-for f in .github/ISSUE_TEMPLATE/*.yaml; do
-  yq eval '.' "$f" > /dev/null && echo "$f valid"
-done
-
-# Expected: All template files present
-# Success indicator: Templates appear in GitHub UI when creating issues/PRs
-# Note: Full verification requires creating a test issue/PR on GitHub
-```
-
-**To remove**: Delete the template files
-
----
-
-### 19. Dependabot
+### 10. Dependabot
 
 **Purpose**: Automated dependency update pull requests for multiple package ecosystems.
+
+**Benefits**: Automated updates reduce security exposure and maintenance effort, while keeping changes reviewable.
+
+**Problem it solves**: Dependencies age quickly, and manual updates are often missed or deferred.
+
+**How it solves it**: Dependabot raises scheduled PRs per ecosystem so teams can review and merge controlled updates.
+
+**Dependencies**: GitHub repository with Dependabot enabled
 
 **Source files** (in `assets/`):
 
@@ -1229,13 +826,12 @@ done
 
 **Configured ecosystems**:
 
-| Ecosystem        | Schedule | Purpose                     |
-| ---------------- | -------- | --------------------------- |
-| `docker`         | Daily    | Base image updates          |
-| `github-actions` | Daily    | Action version updates      |
-| `npm`            | Daily    | Node.js dependency updates  |
-| `pip`            | Daily    | Python dependency updates   |
-| `terraform`      | Daily    | Provider and module updates |
+| Ecosystem        | Schedule | Purpose                    |
+| ---------------- | -------- | -------------------------- |
+| `docker`         | Daily    | Base image updates         |
+| `github-actions` | Daily    | Action version updates     |
+| `npm`            | Daily    | Node.js dependency updates |
+| `pip`            | Daily    | Python dependency updates  |
 
 **Features**:
 
@@ -1270,21 +866,252 @@ yq eval '.updates[].package-ecosystem' .github/dependabot.yaml
 
 ---
 
-### 20. Documentation Structure
+### 11. VS Code Integration
 
-**Purpose**: Standardised documentation layout with Architecture Decision Records (ADRs), developer guides, and user guides.
+**Purpose**: Standardised editor configuration and recommended extensions.
+
+**Benefits**: Consistent editor settings reduce formatting churn and improve onboarding speed.
+
+**Problem it solves**: Different local editor setups cause inconsistent outputs and avoidable lint failures.
+
+**How it solves it**: Workspace settings and recommended extensions align tooling behaviour, making local results match CI expectations.
+
+**Dependencies**: Visual Studio Code (or a compatible editor that honours the workspace files)
+
+**Source files** (in `assets/`):
+
+- [`.vscode/extensions.json`](assets/.vscode/extensions.json) — Recommended extensions
+- [`.vscode/settings.json`](assets/.vscode/settings.json) — Workspace settings
+- [`project.code-workspace`](assets/project.code-workspace) — Multi-root workspace file
+
+**Key extensions**:
+
+- `editorconfig.editorconfig` — EditorConfig support
+- `davidanson.vscode-markdownlint` — Markdown linting
+- `ms-azuretools.vscode-docker` — Docker support
+- `github.vscode-github-actions` — GitHub Actions
+- `eamodio.gitlens` — Git enhancements
+- `esbenp.prettier-vscode` — Formatting support
+- `streetsidesoftware.code-spell-checker-british-english` — British English spellchecking
+- `vstirbu.vscode-mermaid-preview` — Mermaid diagram preview
+
+**Verification** (run after adoption):
+
+```bash
+# Check VS Code config files exist
+test -f .vscode/settings.json && echo "settings.json OK"
+test -f .vscode/extensions.json && echo "extensions.json OK"
+test -f project.code-workspace && echo "workspace file OK"
+
+# Validate JSON syntax
+jq '.' .vscode/settings.json > /dev/null && echo "settings.json valid"
+jq '.' .vscode/extensions.json > /dev/null && echo "extensions.json valid"
+jq '.' project.code-workspace > /dev/null && echo "workspace file valid"
+
+# List recommended extensions
+jq -r '.recommendations[]' .vscode/extensions.json
+
+# Expected: All files exist and contain valid JSON
+# Success indicator: Extension list displayed
+```
+
+**To adopt**: Copy `.vscode/` directory and `project.code-workspace`
+
+**To remove**: Delete the files
+
+---
+
+### 12. Tool Version Management (asdf)
+
+**Purpose**: Pin and manage tool versions consistently across the team, including Docker images.
+
+**Benefits**: Pinned tools make builds repeatable and reduce environment-related defects.
+
+**Problem it solves**: Unpinned versions create “works on my machine” issues and inconsistent outputs.
+
+**How it solves it**: `.tool-versions` defines tool and Docker image versions, and shared scripts use those pins to ensure deterministic execution.
+
+**Dependencies**: asdf version manager
+
+**Source files** (in `assets/`):
+
+- [`.tool-versions`](assets/.tool-versions) — Tool version pins (standard and Docker)
+
+**Standard tool entries**:
+
+```text
+gitleaks 8.30.0
+pre-commit 4.5.1
+```
+
+**Extended format for Docker images**:
+
+The `.tool-versions` file is extended beyond standard asdf usage to pin Docker image versions. These entries are formatted as comments (so asdf ignores them) and parsed by the `docker-get-image-version-and-pull` function in `scripts/docker/docker.lib.sh`.
+
+```text
+# docker/<registry>/<image> <tag>@<digest> # SEE: <url>
+```
+
+**Example Docker entries**:
+
+```text
+# docker/ghcr.io/gitleaks/gitleaks v8.30.0@sha256:691af3c7c5a48b16f187ce3446d5f194838f91238f27270ed36eef6359a574d9 # SEE: https://github.com/gitleaks/gitleaks/pkgs/container/gitleaks
+# docker/ghcr.io/igorshubovych/markdownlint-cli v0.47.0@sha256:9f06c8c9a75aa08b87b235b66d618f7df351f09f08faf703177f670e38ee6511 # SEE: https://github.com/igorshubovych/markdownlint-cli/pkgs/container/markdownlint-cli
+# docker/hadolint/hadolint 2.14.0-alpine@sha256:7aba693c1442eb31c0b015c129697cb3b6cb7da589d85c7562f9deb435a6657c # SEE: https://hub.docker.com/r/hadolint/hadolint/tags
+# docker/koalaman/shellcheck v0.11.0@sha256:61862eba1fcf09a484ebcc6feea46f1782532571a34ed51fedf90dd25f925a8d # SEE: https://hub.docker.com/r/koalaman/shellcheck/tags
+# docker/mstruebing/editorconfig-checker v3.6@sha256:af556694c3eb0a16b598efbe84c1171d40dfb779fdac6f01b89baedde065556f # SEE: https://hub.docker.com/r/mstruebing/editorconfig-checker/tags
+```
+
+**Format breakdown**:
+
+| Component            | Description                                               | Example                     |
+| -------------------- | --------------------------------------------------------- | --------------------------- |
+| `# docker/`          | Prefix marker (comment for asdf, parsed by docker.lib.sh) | `# docker/`                 |
+| `<registry>/<image>` | Full image name                                           | `ghcr.io/gitleaks/gitleaks` |
+| `<tag>`              | Version tag                                               | `v8.30.0`                   |
+| `@<digest>`          | Content-addressable SHA256 digest                         | `@sha256:691af3c7c...`      |
+| `# SEE: <url>`       | Reference URL (optional, for maintainability)             | `# SEE: https://...`        |
+
+**Why use digests?**
+
+- **Reproducibility**: Digests are immutable; tags can be overwritten
+- **Security**: Prevents supply-chain attacks via tag substitution
+- **Caching**: The `docker-get-image-version-and-pull` function pulls by digest and tags locally to avoid repeated downloads
+
+**Usage**:
+
+```bash
+make config                             # Installs all asdf tools from .tool-versions
+make _install-dependency name=gitleaks # Install specific asdf tool
+
+# Docker images are pulled on-demand by scripts using docker-get-image-version-and-pull
+```
+
+**To adopt**:
+
+1. Copy `.tool-versions`
+2. Adjust versions for your project
+3. Run `make config`
+4. For Docker images, add entries following the format above
+
+**Verification** (run after adoption):
+
+```bash
+# Check asdf is available
+asdf --version
+
+# Check .tool-versions exists and has content
+test -f .tool-versions && cat .tool-versions
+
+# Verify asdf tools are installed at specified versions
+asdf current
+
+# Install all asdf tools (if not already installed)
+asdf install
+
+# Check a specific tool matches pinned version
+asdf current gitleaks
+
+# Check Docker entries exist
+grep "^# docker/" .tool-versions
+
+# Expected: All tools listed in .tool-versions are installed
+# Success indicator: `asdf current` shows all tools with matching versions
+# Docker images are pulled automatically when scripts invoke docker-get-image-version-and-pull
+```
+
+**To remove**: Delete `.tool-versions`
+
+---
+
+### 13. GitHub Repository Templates
+
+**Purpose**: Standardised templates for issues, pull requests, and security policies to ensure consistent contributor experience.
+
+**Benefits**: Structured issues and PRs improve triage quality and reduce review cycles, while a clear security policy supports responsible disclosure.
+
+**Problem it solves**: Unstructured requests lack critical context and slow down decisions.
+
+**How it solves it**: Templates and guidance define required fields and workflows, which standardises contributions and expectations.
+
+**Dependencies**: GitHub repository with Issues enabled and access to security policy settings
+
+**Source files** (in `assets/`):
+
+- [`.github/ISSUE_TEMPLATE/`](assets/.github/ISSUE_TEMPLATE/) — Issue form templates
+- [`.github/pull_request_template.md`](assets/.github/pull_request_template.md) — PR description template
+- [`.github/security.md`](assets/.github/security.md) — Security vulnerability reporting policy
+- [`.github/contributing.md`](assets/.github/contributing.md) — Contributing guide
+
+**Issue templates**:
+
+- `1_support_request.yaml` — Support and help requests
+- `2_feature_request.yaml` — New feature proposals
+- `3_bug_report.yaml` — Bug reports with reproduction steps
+
+**PR template contents**:
+
+- Description section
+- Context/problem statement
+- Type of changes checklist (refactoring, feature, breaking change, bug fix)
+- Contributor checklist (code style, tests, documentation, pair programming)
+
+**Security policy**:
+
+- NHS England security contact information
+- Vulnerability reporting procedures via email
+- NCSC (National Cyber Security Centre) reporting option
+
+**To adopt**:
+
+1. Copy `.github/ISSUE_TEMPLATE/` directory
+2. Copy `.github/pull_request_template.md`
+3. Copy `.github/security.md` and customise contact details
+4. Copy `.github/contributing.md` and tailor to your project
+
+**Verification** (run after adoption):
+
+```bash
+# Check templates exist
+ls -la .github/ISSUE_TEMPLATE/
+test -f .github/pull_request_template.md && echo "PR template OK"
+test -f .github/security.md && echo "Security policy OK"
+test -f .github/contributing.md && echo "Contributing guide OK"
+
+# Validate YAML syntax for issue templates
+for f in .github/ISSUE_TEMPLATE/*.yaml; do
+  yq eval '.' "$f" > /dev/null && echo "$f valid"
+done
+
+# Expected: All template files present
+# Success indicator: Templates appear in GitHub UI when creating issues/PRs
+# Note: Full verification requires creating a test issue/PR on GitHub
+```
+
+**To remove**: Delete the template files
+
+---
+
+### 14. Documentation Structure (Markdown)
+
+**Purpose**: Standardised documentation layout with Architecture Decision Records (ADRs) and guides.
+
+**Benefits**: A clear documentation layout preserves design intent and reduces knowledge loss.
+
+**Problem it solves**: Scattered or missing docs slow onboarding and lead to repeated decisions.
+
+**How it solves it**: ADRs capture architectural choices and guides provide practical usage patterns in a predictable location.
+
+**Dependencies**: None beyond a Markdown renderer for viewing
 
 **Source files** (in `assets/`):
 
 - [`docs/adr/`](assets/docs/adr/) — Architecture Decision Records
-- [`docs/developer-guides/`](assets/docs/developer-guides/) — Technical documentation for developers
-- [`docs/user-guides/`](assets/docs/user-guides/) — End-user documentation
-- [`docs/diagrams/`](assets/docs/diagrams/) — Draw.io diagrams
+- [`docs/guides/`](assets/docs/guides/) — Developer and user guides
 
 **ADR structure** (`docs/adr/`):
 
 - `ADR-nnn_Any_Decision_Record_Template.md` — Template for new ADRs
-- Example ADRs covering EditorConfig, secret scanning, GitHub auth
 
 **ADR template fields**:
 
@@ -1296,26 +1123,19 @@ yq eval '.updates[].package-ecosystem' .github/dependabot.yaml
 | Significance | Structure, non-functional, dependencies, interfaces, etc. |
 | Owners       | Decision owners                                           |
 
-**Developer guides**:
+**Guides** (`docs/guides/`):
 
 - `Bash_and_Make.md` — Shell scripting and Make conventions
+- `Run_Git_hooks_on_commit.md` — Pre-commit hook usage
+- `Scan_secrets.md` — Secret scanning usage
 - `Scripting_Docker.md` — Docker patterns and practices
-- `Scripting_Terraform.md` — Terraform conventions
-
-**User guides**:
-
-- `Perform_static_analysis.md`
-- `Run_Git_hooks_on_commit.md`
-- `Scan_dependencies.md`
-- `Scan_secrets.md`
-- `Sign_Git_commits.md`
-- `Test_GitHub_Actions_locally.md`
+- `Sign_Git_commits.md` — Git commit signing guidance
 
 **To adopt**:
 
 1. Copy `docs/` directory structure
 2. Customise ADR template for your organisation
-3. Remove example ADRs and guides not applicable
+3. Remove example guides not applicable
 4. Add project-specific documentation
 
 **Verification** (run after adoption):
@@ -1323,8 +1143,7 @@ yq eval '.updates[].package-ecosystem' .github/dependabot.yaml
 ```bash
 # Check documentation structure exists
 test -d docs/adr && echo "ADR directory OK"
-test -d docs/developer-guides && echo "Developer guides OK"
-test -d docs/user-guides && echo "User guides OK"
+test -d docs/guides && echo "Guides directory OK"
 
 # Check ADR template exists
 test -f docs/adr/ADR-nnn_Any_Decision_Record_Template.md && echo "ADR template OK"
@@ -1337,74 +1156,6 @@ find docs -name "*.md" -type f
 ```
 
 **To remove**: Delete `docs/` directory or specific subdirectories
-
----
-
-### 21. Static Analysis (SonarCloud)
-
-**Purpose**: Continuous code quality inspection and security analysis with SonarCloud integration.
-
-**Dependencies**: sonar-scanner (native or Docker), SonarCloud account
-
-**Source files** (in `assets/`):
-
-- [`scripts/reports/perform-static-analysis.sh`](assets/scripts/reports/perform-static-analysis.sh) — SonarCloud scanner wrapper
-- [`scripts/config/sonar-scanner.properties`](assets/scripts/config/sonar-scanner.properties) — Scanner configuration shared by native and Docker execution
-
-**Required environment variables**:
-
-| Variable                 | Description                     |
-| ------------------------ | ------------------------------- |
-| `BRANCH_NAME`            | Branch being analysed           |
-| `SONAR_ORGANISATION_KEY` | SonarCloud organisation key     |
-| `SONAR_PROJECT_KEY`      | SonarCloud project key          |
-| `SONAR_TOKEN`            | SonarCloud authentication token |
-
-**Features**:
-
-- Automatic native or Docker execution mode
-- Branch-aware analysis for PR feedback
-- Quality gate status badges
-- Integration with GitHub Actions CI/CD
-
-**To adopt**:
-
-1. Copy `scripts/reports/perform-static-analysis.sh` and `scripts/config/sonar-scanner.properties`
-2. Add Docker image entry to `.tool-versions` for sonar-scanner:
-
-   ```text
-   # docker/sonarsource/sonar-scanner-cli 10.0@sha256:... # SEE: https://hub.docker.com/r/sonarsource/sonar-scanner-cli/tags
-   ```
-
-3. Create a SonarCloud account and project at [sonarcloud.io](https://sonarcloud.io)
-4. Add `SONAR_TOKEN` to repository secrets
-5. Configure the workflow to run the script with required environment variables
-
-**Verification** (run after adoption):
-
-```bash
-# Check sonar-scanner is available
-sonar-scanner --version || docker run --rm sonarsource/sonar-scanner-cli --version
-
-# Verify script exists and is executable
-test -x scripts/reports/perform-static-analysis.sh && echo "Script OK"
-
-# Verify sonar-scanner configuration exists
-test -f scripts/config/sonar-scanner.properties && echo "Config OK"
-
-# Run static analysis (requires SonarCloud credentials)
-BRANCH_NAME=$(git branch --show-current) \
-SONAR_ORGANISATION_KEY=your-org \
-SONAR_PROJECT_KEY=your-project \
-SONAR_TOKEN=$SONAR_TOKEN \
-./scripts/reports/perform-static-analysis.sh
-
-# Expected: Analysis uploaded to SonarCloud
-# Success indicator: Quality gate status visible on SonarCloud dashboard
-# Note: Full verification requires SonarCloud account configuration
-```
-
-**To remove**: Delete the script and remove from CI/CD workflows
 
 ---
 
@@ -1456,17 +1207,18 @@ All source files are located in the [`assets/`](assets/) directory. Copy them to
 
 ### Root Files
 
-| File                                                             | Purpose                | Capability              |
-| ---------------------------------------------------------------- | ---------------------- | ----------------------- |
-| [`assets/.editorconfig`](assets/.editorconfig)                   | File formatting rules  | File Format Checking    |
-| [`assets/.gitattributes`](assets/.gitattributes)                 | Git file handling      | Core                    |
-| [`assets/.gitignore`](assets/.gitignore)                         | Git ignore patterns    | Core                    |
-| [`assets/.gitleaksignore`](assets/.gitleaksignore)               | False positive ignores | Secret Scanning         |
-| [`assets/.tool-versions`](assets/.tool-versions)                 | Tool version pins      | Tool Version Management |
-| [`assets/LICENCE.md`](assets/LICENCE.md)                         | MIT licence            | Core                    |
-| [`assets/Makefile`](assets/Makefile)                             | Project make targets   | Core Make System        |
-| [`assets/project.code-workspace`](assets/project.code-workspace) | VS Code workspace      | VS Code Integration     |
-| [`assets/VERSION`](assets/VERSION)                               | Project version        | Core                    |
+| File                                                             | Purpose                         | Capability              |
+| ---------------------------------------------------------------- | ------------------------------- | ----------------------- |
+| [`assets/.editorconfig`](assets/.editorconfig)                   | File formatting rules           | File Format Checking    |
+| [`assets/.gitattributes`](assets/.gitattributes)                 | Git file handling               | Core                    |
+| [`assets/.gitignore`](assets/.gitignore)                         | Git ignore patterns             | Core                    |
+| [`assets/.tool-versions`](assets/.tool-versions)                 | Tool version pins               | Tool Version Management |
+| [`assets/.vscode/`](assets/.vscode/)                             | VS Code settings and extensions | VS Code Integration     |
+| [`assets/LICENCE.md`](assets/LICENCE.md)                         | MIT licence                     | Core                    |
+| [`assets/Makefile`](assets/Makefile)                             | Project make targets            | Core Make System        |
+| [`assets/README.md`](assets/README.md)                           | Template README                 | Core                    |
+| [`assets/project.code-workspace`](assets/project.code-workspace) | VS Code workspace               | VS Code Integration     |
+| [`assets/VERSION`](assets/VERSION)                               | Project version                 | Core                    |
 
 ### Documentation Directory
 
@@ -1474,22 +1226,17 @@ All source files are located in the [`assets/`](assets/) directory. Copy them to
 | -------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
 | [`assets/docs/adr/`](assets/docs/adr/)                                                                               | Architecture Decision Records |
 | [`assets/docs/adr/ADR-nnn_Any_Decision_Record_Template.md`](assets/docs/adr/ADR-nnn_Any_Decision_Record_Template.md) | ADR template                  |
-| [`assets/docs/developer-guides/`](assets/docs/developer-guides/)                                                     | Technical documentation       |
-| [`assets/docs/user-guides/`](assets/docs/user-guides/)                                                               | End-user guides               |
-| [`assets/docs/diagrams/`](assets/docs/diagrams/)                                                                     | Draw.io diagrams              |
+| [`assets/docs/guides/`](assets/docs/guides/)                                                                         | Developer and user guides     |
 
 ### Scripts Directory
 
-| Path                                                                           | Purpose                  |
-| ------------------------------------------------------------------------------ | ------------------------ |
-| [`assets/scripts/init.mk`](assets/scripts/init.mk)                             | Core make infrastructure |
-| [`assets/scripts/shellscript-linter.sh`](assets/scripts/shellscript-linter.sh) | ShellCheck wrapper       |
-| [`assets/scripts/config/`](assets/scripts/config/)                             | Tool configurations      |
-| [`assets/scripts/docker/`](assets/scripts/docker/)                             | Docker support           |
-| [`assets/scripts/githooks/`](assets/scripts/githooks/)                         | Pre-commit hook scripts  |
-| [`assets/scripts/reports/`](assets/scripts/reports/)                           | Reporting scripts        |
-| [`assets/scripts/terraform/`](assets/scripts/terraform/)                       | Terraform support        |
-| [`assets/scripts/tests/`](assets/scripts/tests/)                               | Test framework           |
+| Path                                                           | Purpose                  |
+| -------------------------------------------------------------- | ------------------------ |
+| [`assets/scripts/init.mk`](assets/scripts/init.mk)             | Core make infrastructure |
+| [`assets/scripts/config/`](assets/scripts/config/)             | Tool configurations      |
+| [`assets/scripts/quality/`](assets/scripts/quality/)           | Quality check scripts    |
+| [`assets/scripts/docker/`](assets/scripts/docker/)             | Docker support           |
+| [`assets/scripts/docker/tests/`](assets/scripts/docker/tests/) | Docker test scripts      |
 
 ### GitHub Directory
 
@@ -1498,8 +1245,10 @@ All source files are located in the [`assets/`](assets/) directory. Copy them to
 | [`assets/.github/workflows/`](assets/.github/workflows/)                             | CI/CD pipeline workflows |
 | [`assets/.github/actions/`](assets/.github/actions/)                                 | Composite actions        |
 | [`assets/.github/ISSUE_TEMPLATE/`](assets/.github/ISSUE_TEMPLATE/)                   | Issue templates          |
-| [`assets/.github/PULL_REQUEST_TEMPLATE.md`](assets/.github/PULL_REQUEST_TEMPLATE.md) | PR template              |
-| [`assets/.github/SECURITY.md`](assets/.github/SECURITY.md)                           | Security policy          |
+| [`assets/.github/pull_request_template.md`](assets/.github/pull_request_template.md) | PR template              |
+| [`assets/.github/security.md`](assets/.github/security.md)                           | Security policy          |
+| [`assets/.github/contributing.md`](assets/.github/contributing.md)                   | Contributing guide       |
+| [`assets/.github/copilot-instructions.md`](assets/.github/copilot-instructions.md)   | Copilot instructions     |
 | [`assets/.github/dependabot.yaml`](assets/.github/dependabot.yaml)                   | Dependency updates       |
 
 ---
@@ -1516,5 +1265,5 @@ Then selectively copy relevant files to your repository.
 
 ---
 
-> **Version**: 1.0.2
-> **Last Amended**: 2026-01-18
+> **Version**: 2.0.0
+> **Last Amended**: 2026-01-31
