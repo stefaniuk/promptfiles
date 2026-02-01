@@ -129,8 +129,3 @@ If the decision is tactical, sub-optimal, or misaligned with strategic direction
 Use tags to link related ADRs by cross-cutting concern and quality attribute. Prefer a small, consistent set.
 
 `#availability|#reliability|#resilience|#recoverability|#scalability|#performance|#latency|#throughput|#efficiency|#cost|#security|#privacy|#compliance|#auditability|#observability|#operability|#maintainability|#testability|#deployability|#portability|#interoperability|#compatibility|#usability|#accessibility|#simplicity|#modularity|#extensibility|#data-integrity|#data-quality|#data-retention|#data-lineage|#idempotency|#consistency|…`
-
----
-
-> **Version**: 1.0.2
-> **Last Amended**: 2026-01-02

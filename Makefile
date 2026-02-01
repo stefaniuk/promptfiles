@@ -1,22 +1,19 @@
-# This file is for you! Edit it to implement your own hooks (make targets) into
-# the project as automated steps to be executed locally and in the CD pipeline.
-
 include scripts/init.mk
 
 # ==============================================================================
-# Project-specific targets
+# Project targets
 
 format: # Auto-format code @Quality
 	# No formatting required for this repository
 
 lint-file-format: # Check file formats @Quality
-	check=all ./scripts/githooks/check-file-format.sh && echo "file format: ok"
+	check=all ./scripts/quality/check-file-format.sh && echo "file format: ok"
 
 lint-markdown-format: # Check markdown formatting @Quality
-	check=all ./scripts/githooks/check-markdown-format.sh && echo "markdown format: ok"
+	check=all ./scripts/quality/check-markdown-format.sh && echo "markdown format: ok"
 
 lint-markdown-links: # Check markdown links @Quality
-	output=$$(check=all ./scripts/githooks/check-markdown-links.sh 2>&1) && echo "markdown links: ok" || { echo "$$output"; exit 1; }
+	output=$$(check=all ./scripts/quality/check-markdown-links.sh 2>&1) && echo "markdown links: ok" || { echo "$$output"; exit 1; }
 
 lint: # Run linter to check code style and errors @Quality
 	$(MAKE) lint-file-format

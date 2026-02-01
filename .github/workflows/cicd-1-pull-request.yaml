@@ -7,21 +7,20 @@ on:
   pull_request:
     types: [opened, reopened, synchronize]
 
-permissions:
-  id-token: write
-  contents: read
-
 jobs:
   metadata:
     name: "Set CI/CD metadata"
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
     timeout-minutes: 1
     outputs:
       build_datetime: ${{ steps.variables.outputs.build_datetime }}
       build_timestamp: ${{ steps.variables.outputs.build_timestamp }}
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: "Set CI/CD variables"
         id: variables
         run: |
@@ -30,6 +29,8 @@ jobs:
           echo "build_timestamp=$(date --date=$datetime -u +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
   commit-stage:
     name: "Commit stage"
+    permissions:
+      contents: read
     needs: [metadata]
     uses: ./.github/workflows/stage-1-commit.yaml
     with:

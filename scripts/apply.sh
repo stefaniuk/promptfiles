@@ -40,7 +40,7 @@ set -euo pipefail
 #   - constitution.md
 #   - .specify/scripts/bash
 #   - .specify/templates
-#   - adr-template.md
+#   - ADR-nnn_Any_Decision_Record_Template.md
 #   - docs/codebase-overview/
 #   - docs/prompts/
 #   - project.code-workspace (if not already present)
@@ -70,7 +70,7 @@ PULL_REQUEST_TEMPLATE="${REPO_ROOT}/.github/pull_request_template.md"
 CONSTITUTION="${REPO_ROOT}/.specify/memory/constitution.md"
 SPECIFY_SCRIPTS_BASH="${REPO_ROOT}/.specify/scripts/bash"
 SPECIFY_TEMPLATES="${REPO_ROOT}/.specify/templates"
-ADR_TEMPLATE="${REPO_ROOT}/docs/adr/adr-template.md"
+ADR_TEMPLATE="${REPO_ROOT}/docs/adr/ADR-nnn_Any_Decision_Record_Template.md"
 DOCS_CODEBASE_OVERVIEW="${REPO_ROOT}/docs/codebase-overview"
 DOCS_PROMPTS="${REPO_ROOT}/docs/prompts"
 WORKSPACE_FILE="${REPO_ROOT}/project.code-workspace"
@@ -528,7 +528,7 @@ function copy-specify-templates() {
   cp -R "${SPECIFY_TEMPLATES}/". "${dest}/"
 }
 
-# Copy adr-template.md to the destination.
+# Copy ADR-nnn_Any_Decision_Record_Template.md to the destination.
 # Arguments (provided as function parameters):
 #   $1=[destination directory path]
 function copy-adr-template() {
@@ -536,7 +536,7 @@ function copy-adr-template() {
   local dest="$1/docs/adr"
   mkdir -p "${dest}"
 
-  print-info "Copying adr-template.md to ${dest}"
+  print-info "Copying ADR-nnn_Any_Decision_Record_Template.md to ${dest}"
   cp "${ADR_TEMPLATE}" "${dest}/"
 }
 

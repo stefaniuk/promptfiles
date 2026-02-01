@@ -2,6 +2,5 @@
 .specify/templates/** linguist-vendored
 scripts/config/** linguist-vendored
 scripts/docker/** linguist-vendored
-scripts/githooks/** linguist-vendored
-scripts/reports/** linguist-vendored
+scripts/quality/** linguist-vendored
 scripts/init.mk linguist-vendored

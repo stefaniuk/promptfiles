@@ -151,8 +151,12 @@ make apply dest=/absolute/path/to/target
 
 - `.github/agents`, `.github/instructions`, `.github/prompts`, `.github/skills`
 - `.github/copilot-instructions.md`
+- `.github/pull_request_template.md` (only if missing in the target)
 - `.specify/memory/constitution.md`
-- `docs/adr/adr-template.md`, `docs/.gitignore`
+- `.specify/scripts/bash`, `.specify/templates`
+- `docs/adr/ADR-nnn_Any_Decision_Record_Template.md`
+- `docs/codebase-overview/`, `docs/prompts/`, `docs/.gitignore`
+- `project.code-workspace` (only if missing in the target)
 
 </details>
 
@@ -201,14 +205,14 @@ The report shows:
 
 #### Featured artefacts
 
-| Pack                                                        | Description                                                                                                                                           |
-| :---------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 🤖 **[.github/agents](.github/agents)**                     | Ready-to-run Copilot agents (analyze, checklist, clarify, constitution, implement, plan, specify, tasks, taskstoissues) tuned for spec-kit ceremonies |
-| 💬 **[.github/prompts](.github/prompts)**                   | Focused prompt files for documentation reviews, governance gates, tests, and refactoring support                                                      |
-| 📋 **[.github/instructions](.github/instructions)**         | Coding standards and best practice packs scoped by file glob so Copilot always sees the right rules                                                   |
-| 🧠 **[.github/skills](.github/skills)**                     | Bundled instructions plus helper assets that extend Copilot's capabilities for niche workflows                                                        |
-| 📝 **[.specify/templates](.specify/templates)**             | Seed specs, plans, and tasks for new features                                                                                                         |
-| 📄 **[docs/adr/adr-template.md](docs/adr/adr-template.md)** | Opinionated ADR template aligned with spec-kit identifiers                                                                                            |
+| Pack                                                                                                        | Description                                                                                                                                           |
+| :---------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🤖 **[.github/agents](.github/agents)**                                                                     | Ready-to-run Copilot agents (analyze, checklist, clarify, constitution, implement, plan, specify, tasks, taskstoissues) tuned for spec-kit ceremonies |
+| 💬 **[.github/prompts](.github/prompts)**                                                                   | Focused prompt files for documentation reviews, governance gates, tests, and refactoring support                                                      |
+| 📋 **[.github/instructions](.github/instructions)**                                                         | Coding standards and best practice packs scoped by file glob so Copilot always sees the right rules                                                   |
+| 🧠 **[.github/skills](.github/skills)**                                                                     | Bundled instructions plus helper assets that extend Copilot's capabilities for niche workflows                                                        |
+| 📝 **[.specify/templates](.specify/templates)**                                                             | Seed specs, plans, and tasks for new features                                                                                                         |
+| 📄 **[docs/adr/ADR-nnn_Any_Decision_Record_Template.md](docs/adr/ADR-nnn_Any_Decision_Record_Template.md)** | Opinionated ADR template aligned with spec-kit identifiers                                                                                            |
 
 #### Prompt naming convention
 
@@ -234,7 +238,7 @@ Prompts use a **prefix + category + verb** convention to keep fuzzy search fast 
 
 ## Contributing
 
-We welcome contributions! See [.github/contributing.md](.github/contributing.md) for the full guide.
+We welcome contributions! See [contributing.md](.github/contributing.md) for the full guide.
 
 ### Development setup
 

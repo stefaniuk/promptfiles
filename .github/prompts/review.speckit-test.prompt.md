@@ -49,7 +49,7 @@ Before performing any analysis:
    - Test coverage results (if reported). If coverage is not reported, flag this as a gap and recommend implementing coverage measurement in automation (without optimising for the percentage).
 3. Identify all feature folders under `./specs/` and read the **full specification set** in feature order (lowest feature prefix first), including supporting artefacts within each feature directory.
 4. Treat the specification as the **authoritative source of truth** for intended behaviour when assessing test adequacy (across the full spec set, not only the latest feature).
-5. Read relevant ADRs under `./docs/adr/` and use `./docs/adr/adr-template.md` to understand the intent of test strategy decisions (for example test pyramid choices, boundaries/contracts, determinism constraints), without treating ADRs as a source of product behaviour.
+5. Read relevant ADRs under `./docs/adr/` and use `./docs/adr/ADR-nnn_Any_Decision_Record_Template.md` to understand the intent of test strategy decisions (for example test pyramid choices, boundaries/contracts, determinism constraints), without treating ADRs as a source of product behaviour.
 
 ---
 

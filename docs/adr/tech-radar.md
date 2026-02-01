@@ -18,7 +18,7 @@
 - Logging: `winston` or `Powertools for AWS Lambda`
 - CLI argument parsing: `commander`
 
-Note: Selecting any default tool above still requires an ADR that compares and assesses at least two or three popular alternatives using the [ADR template](./adr-template.md).
+Note: Selecting any default tool above still requires an ADR that compares and assesses at least two or three popular alternatives using the [ADR template](./ADR-nnn_Any_Decision_Record_Template.md).
 
 ---
 

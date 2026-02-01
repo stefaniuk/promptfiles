@@ -206,7 +206,7 @@ Explicitly verify alignment between:
 ### 7. Completeness of Documentation
 
 - Ensure ADRs (decision records) exist for all material decisions and are stored under `./docs/adr/` (mandatory).
-- Validate each ADR against the ADR template in `./docs/adr/adr-template.md` (structure, required fields, and status semantics).
+- Validate each ADR against the ADR template in `./docs/adr/ADR-nnn_Any_Decision_Record_Template.md` (structure, required fields, and status semantics).
 - Ensure C4 model diagrams are present and correctly reflect the current architecture (mandatory).
 - Ensure data flow diagrams are present when the specification, plan, or ADRs describe material data movement or external integrations; otherwise record the omission explicitly.
 
