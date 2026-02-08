@@ -29,6 +29,7 @@ set -euo pipefail
 # Always copied (default/glue layer):
 #   - All spec-kit agents (.github/agents)
 #   - Shell, Docker, Makefile instructions and prompts
+#   - Development prompts (dev.implement-*)
 #   - Codebase documentation prompts (codebase.*)
 #   - Spec-kit prompts (speckit.*, review.speckit-*)
 #   - Utility prompts (util.*)
@@ -85,7 +86,7 @@ GITIGNORE_END_MARKER="# <<< promptfiles-copilot managed content - DO NOT EDIT AB
 DEFAULT_INSTRUCTIONS=("docker" "makefile" "readme" "shell")
 
 # Default prompt patterns (glue layer and spec-kit)
-DEFAULT_PROMPT_PATTERNS=("codebase.*" "enforce.docker" "enforce.makefile" "enforce.shell" "review.speckit-*" "speckit.*" "util.*")
+DEFAULT_PROMPT_PATTERNS=("codebase.*" "dev.implement-*" "enforce.*" "review.speckit-*" "speckit.*" "util.*")
 
 # Default templates (glue layer)
 DEFAULT_TEMPLATES=("Makefile.template" "Dockerfile.template" "compose.yaml.template" "shell-script.template.sh")
