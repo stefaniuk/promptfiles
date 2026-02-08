@@ -2,25 +2,43 @@
 
 ## Python tech stack
 
-- Python and dependency management: `uv`
-- Linting and formatting: `ruff`
-- Type checking: `mypy`
-- Testing: `pytest`
-- Logging: `structlog` or `Powertools for AWS Lambda`
-- CLI argument parsing: `typer`
+- [Python and dependency management](ADR-001a_Python_Dependency_Management.md): `uv`
+- [Linting and formatting](ADR-001b_Python_Linting_and_Formatting.md): `ruff`
+- [Type checking](ADR-001c_Python_Type_Checking.md): `mypy`
+- [Testing](ADR-001d_Python_Testing_Tooling.md): `pytest`
+- [Logging](ADR-001e_Python_Logging.md): `structlog` or `Powertools for AWS Lambda`
+- [CLI argument parsing](ADR-001f_Python_CLI_Argument_Parsing.md): `typer`
 
 ## TypeScript tech stack
 
-- TypeScript and dependency management: Node.js (LTS) and `pnpm`
-- Linting and formatting: `biome`
-- Type checking: `tsc`
-- Testing: `vitest`
-- Logging: `winston` or `Powertools for AWS Lambda`
-- CLI argument parsing: `commander`
+- [TypeScript and dependency management](ADR-002a_TypeScript_Dependency_Management.md): Node.js (LTS) and `pnpm`
+- [Linting and formatting](ADR-002b_TypeScript_Linting_and_Formatting.md): `biome`
+- [Type checking](ADR-002c_TypeScript_Type_Checking.md): `tsc`
+- [Testing](ADR-002d_TypeScript_Testing_Tooling.md): `vitest`
+- [Logging](ADR-002e_TypeScript_Logging.md): `winston` or `Powertools for AWS Lambda`
+- [CLI argument parsing](ADR-002f_TypeScript_CLI_Argument_Parsing.md): `commander`
+
+## Go tech stack
+
+- [Go and dependency management](ADR-003a_Go_Dependency_Management.md): Go and `go mod`
+- [Linting and formatting](ADR-003b_Go_Linting_and_Formatting.md): `gofmt` and `golangci-lint`
+- [Type checking](ADR-003c_Go_Static_Analysis_and_Type_Checking.md): `staticcheck`
+- [Testing](ADR-003d_Go_Testing_Tooling.md): `go test`
+- [Logging](ADR-003e_Go_Logging.md): `zap`
+- [CLI argument parsing](ADR-003f_Go_CLI_Argument_Parsing.md): `cobra`
+
+## Rust tech stack
+
+- [Rust and dependency management](ADR-004a_Rust_Dependency_Management.md): Rust and Cargo
+- [Linting and formatting](ADR-004b_Rust_Linting_and_Formatting.md): `rustfmt` and `clippy`
+- [Type checking](ADR-004c_Rust_Type_Checking.md): `cargo check`
+- [Testing](ADR-004d_Rust_Testing_Tooling.md): `cargo test`
+- [Logging](ADR-004e_Rust_Logging.md): `tracing`
+- [CLI argument parsing](ADR-004f_Rust_CLI_Argument_Parsing.md): `clap`
 
 Note: Selecting any default tool above still requires an ADR that compares and assesses at least two or three popular alternatives using the [ADR template](./ADR-nnn_Any_Decision_Record_Template.md).
 
 ---
 
-> **Version**: 1.0.0
-> **Last Amended**: 2026-01-29
+> **Version**: 1.2.0
+> **Last Amended**: 2026-02-08
