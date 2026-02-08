@@ -74,6 +74,21 @@ Use it for context and evaluate each runtime that emits structured logs against 
 - **Timing information**: log duration for slow or critical operations (or emit metrics instead).
 - **Avoid noise**: do not add "started/finished" logs to trivial or idempotent methods.
 
+### Output destinations and defaults 🎯
+
+- **No logs by default**: logging output is disabled unless explicitly enabled by configuration or CLI flags.
+- **Structured log file option**: provide a CLI argument or configuration option for the structured log file name/path (for example `--log-json-file` or `LOG_JSON_FILE`). When set, emit structured logs in NDJSON.
+- **Human-readable log file option**: provide a CLI argument or configuration option for the human-readable log file name/path (for example `--log-file` or `LOG_FILE`). When set, emit human-readable logs.
+- **Console logging toggle**: provide a CLI argument or configuration option to enable logging to the console (for example `--log-console` or `LOG_CONSOLE=true`).
+- **Pretty/colour console toggle**: provide a CLI argument or configuration option for pretty, colourised console output (for example `--log-console-pretty` or `LOG_CONSOLE_PRETTY=true`).
+- **Separate streams**: console logs must go to stderr and never mix with stdout payloads.
+
+### Logging verbosity controls 🔊
+
+- Provide `--log-level <level>` for explicit control.
+- Support verbosity flags (`--verbose` with `-v`, `-vv`, `-vvv`, and `--quiet` with `-q`, `-qq`) and document the mapping in `--help`.
+- Support an environment variable for verbosity (for example `LOG_LEVEL`) with precedence: CLI flags > env vars > config file > defaults.
+
 ### Log levels 🎚️
 
 | Level | Purpose                                   |
@@ -102,6 +117,7 @@ Flag any misuse (e.g., logging an error condition at INFO).
 - **No-colour mode**: auto-disable colour when stdout is not a TTY; honour `NO_COLOR` or similar environment variables.
 - **Level tags and icons**: use short, consistent tags (INFO, WARN, ERROR) with an optional single icon per level.
 - **Bounded output**: truncate or wrap large fields; never allow unbounded blobs to break layout.
+- **Stdout separation**: console logs must never be written to stdout; keep stdout for primary results only.
 
 ### Performance ⚡
 
@@ -120,6 +136,8 @@ Flag any misuse (e.g., logging an error condition at INFO).
    - [ ] Project-level logger configuration
    - [ ] Class-level logging
    - [ ] Method-level logging
+   - [ ] Output destinations and defaults
+   - [ ] Logging verbosity controls
    - [ ] Log levels
    - [ ] Content
    - [ ] Console visualisation
@@ -127,5 +145,5 @@ Flag any misuse (e.g., logging an error condition at INFO).
 
 ---
 
-> **Version**: 1.1.4
+> **Version**: 1.1.5
 > **Last Amended**: 2026-02-08

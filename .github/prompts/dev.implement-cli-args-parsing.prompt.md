@@ -77,6 +77,7 @@ Use it for context and evaluate each CLI against the CLI Contract Baseline:
 - Support repeatable flags for multiple values and document ordering, de-duplication, and limits.
 - Reject unknown flags and surplus positional arguments with exit code `2`.
 - Follow standard conventions for `-h/--help`, `-v/--version`, `--verbose`, and `--quiet`. These are must-have arguments for every CLI.
+- Support env var equivalents for CLI flags (for example `LOG_FILE` for `--log-file`), with precedence: CLI flags > env vars > config file > defaults.
 - Provide `--yes` or `--no-input` for non-interactive operation and make prompts opt-in.
 
 ### Modern parser defaults 🧱
@@ -124,13 +125,18 @@ Use it for context and evaluate each CLI against the CLI Contract Baseline:
 - Offer `--dry-run` when the command mutates resources.
 - Keep interactive prompts opt-in and always provide a non-interactive equivalent.
 
+### Logging output controls 🧾
+
+- Default to no logging output unless explicitly enabled.
+- Provide options for structured log file (`--log-json-file`), human-readable log file (`--log-file`), console logging (`--log-console`), and pretty/colour console output (`--log-console-pretty`).
+- Console logs must go to stderr and never mix with stdout payloads.
+
 ### Logging verbosity controls 🔊
 
 - `--verbose` raises verbosity one step; allow `-v`, `-vv`, `-vvv` to increment levels (for example INFO → DEBUG → TRACE).
 - `--quiet` lowers verbosity one step; allow `-q`, `-qq` similarly.
 - Document the exact mapping from flags to log levels in `--help`.
 - Provide `--log-level <level>` for explicit control; flags are convenience.
-- Support an environment variable for verbosity (for example `LOG_LEVEL` or `VERBOSITY`), with precedence: CLI flags > env vars > config file > defaults.
 - Keep diagnostics on `stderr` and keep outputs deterministic.
 
 ### Wrappers and shared libraries 📦
@@ -170,6 +176,7 @@ Use it for context and evaluate each CLI against the CLI Contract Baseline:
    - [ ] Validation and errors
    - [ ] Stdout and stderr semantics
    - [ ] Developer ergonomics
+   - [ ] Logging output controls
    - [ ] Logging verbosity controls
    - [ ] Wrappers and shared libraries
    - [ ] Cloud and serverless workloads
@@ -177,5 +184,5 @@ Use it for context and evaluate each CLI against the CLI Contract Baseline:
 
 ---
 
-> **Version**: 1.0.2
+> **Version**: 1.0.3
 > **Last Amended**: 2026-02-08
