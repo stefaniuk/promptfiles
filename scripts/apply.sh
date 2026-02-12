@@ -87,7 +87,7 @@ GITIGNORE_END_MARKER="# <<< promptfiles-copilot managed content - DO NOT EDIT AB
 DEFAULT_INSTRUCTIONS=("docker" "makefile" "readme" "shell")
 
 # Default prompt patterns (glue layer and spec-kit)
-DEFAULT_PROMPT_PATTERNS=("codebase.*" "dev.implement-*" "enforce.*" "review.speckit-*" "speckit.*" "util.*")
+DEFAULT_PROMPT_PATTERNS=("codebase.*" "dev.implement-*" "enforce.docker" "enforce.makefile" "enforce.shell" "review.speckit-*" "speckit.*" "util.*")
 
 # Default templates (glue layer)
 DEFAULT_TEMPLATES=("Makefile.template" "Dockerfile.template" "compose.yaml.template" "shell-script.template.sh")
