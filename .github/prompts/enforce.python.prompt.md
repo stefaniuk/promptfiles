@@ -9,7 +9,7 @@ description: Enforce repository-wide compliance with python.instructions.md
 - Read the [Python instructions](../instructions/python.instructions.md).
 - Read the [pyproject.toml template](../instructions/templates/pyproject.toml) for the canonical project configuration structure.
 - Reference identifiers (for example `[PY-QR-001]`) as you must assess compliance against each of them across the codebase and remediate any deviations.
-- Read the [codebase overview instructions](../instructions/includes/codebase-overview-baseline.include.md) and adopt the approach for gathering supporting evidence.
+- Read the [architecture overview instructions](../instructions/includes/architecture-baseline.include.md) and adopt the approach for gathering supporting evidence.
 
 ## User Input ⌨️
 

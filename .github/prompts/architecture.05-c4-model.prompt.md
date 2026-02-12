@@ -3,17 +3,17 @@ agent: agent
 description: Produce C4 model diagrams (Context, Container, Component) in Structurizr DSL (evidence-first, consistent naming)
 ---
 
-**Mandatory preparation:** read [codebase overview](../instructions/includes/codebase-overview-baseline.include.md) instructions in full and follow strictly its rules before executing any step below.
+**Mandatory preparation:** read [architecture overview](../instructions/includes/architecture-baseline.include.md) instructions in full and follow strictly its rules before executing any step below.
 
 ## Goal 🎯
 
-Create (or update) Structurizr DSL files under `docs/codebase-overview/`:
+Create (or update) Structurizr DSL files under `docs/architecture/`:
 
-- `docs/codebase-overview/c4-01-context.dsl`
-- `docs/codebase-overview/c4-02-container.dsl`
-- `docs/codebase-overview/c4-03-component-*.dsl` (one per container/context as needed)
+- `docs/architecture/c4-01-context.dsl`
+- `docs/architecture/c4-02-container.dsl`
+- `docs/architecture/c4-03-component-*.dsl` (one per container/context as needed)
 
-Also ensure they are linked from: [codebase overview](../../docs/codebase-overview/README.md) output
+Also ensure they are linked from: [architecture overview](../../docs/architecture/README.md) output
 
 ---
 
@@ -22,10 +22,10 @@ Also ensure they are linked from: [codebase overview](../../docs/codebase-overvi
 ### A. Refresh what is already known (use existing docs as inputs)
 
 1. Review:
-   - [repository map](../../docs/codebase-overview/repository-map.md)
-   - Component catalogue: `docs/codebase-overview/component-*.md`
-   - Runtime flows: `docs/codebase-overview/runtime-flow-*.md`
-   - Domain analysis (DDD): `docs/codebase-overview/domain-*.md`
+   - [repository map](../../docs/architecture/repository-map.md)
+   - Component catalogue: `docs/architecture/component-*.md`
+   - Runtime flows: `docs/architecture/runtime-flow-*.md`
+   - Domain analysis (DDD): `docs/architecture/domain-*.md`
 2. Extract into working notes:
    - System name(s) and purpose
    - Deployable units (services/apps/workers/CLIs) and their entry points
@@ -71,7 +71,7 @@ Record any gaps as **Unknown from code – {suggested action}** and avoid guessi
 
 ### 2) Create Context diagram (Structurizr DSL)
 
-Create/update: `docs/codebase-overview/c4-01-context.dsl`
+Create/update: `docs/architecture/c4-01-context.dsl`
 
 Include:
 
@@ -91,7 +91,7 @@ Rules:
 
 ### 3) Create Container diagram (Structurizr DSL)
 
-Create/update: `docs/codebase-overview/c4-02-container.dsl`
+Create/update: `docs/architecture/c4-02-container.dsl`
 
 Include containers for each deployable unit:
 
@@ -124,7 +124,7 @@ Create component diagrams for containers where it adds value:
 
 For each chosen container, create/update:
 
-- `docs/codebase-overview/c4-03-component-{container-name}.dsl`
+- `docs/architecture/c4-03-component-{container-name}.dsl`
 
 Include:
 
@@ -157,8 +157,8 @@ Example comment:
 
 ```text
 // Inputs:
-// - /docs/codebase-overview/repository-map.md
-// - /docs/codebase-overview/component-001-*.md
+// - /docs/architecture/repository-map.md
+// - /docs/architecture/component-001-*.md
 // Evidence pointers:
 // - /path/to/router.ts
 // - /infra/k8s/service.yaml
@@ -169,7 +169,7 @@ Example comment:
 
 ### 6) Update the index (README)
 
-Update: [codebase overview](../../docs/codebase-overview/README.md) with a **C4 Diagrams (Structurizr DSL)** section linking to:
+Update: [architecture overview](../../docs/architecture/README.md) with a **C4 Diagrams (Structurizr DSL)** section linking to:
 
 - `c4-01-context.dsl`
 - `c4-02-container.dsl`

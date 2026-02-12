@@ -9,7 +9,7 @@ description: Enforce repository-wide compliance with tauri.instructions.md
 - Read the [Tauri instructions](../instructions/tauri.instructions.md).
 - Read the [Rust instructions](../instructions/rust.instructions.md), [ReactJS instructions](../instructions/reactjs.instructions.md), and [TypeScript instructions](../instructions/typescript.instructions.md) for shared language and tooling expectations.
 - Reference identifiers (for example `[TAU-QR-001]`) as you must assess compliance against each of them across the codebase and remediate any deviations.
-- Read the [codebase overview instructions](../instructions/includes/codebase-overview-baseline.include.md) and adopt the approach for gathering supporting evidence.
+- Read the [architecture overview instructions](../instructions/includes/architecture-baseline.include.md) and adopt the approach for gathering supporting evidence.
 
 ## User Input ⌨️
 

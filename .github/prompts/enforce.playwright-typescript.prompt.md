@@ -10,7 +10,7 @@ description: Enforce repository-wide compliance with playwright-typescript.instr
 - Read the [TypeScript instructions](../instructions/typescript.instructions.md) for general TypeScript standards.
 - Read the [Playwright baseline](../instructions/includes/playwright-baseline.include.md) for shared Playwright guidance.
 - Reference identifiers (for example `[PW-TS-QR-001]`) as you must assess compliance against each of them across the codebase and remediate any deviations.
-- Read the [codebase overview instructions](../instructions/includes/codebase-overview-baseline.include.md) and adopt the approach for gathering supporting evidence.
+- Read the [architecture overview instructions](../instructions/includes/architecture-baseline.include.md) and adopt the approach for gathering supporting evidence.
 
 ## User Input ⌨️
 

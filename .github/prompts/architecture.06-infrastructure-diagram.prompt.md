@@ -3,13 +3,13 @@ agent: agent
 description: Produce AWS infrastructure diagram from Terraform (evidence-first, consistent with C4 container naming)
 ---
 
-**Mandatory preparation:** read [codebase overview](../instructions/includes/codebase-overview-baseline.include.md) instructions in full and follow strictly its rules before executing any step below.
+**Mandatory preparation:** read [architecture overview](../instructions/includes/architecture-baseline.include.md) instructions in full and follow strictly its rules before executing any step below.
 
 ## Goal 🎯
 
-Create (or update) the [AWS infrastructure page](../../docs/codebase-overview/aws-infrastructure.md) and [AWS infrastructure diagram](../../docs/codebase-overview/aws-infrastructure.drawio), then export the diagram to PNG once complete.
+Create (or update) the [AWS infrastructure page](../../docs/architecture/aws-infrastructure.md) and [AWS infrastructure diagram](../../docs/architecture/aws-infrastructure.drawio), then export the diagram to PNG once complete.
 
-Also ensure this work is linked from: [codebase overview](../../docs/codebase-overview/README.md) output.
+Also ensure this work is linked from: [architecture overview](../../docs/architecture/README.md) output.
 
 Constraints:
 
@@ -90,7 +90,7 @@ For each Terraform root/module:
 
 ### 4) Document evidence and outputs
 
-1. Update [codebase overview](../../docs/codebase-overview/README.md) with:
+1. Update [architecture overview](../../docs/architecture/README.md) with:
    - Link to the draw.io file (and PNG/SVG if exported)
    - Short summary of what the diagram covers (environments, date of last refresh)
    - Instructions to regenerate (e.g. "Open in draw.io desktop/web and refresh AWS icons from Terraform module XYZ")

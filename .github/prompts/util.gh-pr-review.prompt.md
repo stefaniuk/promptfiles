@@ -1,5 +1,5 @@
 ---
-description: Generate pull request review using codebase overview context
+description: Generate pull request review using architecture overview context
 ---
 
 **Mandatory preparation:**
@@ -7,7 +7,7 @@ description: Generate pull request review using codebase overview context
 - Read the [constitution](../../.specify/memory/constitution.md) and honour its non-negotiable rules.
 - Read the Pull Request template at [pull_request_template.md](../pull_request_template.md) so the generated content mirrors it exactly.
 - Read the technology-specific instructions for every language touched in the diff (for example [python.instructions.md](../instructions/python.instructions.md), [shell.instructions.md](../instructions/shell.instructions.md), [makefile.instructions.md](../instructions/makefile.instructions.md)).
-- Review the design context under `docs/codebase-overview/` to describe affected components accurately.
+- Review the design context under `docs/architecture/` to describe affected components accurately.
 
 ## Goal 🎯
 
@@ -16,7 +16,7 @@ Produce a thorough, evidence-based peer review of the current branch changes com
 Your output must be grounded in:
 
 - The actual diff between this branch and `main`
-- The existing design overview documentation under `docs/codebase-overview/`
+- The existing design overview documentation under `docs/architecture/`
 
 Where evidence cannot be found, record **Unknown from code – {suggested action}**.
 
@@ -26,7 +26,7 @@ Where evidence cannot be found, record **Unknown from code – {suggested action
 
 ### A. Load design overview context (read before reviewing code)
 
-1. Read the repository documentation that exists under `docs/codebase-overview/`:
+1. Read the repository documentation that exists under `docs/architecture/`:
    - `README.md`
    - `repository-map.md`
    - `loc-report.txt`

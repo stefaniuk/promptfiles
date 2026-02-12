@@ -3,13 +3,13 @@ agent: agent
 description: Create component-level summaries (responsibilities, interfaces, data, and extension points)
 ---
 
-**Mandatory preparation:** read [codebase overview](../instructions/includes/codebase-overview-baseline.include.md) instructions in full and follow strictly its rules before executing any step below.
+**Mandatory preparation:** read [architecture overview](../instructions/includes/architecture-baseline.include.md) instructions in full and follow strictly its rules before executing any step below.
 
 ## Goal 🎯
 
-Create (or update): component catalogue `../../docs/codebase-overview/component-*.md`
+Create (or update): component catalogue `../../docs/architecture/component-*.md`
 
-Also ensure they are linked from:[codebase overview](../../docs/codebase-overview/README.md) output
+Also ensure they are linked from:[architecture overview](../../docs/architecture/README.md) output
 
 ---
 
@@ -17,7 +17,7 @@ Also ensure they are linked from:[codebase overview](../../docs/codebase-overvie
 
 ### A. Refresh what is already known
 
-1. Re-read: [repository map](../../docs/codebase-overview/repository-map.md).
+1. Re-read: [repository map](../../docs/architecture/repository-map.md).
 2. Extract (briefly) into working notes:
    - Deployable units and entry points
    - Repo-level architecture statement and tech stack summary (do not repeat in every component)
@@ -66,7 +66,7 @@ Also ensure they are linked from:[codebase overview](../../docs/codebase-overvie
 
 For each component, create:
 
-- `docs/codebase-overview/component-[XXX]-[name].md`
+- `docs/architecture/component-[XXX]-[name].md`
 
 Where:
 
@@ -187,7 +187,7 @@ Document component-specific implementation details only. If a concern is identic
 
 ### 5) Update the index
 
-Update: [codebase overview](../../docs/codebase-overview/README.md) with a **Component Catalogue** section linking to every component document (in `[XXX]` order).
+Update: [architecture overview](../../docs/architecture/README.md) with a **Component Catalogue** section linking to every component document (in `[XXX]` order).
 
 ---
 

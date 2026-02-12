@@ -3,13 +3,13 @@ agent: agent
 description: Build a repository map to document architecture, technology stack, and repo-level conventions (evidence-first)
 ---
 
-**Mandatory preparation:** read [codebase overview](../instructions/includes/codebase-overview-baseline.include.md) instructions in full and follow strictly its rules before executing any step below.
+**Mandatory preparation:** read [architecture overview](../instructions/includes/architecture-baseline.include.md) instructions in full and follow strictly its rules before executing any step below.
 
 ## Goal 🎯
 
-Create (or update): [repository map](../../docs/codebase-overview/repository-map.md)
+Create (or update): [repository map](../../docs/architecture/repository-map.md)
 
-Also ensure it is linked from: [codebase overview](../../docs/codebase-overview/README.md) output
+Also ensure it is linked from: [architecture overview](../../docs/architecture/README.md) output
 
 ---
 
@@ -36,7 +36,7 @@ If not set, auto-detect from code/config. Do **not** guess.
    - **Generated/vendor** (ignore for mapping unless referenced by build)
 2. Record which directories appear to be **generated/vendor** and should be treated as _non-authoritative_.
 3. Run `make clean` (if present), followed by `gocloc .` from the repository root to capture a lines-of-code breakdown by language.
-   - Store the raw output in `docs/codebase-overview/loc-report.txt`.
+   - Store the raw output in `docs/architecture/loc-report.txt`.
    - Summarise the top languages (by lines) in `repository-map.md` under a short **Size and language mix** section.
    - If `gocloc` is not available, record **Unknown from code – install gocloc or provide equivalent LOC output** and continue.
 

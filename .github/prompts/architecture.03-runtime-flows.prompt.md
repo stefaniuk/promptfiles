@@ -3,13 +3,13 @@ agent: agent
 description: Document key runtime flows with diagrams (trigger → orchestration → data lineage), evidence-first
 ---
 
-**Mandatory preparation:** read [codebase overview](../instructions/includes/codebase-overview-baseline.include.md) instructions in full and follow strictly its rules before executing any step below.
+**Mandatory preparation:** read [architecture overview](../instructions/includes/architecture-baseline.include.md) instructions in full and follow strictly its rules before executing any step below.
 
 ## Goal 🎯
 
-Create (or update): runtime flows `../../docs/codebase-overview/runtime-flow-*.md`
+Create (or update): runtime flows `../../docs/architecture/runtime-flow-*.md`
 
-Also ensure they are linked from: [codebase overview](../../docs/codebase-overview/README.md) output
+Also ensure they are linked from: [architecture overview](../../docs/architecture/README.md) output
 
 ---
 
@@ -18,8 +18,8 @@ Also ensure they are linked from: [codebase overview](../../docs/codebase-overvi
 ### A. Refresh what is already known
 
 1. Review:
-   - [repository map](../../docs/codebase-overview/repository-map.md)
-   - All component documents: `docs/codebase-overview/component-*.md`
+   - [repository map](../../docs/architecture/repository-map.md)
+   - All component documents: `docs/architecture/component-*.md`
 2. Extract into working notes:
    - All entry points (HTTP, CLI, schedulers, message consumers)
    - Known external integrations
@@ -69,7 +69,7 @@ Search for and open the files that define or register:
 
 For each flow, create:
 
-- `docs/codebase-overview/runtime-flow-[XXX]-[name].md`
+- `docs/architecture/runtime-flow-[XXX]-[name].md`
 
 Where:
 
@@ -180,7 +180,7 @@ If any item cannot be supported by code/config, record:
 
 ### 5) Update the index
 
-Update: [codebase overview](../../docs/codebase-overview/README.md) with a **Runtime Flows** section linking to every flow document (in `[XXX]` order).
+Update: [architecture overview](../../docs/architecture/README.md) with a **Runtime Flows** section linking to every flow document (in `[XXX]` order).
 
 Also add (or update) a brief flow index table in the README (evidence-based):
 

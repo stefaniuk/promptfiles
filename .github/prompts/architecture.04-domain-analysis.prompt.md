@@ -3,19 +3,19 @@ agent: agent
 description: Domain analysis (DDD) to document bounded contexts, language, events, and context map (evidence-first)
 ---
 
-**Mandatory preparation:** read [codebase overview](../instructions/includes/codebase-overview-baseline.include.md) instructions in full and follow strictly its rules before executing any step below.
+**Mandatory preparation:** read [architecture overview](../instructions/includes/architecture-baseline.include.md) instructions in full and follow strictly its rules before executing any step below.
 
 ## Goal 🎯
 
 Create (or update) these domain analysis documents (evidence-first):
 
-- [bounded contexts](../../docs/codebase-overview/domain-01-bounded-contexts.md)
-- [ubiquitous language](../../docs/codebase-overview/domain-02-ubiquitous-language.md)
-- [context map](../../docs/codebase-overview/domain-03-context-map.md)
-- [domain events catalogue](../../docs/codebase-overview/domain-04-domain-events.md)
-- [boundary and modelling notes](../../docs/codebase-overview/domain-05-boundary-notes.md)
+- [bounded contexts](../../docs/architecture/domain-01-bounded-contexts.md)
+- [ubiquitous language](../../docs/architecture/domain-02-ubiquitous-language.md)
+- [context map](../../docs/architecture/domain-03-context-map.md)
+- [domain events catalogue](../../docs/architecture/domain-04-domain-events.md)
+- [boundary and modelling notes](../../docs/architecture/domain-05-boundary-notes.md)
 
-Also ensure they are linked from: [codebase overview](../../docs/codebase-overview/README.md) output
+Also ensure they are linked from: [architecture overview](../../docs/architecture/README.md) output
 
 ---
 
@@ -24,9 +24,9 @@ Also ensure they are linked from: [codebase overview](../../docs/codebase-overvi
 ### A. Refresh architectural context
 
 1. Review:
-   - [repository map](../../docs/codebase-overview/repository-map.md)
-   - All component documents: `docs/codebase-overview/component-*.md`
-   - All runtime flow documents: `docs/codebase-overview/runtime-flow-*.md`
+   - [repository map](../../docs/architecture/repository-map.md)
+   - All component documents: `docs/architecture/component-*.md`
+   - All runtime flow documents: `docs/architecture/runtime-flow-*.md`
 2. Extract into working notes:
    - Deployable units and component names (use the same names)
    - Datastores and ownership statements (if any)
@@ -74,7 +74,7 @@ Search for and open code/config that commonly reveals domain boundaries and lang
 3. If boundaries are unclear, record:
    - **Unknown from code – {action to confirm boundary}**
 
-Write/update: `docs/codebase-overview/domain-01-bounded-contexts.md`
+Write/update: `docs/architecture/domain-01-bounded-contexts.md`
 
 Include a brief index table:
 
@@ -84,7 +84,7 @@ Include a brief index table:
 
 ### 2) Document ubiquitous language (terms and meanings)
 
-Create/update: `docs/codebase-overview/domain-02-ubiquitous-language.md`
+Create/update: `docs/architecture/domain-02-ubiquitous-language.md`
 
 1. Capture 30–60 terms (aim for quality over quantity).
 2. For each term, record:
@@ -102,7 +102,7 @@ Include an "Ambiguities and conflicts" section (terms used inconsistently) with 
 
 ### 3) Create a context map (relationships and integration styles)
 
-Create/update: `docs/codebase-overview/domain-03-context-map.md`
+Create/update: `docs/architecture/domain-03-context-map.md`
 
 1. For each pair of bounded contexts with a relationship, record:
    - Relationship direction (upstream/downstream)
@@ -123,7 +123,7 @@ If a relationship is suspected but not evidenced, record:
 
 ### 4) Build a domain events catalogue (business meaning + evidence)
 
-Create/update: `docs/codebase-overview/domain-04-domain-events.md`
+Create/update: `docs/architecture/domain-04-domain-events.md`
 
 1. Identify domain events (or event-like messages) from code/config:
    - Event name constants/enums
@@ -149,7 +149,7 @@ Include an index table:
 
 ### 5) Capture modelling and boundary notes (practical DDD insights)
 
-Create/update: `docs/codebase-overview/domain-05-boundary-notes.md`
+Create/update: `docs/architecture/domain-05-boundary-notes.md`
 
 1. Record evidence-based notes on:
    - Where business rules live (domain services vs application services vs controllers)
@@ -168,7 +168,7 @@ Create/update: `docs/codebase-overview/domain-05-boundary-notes.md`
 
 ### 6) Update the index (README)
 
-Update: [codebase overview](../../docs/codebase-overview/README.md) with a **Domain Analysis (DDD)** section linking to:
+Update: [architecture overview](../../docs/architecture/README.md) with a **Domain Analysis (DDD)** section linking to:
 
 - `domain-01-bounded-contexts.md`
 - `domain-02-ubiquitous-language.md`

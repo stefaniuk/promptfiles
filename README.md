@@ -155,7 +155,7 @@ make apply dest=/absolute/path/to/target
 - `.specify/memory/constitution.md`
 - `.specify/scripts/bash`, `.specify/templates`
 - `docs/adr/ADR-nnn_Any_Decision_Record_Template.md`
-- `docs/codebase-overview/`, `docs/prompts/`, `docs/.gitignore`
+- `docs/architecture/`, `docs/prompts/`, `docs/.gitignore`
 - `project.code-workspace` (only if missing in the target)
 
 </details>
@@ -218,13 +218,13 @@ The report shows:
 
 Prompts use a **prefix + category + verb** convention to keep fuzzy search fast and predictable:
 
-| Prefix      | Purpose                                     | Example                                |
-| :---------- | :------------------------------------------ | :------------------------------------- |
-| `speckit.`  | Spec-kit lifecycle steps                    | `speckit.plan.prompt.md`               |
-| `codebase.` | Evidence-first codebase documentation flows | `codebase.01-repository-map.prompt.md` |
-| `enforce.`  | Instruction compliance enforcement          | `enforce.python.prompt.md`             |
-| `review.`   | Review and audit prompts                    | `review.speckit-code.prompt.md`        |
-| `util.`     | Operational utilities                       | `util.gh-pr-review.prompt.md`          |
+| Prefix          | Purpose                                         | Example                                    |
+| :-------------- | :---------------------------------------------- | :----------------------------------------- |
+| `speckit.`      | Spec-kit lifecycle steps                        | `speckit.plan.prompt.md`                   |
+| `architecture.` | Evidence-first architecture documentation flows | `architecture.01-repository-map.prompt.md` |
+| `enforce.`      | Instruction compliance enforcement              | `enforce.python.prompt.md`                 |
+| `review.`       | Review and audit prompts                        | `review.speckit-code.prompt.md`            |
+| `util.`         | Operational utilities                           | `util.gh-pr-review.prompt.md`              |
 
 ## Resources
 

@@ -9,7 +9,7 @@ description: Enforce repository-wide compliance with reactjs.instructions.md
 - Read the [ReactJS instructions](../instructions/reactjs.instructions.md).
 - Read the [TypeScript instructions](../instructions/typescript.instructions.md) for shared tooling, quality gates, and UI accessibility baselines.
 - Reference identifiers (for example `[RJS-QR-001]`) as you must assess compliance against each of them across the codebase and remediate any deviations.
-- Read the [codebase overview instructions](../instructions/includes/codebase-overview-baseline.include.md) and adopt the approach for gathering supporting evidence.
+- Read the [architecture overview instructions](../instructions/includes/architecture-baseline.include.md) and adopt the approach for gathering supporting evidence.
 
 ## User Input ⌨️
 

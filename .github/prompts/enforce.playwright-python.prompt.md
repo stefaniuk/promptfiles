@@ -10,7 +10,7 @@ description: Enforce repository-wide compliance with playwright-python.instructi
 - Read the [Python instructions](../instructions/python.instructions.md) for general Python standards.
 - Read the [Playwright baseline](../instructions/includes/playwright-baseline.include.md) for shared Playwright guidance.
 - Reference identifiers (for example `[PW-PY-QR-001]`) as you must assess compliance against each of them across the codebase and remediate any deviations.
-- Read the [codebase overview instructions](../instructions/includes/codebase-overview-baseline.include.md) and adopt the approach for gathering supporting evidence.
+- Read the [architecture overview instructions](../instructions/includes/architecture-baseline.include.md) and adopt the approach for gathering supporting evidence.
 
 ## User Input ⌨️
 

@@ -31,7 +31,7 @@ set -euo pipefail
 #   - All spec-kit agents (.github/agents)
 #   - Shell, Docker, Makefile instructions and prompts
 #   - Development prompts (dev.implement-*)
-#   - Codebase documentation prompts (codebase.*)
+#   - Architecture documentation prompts (architecture.*)
 #   - Spec-kit prompts (speckit.*, review.speckit-*)
 #   - Utility prompts (util.*)
 #   - Shared includes (baselines)
@@ -43,7 +43,7 @@ set -euo pipefail
 #   - .specify/scripts/bash
 #   - .specify/templates
 #   - ADR-nnn_Any_Decision_Record_Template.md
-#   - docs/codebase-overview/
+#   - docs/architecture/
 #   - docs/prompts/
 #   - project.code-workspace (if not already present)
 #   - .gitignore content (managed section with begin/end markers)
@@ -74,7 +74,7 @@ CONSTITUTION="${REPO_ROOT}/.specify/memory/constitution.md"
 SPECIFY_SCRIPTS_BASH="${REPO_ROOT}/.specify/scripts/bash"
 SPECIFY_TEMPLATES="${REPO_ROOT}/.specify/templates"
 ADR_TEMPLATE="${REPO_ROOT}/docs/adr/ADR-nnn_Any_Decision_Record_Template.md"
-DOCS_CODEBASE_OVERVIEW="${REPO_ROOT}/docs/codebase-overview"
+DOCS_ARCHITECTURE="${REPO_ROOT}/docs/architecture"
 DOCS_PROMPTS="${REPO_ROOT}/docs/prompts"
 WORKSPACE_FILE="${REPO_ROOT}/project.code-workspace"
 GITIGNORE_PROMPTFILES="${REPO_ROOT}/.gitignore.promptfiles"
@@ -87,7 +87,7 @@ GITIGNORE_END_MARKER="# <<< promptfiles-copilot managed content - DO NOT EDIT AB
 DEFAULT_INSTRUCTIONS=("docker" "makefile" "readme" "shell")
 
 # Default prompt patterns (glue layer and spec-kit)
-DEFAULT_PROMPT_PATTERNS=("codebase.*" "dev.implement-*" "enforce.docker" "enforce.makefile" "enforce.shell" "review.speckit-*" "speckit.*" "util.*")
+DEFAULT_PROMPT_PATTERNS=("architecture.*" "dev.implement-*" "enforce.docker" "enforce.makefile" "enforce.shell" "review.speckit-*" "speckit.*" "util.*")
 
 # Default templates (glue layer)
 DEFAULT_TEMPLATES=("Makefile.template" "Dockerfile.template" "compose.yaml.template" "shell-script.template.sh")
@@ -251,7 +251,7 @@ function main() {
   copy-specify-scripts-bash "${destination}"
   copy-specify-templates "${destination}"
   copy-adr-template "${destination}"
-  copy-docs-codebase-overview "${destination}"
+  copy-docs-architecture "${destination}"
   copy-docs-prompts "${destination}"
   copy-workspace-file "${destination}"
   update-gitignore "${destination}"
@@ -551,16 +551,16 @@ function copy-adr-template() {
   cp "${ADR_TEMPLATE}" "${dest}/"
 }
 
-# Copy docs/codebase-overview directory to the destination.
+# Copy docs/architecture directory to the destination.
 # Only copies .gitkeep if the destination directory is empty or doesn't exist.
 # Arguments (provided as function parameters):
 #   $1=[destination directory path]
-function copy-docs-codebase-overview() {
+function copy-docs-architecture() {
 
-  local dest="$1/docs/codebase-overview"
+  local dest="$1/docs/architecture"
   mkdir -p "${dest}"
 
-  print-info "Copying docs/codebase-overview to ${dest}"
+  print-info "Copying docs/architecture to ${dest}"
 
   # Check if destination directory has any files (excluding hidden files that start with .)
   local file_count
@@ -568,10 +568,10 @@ function copy-docs-codebase-overview() {
 
   if [[ "${file_count}" -eq 0 ]]; then
     # Directory is empty, copy everything including .gitkeep
-    cp -R "${DOCS_CODEBASE_OVERVIEW}/." "${dest}/"
+    cp -R "${DOCS_ARCHITECTURE}/." "${dest}/"
   else
     # Directory has files, copy everything except .gitkeep
-    find "${DOCS_CODEBASE_OVERVIEW}" -maxdepth 1 -type f ! -name ".gitkeep" -exec cp {} "${dest}/" \; 2>/dev/null || true
+    find "${DOCS_ARCHITECTURE}" -maxdepth 1 -type f ! -name ".gitkeep" -exec cp {} "${dest}/" \; 2>/dev/null || true
   fi
 }
 

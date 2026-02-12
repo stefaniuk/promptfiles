@@ -1,12 +1,12 @@
 # Codebase Overview Baseline 📚
 
-Use this shared baseline for producing and maintaining codebase overview documentation for this repository.
+Use this shared baseline for producing and maintaining architecture overview documentation for this repository.
 
 **Identifier scheme.** Every normative rule carries a unique tag in the form `[CBO-<prefix>-NNN]`, where the prefix maps to the containing section (for example `SCP` for Scope, `HRD` for Hard Rules, `EVD` for Evidence, `EXC` for Exclusions, `WRT` for Writing, `DSC` for Discovery, `PRM` for Prompts, `ITR` for Iteration, `NAV` for Navigation). Use these identifiers when referencing, planning, or validating requirements.
 
 ## Scope 🎯
 
-- [CBO-SCP-001] Produce and maintain Markdown documents under `docs/codebase-overview/`.
+- [CBO-SCP-001] Produce and maintain Markdown documents under `docs/architecture/`.
 - [CBO-SCP-002] Treat the repository as the only authoritative source.
 
 ## Hard rules 🚫
@@ -51,16 +51,16 @@ Use this shared baseline for producing and maintaining codebase overview documen
 - [CBO-DSC-001] List top-level directories (e.g. `ls`) and identify likely source roots.
 - [CBO-DSC-002] Identify language/tooling indicators (`Makefile`, `pyproject.toml`, `package.json`, `go.mod`, etc.).
 - [CBO-DSC-003] Identify CI/deploy indicators (`.github/workflows/`, `Dockerfile`, Helm, Kubernetes, Terraform).
-- [CBO-DSC-004] Record any new findings in `docs/codebase-overview/repository-map.md` (even if partial).
+- [CBO-DSC-004] Record any new findings in `docs/architecture/repository-map.md` (even if partial).
 
 ### Prompt execution order
 
 - [CBO-PRM-001] Run prompts in this order.
-- [CBO-PRM-002] [codebase.01-repository-map](../../prompts/codebase.01-repository-map.prompt.md)
-- [CBO-PRM-003] [codebase.02-component-catalogue](../../prompts/codebase.02-component-catalogue.prompt.md)
-- [CBO-PRM-004] [codebase.03-runtime-flows](../../prompts/codebase.03-runtime-flows.prompt.md)
-- [CBO-PRM-005] [codebase.04-domain-analysis](../../prompts/codebase.04-domain-analysis.prompt.md)
-- [CBO-PRM-006] [codebase.05-c4-model](../../prompts/codebase.05-c4-model.prompt.md)
+- [CBO-PRM-002] [architecture.01-repository-map](../../prompts/architecture.01-repository-map.prompt.md)
+- [CBO-PRM-003] [architecture.02-component-catalogue](../../prompts/architecture.02-component-catalogue.prompt.md)
+- [CBO-PRM-004] [architecture.03-runtime-flows](../../prompts/architecture.03-runtime-flows.prompt.md)
+- [CBO-PRM-005] [architecture.04-domain-analysis](../../prompts/architecture.04-domain-analysis.prompt.md)
+- [CBO-PRM-006] [architecture.05-c4-model](../../prompts/architecture.05-c4-model.prompt.md)
 
 ### Iteration rules
 
@@ -70,7 +70,7 @@ Use this shared baseline for producing and maintaining codebase overview documen
 
 ## Indexing and navigation 🗂️
 
-- [CBO-NAV-001] Treat `docs/codebase-overview/README.md` as the canonical landing page.
+- [CBO-NAV-001] Treat `docs/architecture/README.md` as the canonical landing page.
 - [CBO-NAV-002] Link every `component-*.md`, `runtime-flow-*.md` and `domain-*` document from the README.
 - [CBO-NAV-003] Maintain an **Unknowns / to verify** section in the README for follow-up work.
 

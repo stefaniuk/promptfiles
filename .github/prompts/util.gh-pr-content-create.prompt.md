@@ -7,7 +7,7 @@ description: Create pull request content from the current branch changes
 - Read the [constitution](../../.specify/memory/constitution.md) and honour its non-negotiable rules.
 - Read the Pull Request template at [pull_request_template.md](../pull_request_template.md) so the generated content mirrors it exactly.
 - Read the technology-specific instructions for every language touched in the diff (for example [python.instructions.md](../instructions/python.instructions.md), [shell.instructions.md](../instructions/shell.instructions.md), [makefile.instructions.md](../instructions/makefile.instructions.md)).
-- Review the design context under `docs/codebase-overview/` to describe affected components accurately.
+- Review the design context under `docs/architecture/` to describe affected components accurately.
 
 ## Goal 🎯
 
@@ -42,7 +42,7 @@ done
 
 ### B. Summarise behavioural impact
 
-1. Enumerate the files, components, and flows touched (map component names to `docs/codebase-overview/*`).
+1. Enumerate the files, components, and flows touched (map component names to `docs/architecture/*`).
 2. Identify change categories (bug fix, feature, refactor, documentation, tooling) and note any public interfaces affected.
 3. Record configuration, schema, or dependency updates.
 4. Capture open questions as **Unknown from code – {action needed}**.

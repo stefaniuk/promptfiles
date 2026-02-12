@@ -11,7 +11,7 @@
 # Instructions (shell, docker, makefile, readme, and technology-specific)
 .github/instructions/
 
-# Prompts (codebase, enforce, review, speckit, util)
+# Prompts (architecture, enforce, review, speckit, util)
 .github/prompts/
 
 # Skills (repository-template and technology-specific)
@@ -44,7 +44,7 @@
 docs/adr/ADR-nnn_Any_Decision_Record_Template.md
 
 # Codebase overview (placeholder)
-docs/codebase-overview/.gitkeep
+docs/architecture/.gitkeep
 
 # Prompts documentation
 docs/prompts/

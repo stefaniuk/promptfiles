@@ -8,7 +8,7 @@ description: Enforce repository-wide compliance with docker.instructions.md
 - Read the [constitution](../../.specify/memory/constitution.md) for non-negotiable rules, if you have not done already.
 - Read the [Dockerfile instructions](../instructions/docker.instructions.md).
 - Reference identifiers (for example `[DF-QR-001]`) as you must assess compliance against each of them across the codebase and remediate any deviations.
-- Read the [codebase overview instructions](../instructions/includes/codebase-overview-baseline.include.md) and adopt the approach for gathering supporting evidence.
+- Read the [architecture overview instructions](../instructions/includes/architecture-baseline.include.md) and adopt the approach for gathering supporting evidence.
 
 ## User Input ⌨️
 
