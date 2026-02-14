@@ -228,13 +228,12 @@ Prompts use a **prefix + category + verb** convention to keep fuzzy search fast 
 
 ## Resources
 
-| Resource            | Link                                                                                         |
-| :------------------ | :------------------------------------------------------------------------------------------- |
-| Custom Prompts      | [VS Code Docs](https://code.visualstudio.com/docs/copilot/customization/prompt-files)        |
-| Custom Instructions | [VS Code Docs](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) |
-| Custom Agents       | [VS Code Docs](https://code.visualstudio.com/docs/copilot/customization/custom-agents)       |
-| Custom Skills       | [VS Code Docs](https://code.visualstudio.com/docs/copilot/customization/agent-skills)        |
-| Awesome Copilot     | [GitHub](https://github.com/github/awesome-copilot)                                          |
+- Custom Prompts — [VS Code Docs](https://code.visualstudio.com/docs/copilot/customization/prompt-files)
+- Custom Instructions — [VS Code Docs](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
+- Custom Agents — [VS Code Docs](https://code.visualstudio.com/docs/copilot/customization/custom-agents)
+- Custom Skills — [VS Code Docs](https://code.visualstudio.com/docs/copilot/customization/agent-skills)
+- Copilot Chat (macOS) — [Local setup guide](docs/prompts/vscode-copilot-chat-setup-macos.md)
+- Awesome Copilot — [GitHub](https://github.com/github/awesome-copilot)
 
 ## Contributing
 
