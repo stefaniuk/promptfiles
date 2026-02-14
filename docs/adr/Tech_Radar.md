@@ -8,6 +8,7 @@
 - [Testing](ADR-001d_Python_Testing_Tooling.md): `pytest`
 - [Logging](ADR-001e_Python_Logging.md): `structlog` or `Powertools for AWS Lambda`
 - [CLI argument parsing](ADR-001f_Python_CLI_Argument_Parsing.md): `typer` + `rich`
+- [TUI framework](ADR-001g_Python_TUI_Framework.md): `textual`
 
 ## TypeScript tech stack
 
