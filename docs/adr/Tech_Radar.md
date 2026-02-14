@@ -28,6 +28,7 @@
 - [Testing](ADR-003d_Go_Testing_Tooling.md): `go test`
 - [Logging](ADR-003e_Go_Logging.md): `zap`
 - [CLI argument parsing](ADR-003f_Go_CLI_Argument_Parsing.md): `cobra` + `fatih/color`
+- [TUI framework](ADR-003g_Go_TUI_Framework.md): `bubbletea` + `lipgloss`
 
 ## Rust tech stack
 
