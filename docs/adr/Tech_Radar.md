@@ -18,6 +18,7 @@
 - [Testing](ADR-002d_TypeScript_Testing_Tooling.md): `vitest`
 - [Logging](ADR-002e_TypeScript_Logging.md): `winston` or `Powertools for AWS Lambda`
 - [CLI argument parsing](ADR-002f_TypeScript_CLI_Argument_Parsing.md): `commander` + `chalk`
+- [TUI framework](ADR-002g_TypeScript_TUI_Framework.md): `ink`
 
 ## Go tech stack
 
@@ -43,5 +44,5 @@ Note: Selecting any default tool above still requires an ADR that compares and a
 
 ---
 
-> **Version**: 1.2.1
-> **Last Amended**: 2026-02-09
+> **Version**: 1.3.0
+> **Last Amended**: 2026-06-15
