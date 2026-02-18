@@ -377,6 +377,16 @@ function revert-promptfiles() {
     fi
   done
 
+  # Remove docs/architecture directory if empty or only contains .gitkeep
+  if [[ -d "${dest}/docs/architecture" ]]; then
+    local arch_contents
+    arch_contents=$(ls -A "${dest}/docs/architecture" 2>/dev/null)
+    if [[ -z "${arch_contents}" ]] || [[ "${arch_contents}" == ".gitkeep" ]]; then
+      print-info "Removing ${dest}/docs/architecture"
+      rm -rf "${dest:?}/docs/architecture"
+    fi
+  fi
+
   # Remove docs/prompts directory
   if [[ -d "${dest}/docs/prompts" ]]; then
     print-info "Removing ${dest}/docs/prompts"
