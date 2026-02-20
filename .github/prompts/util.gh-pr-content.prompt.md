@@ -19,24 +19,29 @@ Craft a diff-driven pull request title and body, ready to copy/paste, that compa
 
 ### A. Establish the diff against `main`
 
-Run the labelled batch below **once** from the repository root so each command prints `>>> <command>` before its output:
+Run the labelled batch below **once** from the repository root. Output is written to `docs/prompts/git-pr-content-diff.txt` so that large diffs do not overflow the terminal context.
 
 ```bash
+_diff_file="docs/prompts/git-pr-content-diff.txt"
+: > "$_diff_file"
 if ! git show-ref --verify --quiet refs/heads/main; then
-  printf '\n>>> %s\n' "git fetch origin main:main"
-  git fetch origin main:main
+  printf '\n>>> %s\n' "git fetch origin main:main" | tee -a "$_diff_file"
+  git fetch origin main:main 2>&1 | tee -a "$_diff_file"
 fi
 for cmd in \
   "git diff --stat main...HEAD" \
   "git diff main...HEAD" \
   "git status -sb" \
   "git rev-parse --abbrev-ref HEAD"; do
-    printf '\n>>> %s\n' "$cmd"
-    eval "$cmd"
+    printf '\n>>> %s\n' "$cmd" >> "$_diff_file"
+    eval "$cmd" >> "$_diff_file" 2>&1
 done
+printf '\nDiff captured → %s (%s bytes)\n' "$_diff_file" "$(wc -c < "$_diff_file")"
 ```
 
-- Use `git diff --stat` for the overview and `git diff main...HEAD` for detailed evidence.
+After the script completes, **read the file `docs/prompts/git-pr-content-diff.txt`** in full and use its contents as the authoritative diff evidence for the rest of this review.
+
+- Use `git diff --stat main...HEAD` for the overview and `git diff main...HEAD` for detailed evidence.
 - Capture branch/working-tree information from `git status -sb` and `git rev-parse --abbrev-ref HEAD`.
 - If there is no diff, stop and report **"No diff vs main – nothing to raise."**
 
@@ -152,5 +157,5 @@ Add additional sections (for example "Testing", "Follow-ups") **only** if the te
 
 ---
 
-> **Version**: 1.1.0
-> **Last Amended**: 2026-01-24
+> **Version**: 1.1.1
+> **Last Amended**: 2026-02-20

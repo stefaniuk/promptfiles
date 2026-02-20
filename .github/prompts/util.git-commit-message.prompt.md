@@ -23,12 +23,14 @@ All artefacts must be fully backed by the diff between `main` and the current `H
 
 ### A. Establish the diff against `main`
 
-Run the labelled batch below **once** from the repository root so each command prints a `>>> <command>` header followed by its output. This keeps every datum tied to the command that produced it and avoids duplicate executions.
+Run the labelled batch below **once** from the repository root. Output is written to `docs/prompts/git-commit-message-diff.txt` so that large diffs do not overflow the terminal context.
 
 ```bash
+_diff_file="docs/prompts/git-commit-message-diff.txt"
+: > "$_diff_file"
 if ! git show-ref --verify --quiet refs/heads/main; then
-  printf '\n>>> %s\n' "git fetch origin main:main"
-  git fetch origin main:main
+  printf '\n>>> %s\n' "git fetch origin main:main" | tee -a "$_diff_file"
+  git fetch origin main:main 2>&1 | tee -a "$_diff_file"
 fi
 for cmd in \
   "git diff --stat main...HEAD" \
@@ -38,13 +40,16 @@ for cmd in \
   "git diff --stat" \
   "git diff --cached --stat" \
   "git log -3 --oneline"; do
-    printf '\n>>> %s\n' "$cmd"
-    eval "$cmd"
+    printf '\n>>> %s\n' "$cmd" >> "$_diff_file"
+    eval "$cmd" >> "$_diff_file" 2>&1
 done
+printf '\nDiff captured → %s (%s bytes)\n' "$_diff_file" "$(wc -c < "$_diff_file")"
 ```
 
+After the script completes, **read the file `docs/prompts/git-commit-message-diff.txt`** in full and use its contents as the authoritative diff evidence for the rest of this review.
+
 1. Use the labelled outputs above to confirm `main` is up to date.
-2. Use `git diff --stat` for the overview and `git diff main...HEAD` for full context.
+2. Use `git diff --stat main...HEAD` for the overview and `git diff main...HEAD` for full context.
 3. Capture branch/working-tree details from `git status -sb` and `git rev-parse --abbrev-ref HEAD`.
 4. If the diffs show no changes, output **"No diff vs main – nothing to commit."** and stop.
 5. Mirror recent commit tone using `git log -3 --oneline`.
@@ -129,5 +134,5 @@ Return content exactly in this shape for easy copy/paste:
 
 ---
 
-> **Version**: 1.2.3
-> **Last Amended**: 2026-01-17
+> **Version**: 1.2.4
+> **Last Amended**: 2026-02-20
