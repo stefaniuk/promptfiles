@@ -93,7 +93,7 @@ flowchart TD
   constitution["/speckit.constitution"] --> specify["/speckit.specify"]
 
   specify --> needClarification{Need clarification?}
-  specify -.- specifyNote["💡 Example: Transform the product requirements document #file:PRD.md into a formal specification"]
+  specify -.- specifyNote["💡 Example: Transform the product requirements document #file:PRD.md into a formal specification of the XXX feature"]
   needClarification -- Yes --> clarify["/speckit.clarify"]
   clarify --> specify
   needClarification -- No --> plan["/speckit.plan"]
