@@ -2,7 +2,7 @@
 
 > |              |                                                 |
 > | ------------ | ----------------------------------------------- |
-> | Date         | `2026-02-08` when the decision was last updated |
+> | Date         | `2026-02-28` when the decision was last updated |
 > | Status       | `Accepted`                                      |
 > | Significance | `Quality attributes`                            |
 
@@ -21,6 +21,7 @@
       - [Option E: gocheck](#option-e-gocheck)
     - [Outcome 🏁](#outcome-)
     - [Rationale 🧠](#rationale-)
+    - [Property-based testing tooling 🔬](#property-based-testing-tooling-)
   - [Consequences ⚖️](#consequences-️)
   - [Compliance 📏](#compliance-)
   - [Notes 🔗](#notes-)
@@ -125,9 +126,24 @@ Adopt `go test` and the standard `testing` package as the default testing approa
 
 The standard testing toolchain is fast, stable, and universally understood. It keeps dependencies minimal and works with coverage and CI tooling out of the box.
 
+### Property-based testing tooling 🔬
+
+For Go in 2026, we should prefer a modern PBT library that complements native fuzzing rather than replacing it.
+
+| Tool                                              | Score/Notes                                                                                                     |
+| ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| [rapid](https://github.com/flyingmutant/rapid)    | ⭐⭐⭐ Strong PBT ergonomics (generators, shrinking, stateful tests), plus `MakeFuzz` bridge to native fuzzing. |
+| [testing/quick](https://pkg.go.dev/testing/quick) | ⭐⭐ Stable and dependency-free, but explicitly frozen and limited for complex PBT workflows.                   |
+| [gopter](https://github.com/leanovate/gopter)     | ⭐⭐ Capable and mature, but heavier API and slower momentum than newer options.                                |
+| [go-check](https://github.com/steffnova/go-check) | ⭐ Clear property model, but lower adoption and weaker ecosystem signal.                                        |
+| [gofuzz](https://github.com/google/gofuzz)        | ⭐ Useful random-data generator, but not a full PBT framework and now archived.                                 |
+
+**Recommended choice**: `rapid` as the default PBT companion to `go test`, with native Go fuzzing kept alongside it for coverage-guided exploration.
+
 ## Consequences ⚖️
 
 - Tests should be written using the `testing` package by default.
+- Property-based tests should use `rapid` with `go test`.
 - Any additional framework must be justified by a specific need.
 
 ## Compliance 📏
@@ -141,6 +157,7 @@ The standard testing toolchain is fast, stable, and universally understood. It k
 ## Actions ✅
 
 - [x] Copilot, 2026-02-08, update Tech Radar with the Go stack selection
+- [x] Copilot, 2026-02-28, add the PBT tooling comparison and recommendation
 
 ## Tags 🏷️
 

@@ -2,7 +2,7 @@
 
 > |              |                                                 |
 > | ------------ | ----------------------------------------------- |
-> | Date         | `2026-02-08` when the decision was last updated |
+> | Date         | `2026-02-28` when the decision was last updated |
 > | Status       | `Accepted`                                      |
 > | Significance | `Quality attributes`                            |
 
@@ -21,6 +21,7 @@
       - [Option E: node test](#option-e-node-test)
     - [Outcome 🏁](#outcome-)
     - [Rationale 🧠](#rationale-)
+    - [Property-based testing tooling 🔬](#property-based-testing-tooling-)
   - [Consequences ⚖️](#consequences-️)
   - [Compliance 📏](#compliance-)
   - [Notes 🔗](#notes-)
@@ -130,9 +131,24 @@ Adopt `Vitest` as the default testing framework. This decision is reversible if 
 
 Vitest is fast, TypeScript-friendly, and integrates well with modern build tooling, giving the best developer experience for this repo.
 
+### Property-based testing tooling 🔬
+
+Property-based testing should complement Vitest with good TypeScript ergonomics, reliable shrinking, and active maintenance.
+
+| Tool                                                                   | Score/Notes                                                                                                             |
+| ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| [fast-check](https://github.com/dubzzz/fast-check)                     | ⭐⭐⭐ Best overall fit for TypeScript and modern workflows; strong shrinking, good generators, and active maintenance. |
+| [@fast-check/vitest](https://www.npmjs.com/package/@fast-check/vitest) | ⭐⭐⭐ Best Vitest integration companion; use alongside `fast-check`, not as a standalone engine.                       |
+| [jsverify](https://github.com/jsverify/jsverify)                       | ⭐⭐ Proven QuickCheck style, but older release line and weaker modern momentum.                                        |
+| [testcheck](https://github.com/leebyron/testcheck-js)                  | ⭐⭐ Useful ideas, but legacy maintenance profile and older release cadence.                                            |
+| [jscheck](https://github.com/douglascrockford/JSCheck)                 | ⭐ Historical option; low practical fit for modern TypeScript + Vitest workflows.                                       |
+
+**Recommended choice**: `fast-check` (with `@fast-check/vitest` as the default Vitest companion).
+
 ## Consequences ⚖️
 
 - TypeScript tests should use Vitest by default.
+- Property-based tests should use `fast-check` with `Vitest`.
 - Other test runners require explicit justification.
 
 ## Compliance 📏
@@ -146,6 +162,7 @@ Vitest is fast, TypeScript-friendly, and integrates well with modern build tooli
 ## Actions ✅
 
 - [x] Copilot, 2026-02-08, record the testing decision
+- [x] Copilot, 2026-02-28, add the PBT tooling comparison and recommendation
 
 ## Tags 🏷️
 

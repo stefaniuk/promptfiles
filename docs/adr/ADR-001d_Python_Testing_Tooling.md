@@ -2,7 +2,7 @@
 
 > |              |                                                 |
 > | ------------ | ----------------------------------------------- |
-> | Date         | `2026-02-08` when the decision was last updated |
+> | Date         | `2026-02-28` when the decision was last updated |
 > | Status       | `Accepted`                                      |
 > | Significance | `Quality attributes`                            |
 
@@ -21,6 +21,7 @@
       - [Option E: Robot Framework](#option-e-robot-framework)
     - [Outcome 🏁](#outcome-)
     - [Rationale 🧠](#rationale-)
+    - [Property-based testing tooling 🔬](#property-based-testing-tooling-)
   - [Consequences ⚖️](#consequences-️)
   - [Compliance 📏](#compliance-)
   - [Notes 🔗](#notes-)
@@ -130,9 +131,24 @@ Adopt `pytest` as the default testing framework. This decision is reversible if 
 
 `pytest` offers the best mix of expressiveness, plugin support, and performance. It is the most widely adopted option for modern Python projects.
 
+### Property-based testing tooling 🔬
+
+For Python projects that already use `pytest`, we compared practical property-based testing options for day-to-day engineering use.
+
+| Tool                                                                                | Score/Notes                                                                                                                 |
+| ----------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| [Hypothesis](https://github.com/HypothesisWorks/hypothesis)                         | ⭐⭐⭐ Best general default with strong `pytest` fit, shrinking, strategy ecosystem, and active maintenance.                |
+| [Schemathesis](https://github.com/schemathesis/schemathesis)                        | ⭐⭐ Excellent for OpenAPI/GraphQL property testing; best as an API-focused add-on, not a full replacement for general PBT. |
+| [CrossHair](https://github.com/pschanely/CrossHair)                                 | ⭐⭐ Strong symbolic counterexample finding for contract-heavy code; useful but more specialised workflow.                  |
+| [hypothesis-jsonschema](https://github.com/python-jsonschema/hypothesis-jsonschema) | ⭐⭐ Helpful schema-to-strategy bridge when JSON Schema is central; narrower in scope than a full PBT framework.            |
+| [pytest-quickcheck](https://github.com/Stranger6667/pytest-quickcheck)              | ⭐ Simpler random testing pattern, but limited compared with modern Hypothesis workflows.                                   |
+
+**Recommended choice**: `Hypothesis` as the default property-based testing companion to `pytest`.
+
 ## Consequences ⚖️
 
 - Tests should be written using `pytest` by default.
+- Property-based tests should use `Hypothesis` with `pytest`.
 - Other frameworks require explicit justification.
 
 ## Compliance 📏
@@ -146,6 +162,7 @@ Adopt `pytest` as the default testing framework. This decision is reversible if 
 ## Actions ✅
 
 - [x] Copilot, 2026-02-08, record the testing decision
+- [x] Copilot, 2026-02-28, add the PBT tooling comparison and recommendation
 
 ## Tags 🏷️
 

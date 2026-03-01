@@ -2,7 +2,7 @@
 
 > |              |                                                 |
 > | ------------ | ----------------------------------------------- |
-> | Date         | `2026-02-08` when the decision was last updated |
+> | Date         | `2026-02-28` when the decision was last updated |
 > | Status       | `Accepted`                                      |
 > | Significance | `Quality attributes`                            |
 
@@ -21,6 +21,7 @@
       - [Option E: criterion](#option-e-criterion)
     - [Outcome 🏁](#outcome-)
     - [Rationale 🧠](#rationale-)
+    - [Property-based testing tooling 🔬](#property-based-testing-tooling-)
   - [Consequences ⚖️](#consequences-️)
   - [Compliance 📏](#compliance-)
   - [Notes 🔗](#notes-)
@@ -125,9 +126,23 @@ Adopt `cargo test` as the default testing approach. This decision is reversible 
 
 The built-in test harness is fast, stable, and universally supported across the Rust ecosystem.
 
+### Property-based testing tooling 🔬
+
+For Rust in 2026, keep `cargo test` as the runner and choose one default property-based testing companion for most invariant-driven tests.
+
+| Tool                                                        | Score/Notes                                                                                                         |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| [proptest](https://github.com/proptest-rs/proptest)         | ⭐⭐⭐ Strong strategy model, strong shrinking, and good deterministic replay patterns.                             |
+| [quickcheck](https://github.com/BurntSushi/quickcheck)      | ⭐⭐ Very simple and mature; good for basic properties, but less control for complex generators and shrinking.      |
+| [bolero](https://github.com/camshaft/bolero)                | ⭐⭐ Useful when combining property tests and fuzzing; adds more tooling complexity for everyday property tests.    |
+| [test-strategy](https://github.com/frozenlib/test-strategy) | ⭐⭐ Helpful macro ergonomics on top of `proptest`; best treated as an optional add-on, not the default foundation. |
+
+**Recommended choice**: `proptest` as the default PBT companion to `cargo test`.
+
 ## Consequences ⚖️
 
 - Tests should use Rust's standard test harness by default.
+- Property-based tests should use `proptest` with `cargo test`.
 - Alternative runners require explicit justification.
 
 ## Compliance 📏
@@ -141,6 +156,7 @@ The built-in test harness is fast, stable, and universally supported across the 
 ## Actions ✅
 
 - [x] Copilot, 2026-02-08, record the testing decision
+- [x] Copilot, 2026-02-28, add the PBT tooling comparison and recommendation
 
 ## Tags 🏷️
 
