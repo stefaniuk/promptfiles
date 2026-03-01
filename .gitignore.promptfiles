@@ -8,6 +8,9 @@
 # Commands (spec-kit)
 .claude/commands/speckit.*
 
+# Instructions file
+.claude/CLAUDE.md
+
 # ------------------------------------------------------------------------------
 # GitHub Copilot configuration
 # ------------------------------------------------------------------------------
@@ -24,11 +27,8 @@
 # Skills (repository-template and technology-specific)
 .github/skills/
 
-# Copilot instructions
+# Instructions file
 .github/copilot-instructions.md
-
-# Pull request template (only copied if not present)
-# .github/pull_request_template.md
 
 # ------------------------------------------------------------------------------
 # Specify framework
@@ -46,6 +46,9 @@
 # ------------------------------------------------------------------------------
 # Documentation
 # ------------------------------------------------------------------------------
+
+# Pull request template (only copied if not present)
+# .github/pull_request_template.md
 
 # ADR template
 docs/adr/ADR-nnn_Any_Decision_Record_Template.md
