@@ -35,10 +35,10 @@ If not set, auto-detect from code/config. Do **not** guess.
    - **Tests** (unit/integration/e2e/performance)
    - **Generated/vendor** (ignore for mapping unless referenced by build)
 2. Record which directories appear to be **generated/vendor** and should be treated as _non-authoritative_.
-3. Run `make clean` (if present), followed by `gocloc .` from the repository root to capture a lines-of-code breakdown by language.
+3. Run `make clean` (if present), followed by `scc .` from the repository root to capture a lines-of-code breakdown by language.
    - Store the raw output in `docs/architecture/loc-report.txt`.
    - Summarise the top languages (by lines) in `repository-map.md` under a short **Size and language mix** section.
-   - If `gocloc` is not available, record **Unknown from code – install gocloc or provide equivalent LOC output** and continue.
+   - If `scc` is not available, record **Unknown from code – install scc or provide equivalent LOC output** and continue.
 
 ### B. Detect project type and architecture pattern (repo-level, evidence-first)
 
